@@ -1,4 +1,4 @@
-import { getShows, createShow } from "@/lib/prisma/shows";
+import { getShows, createShow, deleteShow } from "@/lib/prisma/shows";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
@@ -23,7 +23,18 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST"]);
+  if (req.method === "DELETE") {
+    try {
+      const data = req.body.showID;
+      await deleteShow(data);
+      return res.status(200).json({ message: "Show deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json();
+    }
+  }
+
+  res.setHeader("Allow", ["GET", "POST", "DELETE"]);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 
