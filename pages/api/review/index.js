@@ -1,11 +1,11 @@
-import { getShows, createShow, deleteShow } from "@/lib/prisma/shows";
+import { getReviews, createReview, deleteReview } from "@/lib/prisma/reviews";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { shows, error } = await getShows();
+      const { reviews, error } = await getReviews();
       if (error) throw new Error(error);
-      return res.status(200).json({ shows });
+      return res.status(200).json({ reviews });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -13,10 +13,10 @@ const handler = async (req, res) => {
 
   if (req.method === "POST") {
     try {
-      const data = req.body.show;
-      const { show, error } = await createShow(data);
+      const data = req.body.review;
+      const { review, error } = await createReview(data);
       if (error) throw new Error(error);
-      return res.status(200).json({ show });
+      return res.status(200).json({ review });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: error.message });
@@ -25,9 +25,9 @@ const handler = async (req, res) => {
 
   if (req.method === "DELETE") {
     try {
-      const data = req.body.showID;
-      await deleteShow(data);
-      return res.status(200).json({ message: "Show deleted successfully" });
+      const data = req.body.reviewID;
+      await deleteReview(data);
+      return res.status(200).json({ message: "Review deleted successfully" });
     } catch (error) {
       console.log(error);
       return res.status(500).json();

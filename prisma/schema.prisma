@@ -37,7 +37,15 @@ model User {
   password        String
 }
 
-// model Review {
-//   id   String @id @default(auto()) @map("_id") @db.ObjectId
-//   text String
-// }
+model Review {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userID   String
+  username String
+  showID   String
+  title    String
+  score    Float
+  text     String
+  reacts   Int
+  comments Int
+  time     Int
+}
