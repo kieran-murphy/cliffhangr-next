@@ -1,0 +1,15 @@
+{
+    "reviews": [
+        {
+            "userId": "635f9ac6552fc5f1eea6e468",
+            "username": "Username",
+            "showId": "635f9ac6552fc5f1eea6e468",
+            "title": "Lost",
+            "score": 4.5,
+            "text": "bjhfbf",
+            "reacts": [ ],
+            "comments": [ ],
+            "time": "31/10/2022"
+            }
+        ]
+}
