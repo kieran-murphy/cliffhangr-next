@@ -1,4 +1,4 @@
-import { getShows } from "@/lib/prisma/shows";
+import { getShows, createShow } from "@/lib/prisma/shows";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
@@ -11,7 +11,19 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET"]);
+  if (req.method === "POST") {
+    try {
+      const data = req.body.show;
+      const { show, error } = await createShow(data);
+      if (error) throw new Error(error);
+      return res.status(200).json({ show });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  res.setHeader("Allow", ["GET", "POST"]);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 

@@ -12,8 +12,9 @@ datasource db {
 
 model Show {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
+  title   String
   img     String
+  trailer String
   desc    String
   score   Float
   seasons Int
