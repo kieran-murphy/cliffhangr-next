@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Show {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   img     String
   trailer String
@@ -19,18 +19,19 @@ model Show {
   score   Float
   seasons Int
   year    Int
+  reviews Review[]
 }
 
 model User {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   age             Int
   following       Int
   followers       Int
-  reviews         Int
-  favoriteReviews Int
-  favoriteShows   Int
-  watchList       Int
+  reviews         Review[]
+  favoriteReviews String[]
+  favoriteShows   String[]
+  watchList       String[]
   profilePicture  String
   bio             String
   isAdmin         Boolean
@@ -39,9 +40,10 @@ model User {
 
 model Review {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  userID   String
-  username String
-  showID   String
+  User     User   @relation(fields: [userID], references: [id])
+  userID   String @db.ObjectId
+  Show     Show   @relation(fields: [showID], references: [id])
+  showID   String @db.ObjectId
   title    String
   score    Float
   text     String
