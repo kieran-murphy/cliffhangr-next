@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import ShowListItem from "./ShowListItem";
 
 export default function Home() {
   const [shows, setShows] = useState([]);
@@ -34,7 +35,7 @@ export default function Home() {
   return (
     <div>
       {shows?.map((show) => {
-        return <h1 key={show.id}>{show.title}</h1>;
+        return <ShowListItem key={show.id} show={show} />;
       })}
     </div>
   );
