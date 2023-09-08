@@ -7,48 +7,102 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Show {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  img     String
-  trailer String
-  desc    String
-  score   Float
-  seasons Int
-  year    Int
-  reviews Review[]
+model User {
+  id              String            @id @default(uuid())
+  profilePicture  Bytes?
+  username        String            @unique
+  email           String            @unique
+  role            Role              @default(BASIC)
+  bio             String?
+  // password       String
+  favoriteShows   FavoriteShow[]
+  reactOnReviews  ReactOnReview[]
+  writtenReviews  Review[]          @relation("WrittenReviews")
+  CommentOnReview CommentOnReview[]
+  ReactOnComment  ReactOnComment[]
+
+  @@index([username])
 }
 
-model User {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  age             Int
-  following       Int
-  followers       Int
-  reviews         Review[]
-  favoriteReviews String[]
-  favoriteShows   String[]
-  watchList       String[]
-  profilePicture  String
-  bio             String
-  isAdmin         Boolean
-  password        String
+model Show {
+  id            String         @id @default(uuid())
+  title         String         @unique
+  averageRating Float          @default(0)
+  favoritedBy   FavoriteShow[]
+  reviews       Review[]       @relation("ShowReviews")
+}
+
+model FavoriteShow {
+  userId    String
+  showId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  show      Show     @relation(fields: [showId], references: [id])
+
+  @@id([userId, showId])
+}
+
+model ReactOnReview {
+  userId    String
+  reviewId  String
+  react     React    @default(LIKE)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  review    Review   @relation(fields: [reviewId], references: [id])
+
+  @@id([userId, reviewId])
 }
 
 model Review {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  User     User   @relation(fields: [userID], references: [id])
-  userID   String @db.ObjectId
-  Show     Show   @relation(fields: [showID], references: [id])
-  showID   String @db.ObjectId
-  title    String
-  score    Float
-  text     String
-  reacts   Int
-  comments Int
-  time     Int
+  id              String            @id @default(uuid())
+  text            String?
+  rating          Float
+  createdAt       DateTime          @default(now())
+  user            User              @relation("WrittenReviews", fields: [userId], references: [id])
+  userId          String
+  show            Show              @relation("ShowReviews", fields: [showId], references: [id])
+  showId          String
+  reactOnReviews  ReactOnReview[]
+  CommentOnReview CommentOnReview[]
+
+  @@unique([userId, showId])
+}
+
+model CommentOnReview {
+  id             String           @id @default(uuid())
+  userId         String
+  reviewId       String
+  text           String
+  createdAt      DateTime         @default(now())
+  user           User             @relation(fields: [userId], references: [id])
+  review         Review           @relation(fields: [reviewId], references: [id])
+  ReactOnComment ReactOnComment[]
+}
+
+model ReactOnComment {
+  userId    String
+  commentId String
+  react     React           @default(LIKE)
+  createdAt DateTime        @default(now())
+  user      User            @relation(fields: [userId], references: [id])
+  comment   CommentOnReview @relation(fields: [commentId], references: [id])
+
+  @@id([userId, commentId])
+}
+
+enum Role {
+  BASIC
+  ADMIN
+}
+
+enum React {
+  LIKE
+  LOVE
+  LAUGH
+  WOW
+  ANGRY
 }
