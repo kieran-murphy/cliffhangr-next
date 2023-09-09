@@ -37,16 +37,18 @@ model Show {
 }
 
 model FavoriteShow {
+  id        String   @id @default(uuid())
   userId    String
   showId    String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
   show      Show     @relation(fields: [showId], references: [id])
 
-  @@id([userId, showId])
+  @@unique([userId, showId])
 }
 
 model ReactOnReview {
+  id        String   @id @default(uuid())
   userId    String
   reviewId  String
   react     React    @default(LIKE)
@@ -54,7 +56,7 @@ model ReactOnReview {
   user      User     @relation(fields: [userId], references: [id])
   review    Review   @relation(fields: [reviewId], references: [id])
 
-  @@id([userId, reviewId])
+  @@unique([userId, reviewId])
 }
 
 model Review {
@@ -81,9 +83,12 @@ model CommentOnReview {
   user           User             @relation(fields: [userId], references: [id])
   review         Review           @relation(fields: [reviewId], references: [id])
   ReactOnComment ReactOnComment[]
+
+  @@unique([userId, reviewId])
 }
 
 model ReactOnComment {
+  id        String          @id @default(uuid())
   userId    String
   commentId String
   react     React           @default(LIKE)
@@ -91,7 +96,7 @@ model ReactOnComment {
   user      User            @relation(fields: [userId], references: [id])
   comment   CommentOnReview @relation(fields: [commentId], references: [id])
 
-  @@id([userId, commentId])
+  @@unique([userId, commentId])
 }
 
 enum Role {
