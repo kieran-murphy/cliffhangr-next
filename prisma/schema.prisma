@@ -41,7 +41,7 @@ model FavoriteShow {
   userId    String
   showId    String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   show      Show     @relation(fields: [showId], references: [id])
 
   @@unique([userId, showId])
@@ -53,7 +53,7 @@ model ReactOnReview {
   reviewId  String
   react     React    @default(LIKE)
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   review    Review   @relation(fields: [reviewId], references: [id])
 
   @@unique([userId, reviewId])
@@ -64,7 +64,7 @@ model Review {
   text            String?
   rating          Float
   createdAt       DateTime          @default(now())
-  user            User              @relation("WrittenReviews", fields: [userId], references: [id])
+  user            User              @relation("WrittenReviews", fields: [userId], references: [id], onDelete: Cascade)
   userId          String
   show            Show              @relation("ShowReviews", fields: [showId], references: [id])
   showId          String
@@ -80,7 +80,7 @@ model CommentOnReview {
   reviewId       String
   text           String
   createdAt      DateTime         @default(now())
-  user           User             @relation(fields: [userId], references: [id])
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   review         Review           @relation(fields: [reviewId], references: [id])
   ReactOnComment ReactOnComment[]
 
@@ -93,7 +93,7 @@ model ReactOnComment {
   commentId String
   react     React           @default(LIKE)
   createdAt DateTime        @default(now())
-  user      User            @relation(fields: [userId], references: [id])
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   comment   CommentOnReview @relation(fields: [commentId], references: [id])
 
   @@unique([userId, commentId])
