@@ -1,15 +1,15 @@
 import {
-  getReactOnReviews,
-  createReactOnReview,
-  deleteReactOnReview,
-} from "@/lib/prisma/reactOnReviews";
+  getCommentOnReviews,
+  createCommentOnReview,
+  deleteCommentOnReview,
+} from "@/lib/prisma/commentOnReviews";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { reactOnReviews, error } = await getReactOnReviews();
+      const { commentOnReviews, error } = await getCommentOnReviews();
       if (error) throw new Error(error);
-      return res.status(200).json({ reactOnReviews });
+      return res.status(200).json({ commentOnReviews });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -17,10 +17,10 @@ const handler = async (req, res) => {
 
   if (req.method === "POST") {
     try {
-      const data = req.body.reactOnReview;
-      const { reactOnReview, error } = await createReactOnReview(data);
+      const data = req.body.commentOnReview;
+      const { commentOnReview, error } = await createCommentOnReview(data);
       if (error) throw new Error(error);
-      return res.status(200).json({ reactOnReview });
+      return res.status(200).json({ commentOnReview });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: error.message });
@@ -29,10 +29,10 @@ const handler = async (req, res) => {
 
   if (req.method === "DELETE") {
     try {
-      const data = req.body.reactOnReviewID;
-      const { reactOnReview, error } = await deleteReactOnReview(data);
+      const data = req.body.commentOnReviewID;
+      const { commentOnReview, error } = await deleteCommentOnReview(data);
       if (error) throw new Error(error);
-      return res.status(200).json({ reactOnReview });
+      return res.status(200).json({ commentOnReview });
     } catch (error) {
       console.log(error);
       return res.status(500).json();
