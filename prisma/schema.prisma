@@ -42,7 +42,7 @@ model FavoriteShow {
   showId    String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  show      Show     @relation(fields: [showId], references: [id])
+  show      Show     @relation(fields: [showId], references: [id], onDelete: Cascade)
 
   @@unique([userId, showId])
 }
@@ -54,7 +54,7 @@ model ReactOnReview {
   react     React    @default(LIKE)
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  review    Review   @relation(fields: [reviewId], references: [id])
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
   @@unique([userId, reviewId])
 }
@@ -66,7 +66,7 @@ model Review {
   createdAt       DateTime          @default(now())
   user            User              @relation("WrittenReviews", fields: [userId], references: [id], onDelete: Cascade)
   userId          String
-  show            Show              @relation("ShowReviews", fields: [showId], references: [id])
+  show            Show              @relation("ShowReviews", fields: [showId], references: [id], onDelete: Cascade)
   showId          String
   reactOnReviews  ReactOnReview[]
   CommentOnReview CommentOnReview[]
@@ -81,7 +81,7 @@ model CommentOnReview {
   text           String
   createdAt      DateTime         @default(now())
   user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  review         Review           @relation(fields: [reviewId], references: [id])
+  review         Review           @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   ReactOnComment ReactOnComment[]
 
   @@unique([userId, reviewId])
