@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const faker = require("faker");
+const { faker } = require("@faker-js/faker");
 
 const prisma = new PrismaClient();
 
@@ -112,8 +112,7 @@ const populateReviews = async () => {
             data: {
               userId: userId,
               showId: showId,
-              // text: faker.word.words(10),
-              text: "This is a review",
+              text: faker.word.words(10),
               rating: parseFloat(rating.toFixed(1)),
             },
           });
@@ -144,8 +143,7 @@ const populateComments = async () => {
             data: {
               userId: userId,
               reviewId: reviewId,
-              // text: faker.word.words(10),
-              text: "This is a comment",
+              text: faker.word.words(10),
             },
           });
         }
