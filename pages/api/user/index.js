@@ -3,9 +3,9 @@ import { getUsers, createUser, deleteUser } from "@/lib/prisma/users";
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { users, error } = await getUsers();
+      const { users, count, error } = await getUsers();
       if (error) throw new Error(error);
-      return res.status(200).json({ users });
+      return res.status(200).json({ count, users });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

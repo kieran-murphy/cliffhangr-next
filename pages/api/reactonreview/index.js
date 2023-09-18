@@ -7,9 +7,9 @@ import {
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { reactOnReviews, error } = await getReactOnReviews();
+      const { reactOnReviews, count, error } = await getReactOnReviews();
       if (error) throw new Error(error);
-      return res.status(200).json({ reactOnReviews });
+      return res.status(200).json({ count, reactOnReviews });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

@@ -7,9 +7,9 @@ import {
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { favoriteShows, error } = await getFavoriteShows();
+      const { favoriteShows, count, error } = await getFavoriteShows();
       if (error) throw new Error(error);
-      return res.status(200).json({ favoriteShows });
+      return res.status(200).json({ count, favoriteShows });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

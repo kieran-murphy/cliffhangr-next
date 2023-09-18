@@ -3,9 +3,9 @@ import { getShows, createShow, deleteShow } from "@/lib/prisma/shows";
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { shows, error } = await getShows();
+      const { shows, count, error } = await getShows();
       if (error) throw new Error(error);
-      return res.status(200).json({ shows });
+      return res.status(200).json({ count, shows });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

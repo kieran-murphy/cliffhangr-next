@@ -7,9 +7,9 @@ import {
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { reactOnComments, error } = await getReactOnComments();
+      const { reactOnComments, count, error } = await getReactOnComments();
       if (error) throw new Error(error);
-      return res.status(200).json({ reactOnComments });
+      return res.status(200).json({ count, reactOnComments });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

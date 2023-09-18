@@ -3,9 +3,9 @@ import { getReviews, createReview, deleteReview } from "@/lib/prisma/reviews";
 const handler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const { reviews, error } = await getReviews();
+      const { reviews, count, error } = await getReviews();
       if (error) throw new Error(error);
-      return res.status(200).json({ reviews });
+      return res.status(200).json({ count, reviews });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
