@@ -1,13 +1,24 @@
-import { getUsers, createUser, deleteUser } from "@/lib/prisma/users";
+import { getUsers, getUser, createUser, deleteUser } from "@/lib/prisma/users";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    try {
-      const { users, count, error } = await getUsers();
-      if (error) throw new Error(error);
-      return res.status(200).json({ count, users });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    const userID = req.query.id;
+    if (userID) {
+      try {
+        const { user, error } = await getUser(userID);
+        if (error) throw new Error(error);
+        return res.status(200).json({ user });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    } else {
+      try {
+        const { users, count, error } = await getUsers();
+        if (error) throw new Error(error);
+        return res.status(200).json({ count, users });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     }
   }
 
