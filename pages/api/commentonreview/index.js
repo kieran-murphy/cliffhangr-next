@@ -1,17 +1,31 @@
 import {
   getCommentOnReviews,
+  getCommentOnReview,
   createCommentOnReview,
   deleteCommentOnReview,
 } from "@/lib/prisma/commentOnReviews";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    try {
-      const { commentOnReviews, count, error } = await getCommentOnReviews();
-      if (error) throw new Error(error);
-      return res.status(200).json({ count, commentOnReviews });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    const commentOnReviewID = req.query.id;
+    if (commentOnReviewID) {
+      try {
+        const { commentOnReview, error } = await getCommentOnReview(
+          commentOnReviewID
+        );
+        if (error) throw new Error(error);
+        return res.status(200).json({ commentOnReview });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    } else {
+      try {
+        const { commentOnReviews, count, error } = await getCommentOnReviews();
+        if (error) throw new Error(error);
+        return res.status(200).json({ count, commentOnReviews });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     }
   }
 

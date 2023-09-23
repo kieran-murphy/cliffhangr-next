@@ -1,17 +1,29 @@
 import {
   getFavoriteShows,
+  getFavoriteShow,
   createFavoriteShow,
   deleteFavoriteShow,
 } from "@/lib/prisma/favoriteShows";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    try {
-      const { favoriteShows, count, error } = await getFavoriteShows();
-      if (error) throw new Error(error);
-      return res.status(200).json({ count, favoriteShows });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    const favoriteShowID = req.query.id;
+    if (favoriteShowID) {
+      try {
+        const { favoriteShow, error } = await getFavoriteShow(favoriteShowID);
+        if (error) throw new Error(error);
+        return res.status(200).json({ favoriteShow });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    } else {
+      try {
+        const { favoriteShows, count, error } = await getFavoriteShows();
+        if (error) throw new Error(error);
+        return res.status(200).json({ count, favoriteShows });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     }
   }
 

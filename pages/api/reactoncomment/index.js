@@ -1,17 +1,31 @@
 import {
   getReactOnComments,
+  getReactOnComment,
   createReactOnComment,
   deleteReactOnComment,
 } from "@/lib/prisma/reactOnComments";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    try {
-      const { reactOnComments, count, error } = await getReactOnComments();
-      if (error) throw new Error(error);
-      return res.status(200).json({ count, reactOnComments });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    const reactOnCommentID = req.query.id;
+    if (reactOnCommentID) {
+      try {
+        const { reactOnComment, error } = await getReactOnComment(
+          reactOnCommentID
+        );
+        if (error) throw new Error(error);
+        return res.status(200).json({ reactOnComment });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    } else {
+      try {
+        const { reactOnComments, count, error } = await getReactOnComments();
+        if (error) throw new Error(error);
+        return res.status(200).json({ count, reactOnComments });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     }
   }
 

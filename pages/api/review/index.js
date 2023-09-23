@@ -1,13 +1,29 @@
-import { getReviews, createReview, deleteReview } from "@/lib/prisma/reviews";
+import {
+  getReviews,
+  getReview,
+  createReview,
+  deleteReview,
+} from "@/lib/prisma/reviews";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    try {
-      const { reviews, count, error } = await getReviews();
-      if (error) throw new Error(error);
-      return res.status(200).json({ count, reviews });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    const reviewID = req.query.id;
+    if (reviewID) {
+      try {
+        const { review, error } = await getReview(reviewID);
+        if (error) throw new Error(error);
+        return res.status(200).json({ review });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    } else {
+      try {
+        const { reviews, count, error } = await getReviews();
+        if (error) throw new Error(error);
+        return res.status(200).json({ count, reviews });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     }
   }
 

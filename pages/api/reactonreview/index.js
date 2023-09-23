@@ -1,17 +1,31 @@
 import {
   getReactOnReviews,
+  getReactOnReview,
   createReactOnReview,
   deleteReactOnReview,
 } from "@/lib/prisma/reactOnReviews";
 
 const handler = async (req, res) => {
   if (req.method === "GET") {
-    try {
-      const { reactOnReviews, count, error } = await getReactOnReviews();
-      if (error) throw new Error(error);
-      return res.status(200).json({ count, reactOnReviews });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
+    const reactOnReviewID = req.query.id;
+    if (reactOnReviewID) {
+      try {
+        const { reactOnReview, error } = await getReactOnReview(
+          reactOnReviewID
+        );
+        if (error) throw new Error(error);
+        return res.status(200).json({ reactOnReview });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
+    } else {
+      try {
+        const { reactOnReviews, count, error } = await getReactOnReviews();
+        if (error) throw new Error(error);
+        return res.status(200).json({ count, reactOnReviews });
+      } catch (error) {
+        return res.status(500).json({ error: error.message });
+      }
     }
   }
 
