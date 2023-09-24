@@ -3,6 +3,7 @@ import {
   getShow,
   searchShowsByName,
   createShow,
+  updateShow,
   deleteShow,
 } from "@/lib/prisma/shows";
 
@@ -42,6 +43,23 @@ const handler = async (req, res) => {
     try {
       const data = req.body.show;
       const { show, error } = await createShow(data);
+      if (error) throw new Error(error);
+      return res.status(200).json({ show });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  if (req.method === "PATCH") {
+    const { showID, data } = req.body;
+
+    if (!showID) {
+      return res.status(400).json({ error: "showID is required." });
+    }
+
+    try {
+      const { show, error } = await updateShow(showID, data);
       if (error) throw new Error(error);
       return res.status(200).json({ show });
     } catch (error) {

@@ -3,6 +3,7 @@ import {
   getUser,
   searchUsersByName,
   createUser,
+  updateUser,
   deleteUser,
 } from "@/lib/prisma/users";
 
@@ -42,6 +43,23 @@ const handler = async (req, res) => {
     try {
       const data = req.body.user;
       const { user, error } = await createUser(data);
+      if (error) throw new Error(error);
+      return res.status(200).json({ user });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  if (req.method === "PATCH") {
+    const { userID, data } = req.body;
+
+    if (!userID) {
+      return res.status(400).json({ error: "userID is required." });
+    }
+
+    try {
+      const { user, error } = await updateUser(userID, data);
       if (error) throw new Error(error);
       return res.status(200).json({ user });
     } catch (error) {
