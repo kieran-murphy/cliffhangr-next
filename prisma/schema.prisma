@@ -19,14 +19,25 @@ model User {
   email           String            @unique
   role            Role              @default(BASIC)
   bio             String?
-  // password       String
   favoriteShows   FavoriteShow[]
   reactOnReviews  ReactOnReview[]
   writtenReviews  Review[]          @relation("WrittenReviews")
   CommentOnReview CommentOnReview[]
   ReactOnComment  ReactOnComment[]
+  following       Follow[]          @relation("UserFollows")
+  followers       Follow[]          @relation("UserFollowedBy")
 
   @@index([username])
+}
+
+model Follow {
+  id          String @id @default(uuid())
+  followingId String
+  followerId  String
+  followed    User   @relation(name: "UserFollows", fields: [followingId], references: [id])
+  followedBy  User   @relation(name: "UserFollowedBy", fields: [followerId], references: [id])
+
+  @@unique([followingId, followerId])
 }
 
 model Show {
