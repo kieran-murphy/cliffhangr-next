@@ -36,6 +36,32 @@ const populateUsers = async () => {
   }
 };
 
+const populateFollows = async () => {
+  const userIds = [];
+
+  const users = await prisma.user.findMany();
+
+  users.map((user) => userIds.push(user.id));
+
+  try {
+    for (let userId of userIds) {
+      for (let secondUserId of userIds) {
+        const randomNumber = Math.floor(Math.random() * 40);
+        if (randomNumber > 38) {
+          await prisma.follow.create({
+            data: {
+              followerId: userId,
+              followingId: secondUserId,
+            },
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error seeding the database:", error);
+  }
+};
+
 const populateShows = async () => {
   const titles = [
     "breaking bad",
@@ -220,6 +246,7 @@ const populateReactOnComments = async () => {
 
 const main = async () => {
   await populateUsers();
+  await populateFollows();
   await populateShows();
   await populateFavorites();
   await populateReviews();
