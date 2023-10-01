@@ -19,6 +19,7 @@ model User {
   email           String            @unique
   role            Role              @default(BASIC)
   bio             String?
+  password        String?
   favoriteShows   FavoriteShow[]
   reactOnReviews  ReactOnReview[]
   writtenReviews  Review[]          @relation("WrittenReviews")
@@ -34,8 +35,8 @@ model Follow {
   id          String @id @default(uuid())
   followingId String
   followerId  String
-  followed    User   @relation(name: "UserFollows", fields: [followingId], references: [id])
-  followedBy  User   @relation(name: "UserFollowedBy", fields: [followerId], references: [id])
+  followed    User   @relation(name: "UserFollows", fields: [followingId], references: [id], onDelete: Cascade)
+  followedBy  User   @relation(name: "UserFollowedBy", fields: [followerId], references: [id], onDelete: Cascade)
 
   @@unique([followingId, followerId])
 }
