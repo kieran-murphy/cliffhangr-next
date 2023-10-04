@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
+const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
@@ -22,9 +23,11 @@ const populateUsers = async () => {
     const username = generateUniqueUsername();
     const email = `${username}@cliffhangr.com`;
     const password = faker.word.noun();
+    const hashedPassword = await bcrypt.hash(password, 10);
     users.push({
       username: username,
       email: email,
+      hashedPassword: hashedPassword,
       password: password,
     });
   }

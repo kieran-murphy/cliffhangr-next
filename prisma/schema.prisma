@@ -19,6 +19,7 @@ model User {
   email           String            @unique
   role            Role              @default(BASIC)
   bio             String?
+  hashedPassword  String?
   password        String?
   favoriteShows   FavoriteShow[]
   reactOnReviews  ReactOnReview[]
