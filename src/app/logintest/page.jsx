@@ -16,19 +16,19 @@ export default function Home() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/user", {
+      const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user: formData }),
+        body: JSON.stringify({ login: formData }),
       });
 
       const data = await response.json();
       console.log(data);
 
       if (response.ok) {
-        alert("Form data submitted successfully!");
+        alert(data.result);
       } else {
         alert("Submission failed: " + data.message);
       }

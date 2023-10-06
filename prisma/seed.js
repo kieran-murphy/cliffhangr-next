@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
-const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
@@ -23,18 +22,27 @@ const populateUsers = async () => {
     const username = generateUniqueUsername();
     const email = `${username}@cliffhangr.com`;
     const password = faker.word.noun();
-    const hashedPassword = await bcrypt.hash(password, 10);
+
     users.push({
       username: username,
       email: email,
-      hashedPassword: hashedPassword,
       password: password,
     });
   }
 
   try {
     for (let user of users) {
-      await prisma.user.create({ data: user });
+      try {
+        await fetch("http://localhost:3000/api/user", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user: user }),
+        });
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
     }
   } catch (error) {
     console.error("Error seeding the database:", error);
