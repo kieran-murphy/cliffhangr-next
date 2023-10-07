@@ -21,7 +21,8 @@ const populateUsers = async () => {
   for (let i = 0; i < userCount; i++) {
     const username = generateUniqueUsername();
     const email = `${username}@cliffhangr.com`;
-    const password = faker.word.noun();
+    // const password = faker.word.noun();
+    const password = "password";
 
     users.push({
       username: username,

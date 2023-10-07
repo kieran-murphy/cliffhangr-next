@@ -10,7 +10,6 @@ export default function Home() {
     event.preventDefault();
 
     const formData = {
-      email: username + "@cliffhangr.com",
       username: username,
       password: password,
     };
@@ -28,7 +27,15 @@ export default function Home() {
       console.log(data);
 
       if (response.ok) {
-        alert(data.result);
+        // alert(data.result);
+        if (data.result) {
+          alert("Successful login");
+          setUsername("");
+          setPassword("");
+        } else {
+          alert("Login failed");
+          setPassword("");
+        }
       } else {
         alert("Submission failed: " + data.message);
       }
