@@ -1,27 +1,14 @@
-import { userAgent } from "next/server";
 import React, { useState } from "react";
 
-const ShowListItem = ({ show }) => {
-  const [toggle, setToggle] = useState(true);
+import Link from "next/link";
 
+const ShowListItem = ({ show }) => {
   return (
-    <div
-      className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-      onClick={() => setToggle(!toggle)}
-    >
-      {toggle ? (
+    <Link href={`/show/${show.id}`}>
+      <div className="border border-cyan-400 cursor-pointer m-4 w-1/3">
         <h1 className="text-bold">{show.title}</h1>
-      ) : (
-        <div>
-          <h1 className="text-bold">{show.title}</h1>
-          <ul>
-            <li>review 1</li>
-            <li>review 2</li>
-            <li>review 3</li>
-          </ul>
-        </div>
-      )}
-    </div>
+      </div>
+    </Link>
   );
 };
 

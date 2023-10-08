@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import ShowListItem from "./ShowListItem";
 
 export default function Home() {

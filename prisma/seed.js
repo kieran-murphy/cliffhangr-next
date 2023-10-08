@@ -78,16 +78,16 @@ const populateFollows = async () => {
 
 const populateShows = async () => {
   const titles = [
-    "breaking bad",
-    "ozark",
-    "better call saul",
-    "wandavision",
-    "lost",
-    "gossip girl",
-    "the office",
-    "brooklyn nine nine",
-    "my 600lb life",
-    "married at first site",
+    "Breaking Bad",
+    "Ozark",
+    "Better Call Saul",
+    "Wandavision",
+    "Lost",
+    "Gossip Girl",
+    "The Office",
+    "Brooklyn nine nine",
+    "My 600lb life",
+    "Loki",
   ];
 
   try {
