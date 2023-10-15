@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-const ShowListItem = ({ favorite }) => {
-  const userId = favorite.userId;
+const ReviewListItem = ({ review }) => {
+  const userId = review.userId;
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
 
@@ -33,12 +33,14 @@ const ShowListItem = ({ favorite }) => {
   if (loading) return <p></p>;
 
   return (
-    <Link href={`/user/${user.id}`}>
-      <div className="my-2 hover:border border-cyan-400">
-        <h1 className="text-bold">{user.username} ❤️</h1>
+    <Link href={`/review/${review.id}`}>
+      <div className="">
+        <h1 className="text-bold">
+          {user.username} - {review.rating} - {review.text}
+        </h1>
       </div>
     </Link>
   );
 };
 
-export default ShowListItem;
+export default ReviewListItem;

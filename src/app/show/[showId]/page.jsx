@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import FavoriteListItem from "./FavoriteListItem";
+import ReviewListItem from "./ReviewListItem";
 
 export default function Home({ params }) {
   const [show, setShow] = useState(null);
@@ -59,9 +60,14 @@ export default function Home({ params }) {
       >
         {showFavorites ? (
           <div>
+            <div
+              className="my-2 hover:border border-cyan-400"
+              onClick={() => setShowFavorites(!showFavorites)}
+            >
+              collapse
+            </div>
             {show.favoritedBy.map((f) => (
               <FavoriteListItem key={f.id} favorite={f} />
-              // <h1 key={f.id}>{f.userId}</h1>
             ))}
           </div>
         ) : (
@@ -74,10 +80,16 @@ export default function Home({ params }) {
       >
         {showReviews ? (
           <div>
+            <div
+              className="my-2 hover:border border-cyan-400"
+              onClick={() => setShowReviews(!showReviews)}
+            >
+              collapse
+            </div>
             {show.reviews.map((r) => (
-              <h1 key={r.id}>
-                {r.rating} - {r.text}
-              </h1>
+              <div key={r.id} className="my-2 hover:border border-cyan-400">
+                <ReviewListItem review={r} />
+              </div>
             ))}
           </div>
         ) : (
