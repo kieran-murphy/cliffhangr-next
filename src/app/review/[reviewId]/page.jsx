@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
+import CommentListItem from "./CommentListItem";
+import ReactListItem from "./ReactListItem";
+
 export default function Home({ params }) {
   const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,6 +14,8 @@ export default function Home({ params }) {
   const [userId, setUserId] = useState("");
   const [show, setShow] = useState(null);
   const [user, setUser] = useState(null);
+  const [showComments, setShowComments] = useState(false);
+  const [showReacts, setShowReacts] = useState(false);
 
   const reviewId = params.reviewId;
 
@@ -104,7 +109,7 @@ export default function Home({ params }) {
         </div>
       </Link>
       <div className="border border-cyan-400 m-4 w-1/3">
-        <h1>{review.rating}</h1>
+        <h1>{review.rating} ⭐</h1>
       </div>
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1>{review.text}</h1>
@@ -112,11 +117,47 @@ export default function Home({ params }) {
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1>{review.createdAt}</h1>
       </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1>{review.reactOnReviews.length} reacts</h1>
+
+      <div
+        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
+        onClick={() => setShowReacts(!showReacts)}
+      >
+        {showReacts ? (
+          <div>
+            <div
+              className="my-2 hover:border border-cyan-400"
+              onClick={() => setShowReacts(!showReacts)}
+            >
+              collapse
+            </div>
+            {review.reactOnReviews.map((react) => (
+              <ReactListItem key={react.id} react={react} />
+            ))}
+          </div>
+        ) : (
+          <h1>{review.reactOnReviews.length} reacts</h1>
+        )}
       </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1>{review.CommentOnReview.length} comments</h1>
+
+      <div
+        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
+        onClick={() => setShowComments(!showComments)}
+      >
+        {showComments ? (
+          <div>
+            <div
+              className="my-2 hover:border border-cyan-400"
+              onClick={() => setShowComments(!showComments)}
+            >
+              collapse
+            </div>
+            {review.CommentOnReview.map((comment) => (
+              <CommentListItem key={comment.id} comment={comment} />
+            ))}
+          </div>
+        ) : (
+          <h1>{review.CommentOnReview.length} comments</h1>
+        )}
       </div>
     </div>
   );

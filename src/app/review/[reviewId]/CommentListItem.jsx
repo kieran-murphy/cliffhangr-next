@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-const ReviewListItem = ({ review }) => {
-  const userId = review.userId;
+const CommentListItem = ({ comment }) => {
+  const userId = comment.userId;
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
 
@@ -33,21 +33,13 @@ const ReviewListItem = ({ review }) => {
   if (loading) return <p></p>;
 
   return (
-    <Link href={`/review/${review.id}`}>
-      <div className="py-2">
-        <h1 className="">
-          <h1 className="font-bold">{user.username}</h1>
-          {review.rating} ⭐
-          <br />
-          {review.text}
-          {/* <br />
-          {review.reactOnReviews.length} reacts
-          <br />
-          {review.CommentOnReview.length} comments */}
-        </h1>
+    <Link href={`/user/${user.id}`}>
+      <div className="my-2 hover:border border-cyan-400">
+        <h1 className="font-bold">{user.username}</h1>
+        <h1 className="">{comment.text}</h1>
       </div>
     </Link>
   );
 };
 
-export default ReviewListItem;
+export default CommentListItem;

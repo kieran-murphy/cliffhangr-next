@@ -3,10 +3,18 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-const ReviewListItem = ({ review }) => {
-  const userId = review.userId;
+const ReactListItem = ({ react }) => {
+  const userId = react.userId;
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+
+  const reactDict = {
+    LIKE: "👍",
+    LOVE: "❤️",
+    LAUGH: "😂",
+    ANGRY: "😡",
+    WOW: "😮",
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,21 +41,14 @@ const ReviewListItem = ({ review }) => {
   if (loading) return <p></p>;
 
   return (
-    <Link href={`/review/${review.id}`}>
-      <div className="py-2">
-        <h1 className="">
-          <h1 className="font-bold">{user.username}</h1>
-          {review.rating} ⭐
-          <br />
-          {review.text}
-          {/* <br />
-          {review.reactOnReviews.length} reacts
-          <br />
-          {review.CommentOnReview.length} comments */}
+    <Link href={`/user/${user.id}`}>
+      <div className="my-2 hover:border border-cyan-400">
+        <h1 className="font-bold">
+          {user.username} - {reactDict[react.react]}
         </h1>
       </div>
     </Link>
   );
 };
 
-export default ReviewListItem;
+export default ReactListItem;
