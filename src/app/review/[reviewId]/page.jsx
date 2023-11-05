@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import CommentListItem from "@/components/CommentListItem";
+import ReviewCommentListItem from "@/components/ReviewCommentListItem";
 import ReactListItem from "@/components/ReactListItem";
 
 export default function Home({ params }) {
@@ -152,7 +152,7 @@ export default function Home({ params }) {
               collapse
             </div>
             {review.CommentOnReview.map((comment) => (
-              <CommentListItem key={comment.id} comment={comment} />
+              <ReviewCommentListItem key={comment.id} comment={comment} />
             ))}
           </div>
         ) : (

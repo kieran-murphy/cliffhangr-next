@@ -3,15 +3,16 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import CommentListItem from "@/components/CommentListItem";
-// import FavoriteListItem from "@/components/FavoriteListItem";
+import UserReviewListItem from "@/components/UserReviewListItem";
+import UserFavoriteListItem from "@/components/UserFavoriteListItem";
 
 export default function Home({ params }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showComments, setShowComments] = useState(false);
-  // const [showFavorites, setShowFavorites] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   const userId = params.userId;
 
@@ -57,32 +58,48 @@ export default function Home({ params }) {
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1 className="">Role: {user.role}</h1>
       </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="">Favorite Shows: {user.favoriteShows.length}</h1>
-      </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="">Reviews: {user.writtenReviews.length}</h1>
-      </div>
-
       <div
         className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowComments(!showComments)}
+        onClick={() => setShowFavorites(!showFavorites)}
       >
-        {showComments ? (
+        {showFavorites ? (
           <div>
             <div
               className="my-2 hover:border border-cyan-400"
-              onClick={() => setShowComments(!showComments)}
+              onClick={() => setShowFavorites(!showFavorites)}
             >
               collapse
             </div>
-            {user.CommentOnReview.map((comment) => (
-              <CommentListItem key={comment.id} comment={comment} />
+            {user.favoriteShows.map((favorite) => (
+              <UserFavoriteListItem key={favorite.id} favorite={favorite} />
             ))}
           </div>
         ) : (
-          <h1>{user.CommentOnReview.length} comments</h1>
+          <h1>{user.favoriteShows.length} favorites</h1>
         )}
+      </div>
+      <div
+        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
+        onClick={() => setShowReviews(!showReviews)}
+      >
+        {showReviews ? (
+          <div>
+            <div
+              className="my-2 hover:border border-cyan-400"
+              onClick={() => setShowReviews(!showReviews)}
+            >
+              collapse
+            </div>
+            {user.writtenReviews.map((review) => (
+              <UserReviewListItem key={review.id} review={review} />
+            ))}
+          </div>
+        ) : (
+          <h1>{user.writtenReviews.length} reviews</h1>
+        )}
+      </div>
+      <div className="border border-cyan-400 m-4 w-1/3">
+        <h1 className="opacity-70">Comments: {user.CommentOnReview.length}</h1>
       </div>
     </div>
   );

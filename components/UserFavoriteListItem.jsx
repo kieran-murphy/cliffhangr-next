@@ -3,21 +3,21 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-const ReviewListItem = ({ review }) => {
-  const userId = review.userId;
+const UserFavoriteListItem = ({ favorite }) => {
+  const showId = favorite.showId;
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({});
+  const [show, setShow] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/user?id=${userId}`);
+        const response = await fetch(`/api/show?id=${showId}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setUser(data.user);
+        setShow(data.show);
       } catch (error) {
         setError(error);
       } finally {
@@ -25,29 +25,20 @@ const ReviewListItem = ({ review }) => {
       }
     };
 
-    if (userId) {
+    if (showId) {
       fetchData();
     }
-  }, [userId]);
+  }, [showId]);
 
   if (loading) return <p></p>;
 
   return (
-    <Link href={`/review/${review.id}`}>
+    <Link href={`/show/${show.id}`}>
       <div className="my-2 hover:border border-cyan-400">
-        <h1 className="">
-          <h1 className="font-bold">{user.username}</h1>
-          {review.rating} ⭐
-          <br />
-          {review.text}
-          {/* <br />
-          {review.reactOnReviews.length} reacts
-          <br />
-          {review.CommentOnReview.length} comments */}
-        </h1>
+        <h1 className="text-bold">{show.title} ❤️</h1>
       </div>
     </Link>
   );
 };
 
-export default ReviewListItem;
+export default UserFavoriteListItem;

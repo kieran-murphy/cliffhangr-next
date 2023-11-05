@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import FavoriteListItem from "@/components/FavoriteListItem";
+import FavoriteListItem from "@/components/ShowFavoriteListItem";
 import ReviewListItem from "@/components/ReviewListItem";
 
 export default function Home({ params }) {
@@ -87,7 +87,7 @@ export default function Home({ params }) {
               collapse
             </div>
             {show.reviews.map((r) => (
-              <div key={r.id} className="my-2 hover:border border-cyan-400">
+              <div key={r.id}>
                 <ReviewListItem review={r} />
               </div>
             ))}
