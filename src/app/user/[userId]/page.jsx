@@ -3,15 +3,15 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-// import FavoriteListItem from "./FavoriteListItem";
-// import ReviewListItem from "./ReviewListItem";
+import CommentListItem from "@/components/CommentListItem";
+// import FavoriteListItem from "@/components/FavoriteListItem";
 
 export default function Home({ params }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  //   const [showReviews, setShowReviews] = useState(false);
-  //   const [showFavorites, setShowFavorites] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  // const [showFavorites, setShowFavorites] = useState(false);
 
   const userId = params.userId;
 
@@ -61,31 +61,29 @@ export default function Home({ params }) {
         <h1 className="">Favorite Shows: {user.favoriteShows.length}</h1>
       </div>
       <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="">Comments: {user.CommentOnReview.length}</h1>
+        <h1 className="">Reviews: {user.writtenReviews.length}</h1>
       </div>
 
-      {/* <div
+      <div
         className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowReviews(!showReviews)}
+        onClick={() => setShowComments(!showComments)}
       >
-        {showReviews ? (
+        {showComments ? (
           <div>
             <div
               className="my-2 hover:border border-cyan-400"
-              onClick={() => setShowReviews(!showReviews)}
+              onClick={() => setShowComments(!showComments)}
             >
               collapse
             </div>
-            {user.reviews.map((r) => (
-              <div key={r.id} className="my-2 hover:border border-cyan-400">
-                <ReviewListItem review={r} />
-              </div>
+            {user.CommentOnReview.map((comment) => (
+              <CommentListItem key={comment.id} comment={comment} />
             ))}
           </div>
         ) : (
-          <h1>{show.reviews.length} reviews</h1>
+          <h1>{user.CommentOnReview.length} comments</h1>
         )}
-      </div> */}
+      </div>
     </div>
   );
 }

@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import CommentListItem from "./CommentListItem";
-import ReactListItem from "./ReactListItem";
+import CommentListItem from "@/components/CommentListItem";
+import ReactListItem from "@/components/ReactListItem";
 
 export default function Home({ params }) {
   const [review, setReview] = useState(null);

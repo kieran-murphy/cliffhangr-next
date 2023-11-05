@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import FavoriteListItem from "./FavoriteListItem";
-import ReviewListItem from "./ReviewListItem";
+import FavoriteListItem from "@/components/FavoriteListItem";
+import ReviewListItem from "@/components/ReviewListItem";
 
 export default function Home({ params }) {
   const [show, setShow] = useState(null);

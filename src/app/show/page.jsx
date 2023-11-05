@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import ShowListItem from "./ShowListItem";
+import ShowListItem from "@/components/ShowListItem";
 
 export default function Home() {
   const [shows, setShows] = useState([]);

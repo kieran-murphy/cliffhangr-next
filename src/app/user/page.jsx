@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import UserListItem from "./UserListItem";
+import UserListItem from "@/components/UserListItem";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
