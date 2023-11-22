@@ -3,41 +3,52 @@
 import { useState, useEffect } from "react";
 
 import UserListItem from "@/components/UserListItem";
+import UserSearchBar from "@/components/UserSearchBar";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
-
-  const getUsers = async () => {
-    const RequestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch("/api/user", RequestOptions);
-    if (!response.ok) {
-      console.log(response);
-    }
-    const data = await response.text();
-    try {
-      const f = JSON.parse(data);
-      return f.users;
-    } catch (error) {
-      return error.message;
-    }
-  };
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    const getUsers = async () => {
+      const RequestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      const response = await fetch(
+        `/api/user?search=${searchTerm}`,
+        RequestOptions
+      );
+      if (!response.ok) {
+        console.log(response);
+      }
+      const data = await response.text();
+      try {
+        const f = JSON.parse(data);
+        return f.users;
+      } catch (error) {
+        return error.message;
+      }
+    };
+
     const fetchUsers = async () => {
       const users = await getUsers();
       setUsers(users);
     };
     fetchUsers();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <div>
-      {users?.map((user) => {
-        return <UserListItem key={user.id} user={user} />;
-      })}
+      <UserSearchBar setSearchTerm={setSearchTerm} />
+      <div className="border border-cyan-400 m-4 w-1/3 bg-black text-white">
+        Search term: {searchTerm}
+      </div>
+      <div>
+        {users?.map((user) => {
+          return <UserListItem key={user.id} user={user} />;
+        })}
+      </div>
     </div>
   );
 }
