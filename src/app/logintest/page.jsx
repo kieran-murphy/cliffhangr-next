@@ -1,8 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import Cookie from "js-cookie";
 
 export default function Home() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,12 +29,15 @@ export default function Home() {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (response.ok) {
-        // alert(data.result);
-        if (data.result) {
-          alert("Successful login");
+        if (data.token) {
+          Cookie.set("token", data.token, {
+            expires: 7, // Expires in 7 days
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "strict",
+          });
+          router.replace("/loginsuccess");
           setUsername("");
           setPassword("");
         } else {

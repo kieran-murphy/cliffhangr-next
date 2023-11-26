@@ -4,9 +4,9 @@ const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const data = req.body.login;
-      const { result, error } = await validateLogin(data);
+      const { token, error } = await validateLogin(data);
       if (error) throw new Error(error);
-      return res.status(200).json({ result });
+      return res.status(200).json({ token });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: error.message });
