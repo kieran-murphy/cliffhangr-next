@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import FavoriteListItem from "@/components/ShowFavoriteListItem";
+import MainLayout from "../../layout/main-layout";
 import ReviewListItem from "@/components/ReviewListItem";
 
 export default function Home({ params }) {
@@ -42,7 +43,7 @@ export default function Home({ params }) {
   if (!show) return <p>No show found!</p>;
 
   return (
-    <div>
+    <MainLayout>
       <Link href={"/show"}>
         <div className="border border-grey-400 cursor-pointer m-4 w-1/3 opacity-80">
           <h1>{"<- Back to shows"}</h1>
@@ -96,6 +97,6 @@ export default function Home({ params }) {
           <h1>{show.reviews.length} reviews</h1>
         )}
       </div>
-    </div>
+    </MainLayout>
   );
 }
