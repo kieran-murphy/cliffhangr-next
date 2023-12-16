@@ -2,24 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import jwt from "jsonwebtoken";
-// const jwtDecode = require("jwt-decode");
+import Cookies from "js-cookie";
 
-import Cookies from "js-cookie"; // Assuming you're using js-cookie
-
-const getUserFromJWTCookie = () => {
+const getUserFromJWTCookie = async () => {
   const authToken = Cookies.get("token");
-  let decodedToken;
-  if (authToken) {
-    decodedToken = jwt.decode(authToken);
-    // jwt.verify(authToken, process.env.JWT_SECRET);
-  }
-
-  if (decodedToken) {
-    const username = decodedToken.username;
+  const response = await fetch("/api/session", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: authToken }),
+  });
+  const responseData = await response.json();
+  const username = responseData.username;
+  if (username) {
     return username;
-  } else {
-    return null;
   }
 };
 
@@ -29,12 +26,14 @@ const ProtectedPage = () => {
   const [user, setUser] = useState("");
 
   useEffect(() => {
-    const user = getUserFromJWTCookie();
-    setUser(user);
-    if (!user) {
-      router.replace("/logintest");
-    }
-  }, []);
+    (async () => {
+      const user = await getUserFromJWTCookie();
+      setUser(user);
+      if (!user) {
+        router.replace("/logintest");
+      }
+    })();
+  }, [router]);
 
   return <div>Welcome {user}!</div>;
 };
