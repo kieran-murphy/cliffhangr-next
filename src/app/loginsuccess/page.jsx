@@ -1,11 +1,12 @@
-import MainLayout from "../layout/main-layout";
+"use client";
+
+import { useContextUser } from "@/context/MyContext";
 
 const ProtectedPage = () => {
-  return (
-    <MainLayout>
-      <div>Welcome!</div>
-    </MainLayout>
-  );
+  const user = useContextUser();
+  console.log("loginsuccess", user);
+
+  return <div>Welcome! {user}</div>;
 };
 
 export default ProtectedPage;
