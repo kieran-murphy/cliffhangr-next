@@ -44,7 +44,7 @@ export default function Home({ params }) {
   if (!user) return <p>No user found!</p>;
 
   return (
-    <MainLayout>
+    <>
       <Link href={"/user"}>
         <div className="border border-grey-400 cursor-pointer m-4 w-1/3 opacity-80">
           <h1>{"<- Back to users"}</h1>
@@ -102,6 +102,6 @@ export default function Home({ params }) {
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1 className="opacity-70">Comments: {user.CommentOnReview.length}</h1>
       </div>
-    </MainLayout>
+    </>
   );
 }

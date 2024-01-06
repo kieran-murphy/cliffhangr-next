@@ -43,7 +43,7 @@ export default function Home({ params }) {
   if (!show) return <p>No show found!</p>;
 
   return (
-    <MainLayout>
+    <>
       <Link href={"/show"}>
         <div className="border border-grey-400 cursor-pointer m-4 w-1/3 opacity-80">
           <h1>{"<- Back to shows"}</h1>
@@ -97,6 +97,6 @@ export default function Home({ params }) {
           <h1>{show.reviews.length} reviews</h1>
         )}
       </div>
-    </MainLayout>
+    </>
   );
 }

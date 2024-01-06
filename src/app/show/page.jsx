@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 
-import MainLayout from "../layout/main-layout";
 import ShowListItem from "@/components/ShowListItem";
 import ShowSearchBar from "@/components/ShowSearchBar";
 
@@ -40,7 +39,7 @@ export default function Home() {
   }, [searchTerm]);
 
   return (
-    <MainLayout>
+    <>
       <ShowSearchBar setSearchTerm={setSearchTerm} />
 
       <div>
@@ -48,6 +47,6 @@ export default function Home() {
           return <ShowListItem key={show.id} show={show} />;
         })}
       </div>
-    </MainLayout>
+    </>
   );
 }
