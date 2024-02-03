@@ -1,7 +1,9 @@
-import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
+import { PrismaClient } from "@prisma/client";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+const prisma = new PrismaClient();
 
 export const authOptions = {
   session: {
@@ -19,42 +21,48 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
-          console.log("authorize fail");
-          return null;
+        try {
+          if (!credentials?.email || !credentials.password) {
+            console.log("authorize fail");
+            return null;
+          }
+
+          const user = await prisma.user.findUnique({
+            where: {
+              email: credentials.email,
+            },
+          });
+
+          // console.log("prisma find unique", credentials.email);
+
+          if (!user) {
+            return null;
+          }
+
+          const isPasswordValid = await compare(
+            credentials.password,
+            user.password
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          const object = {
+            id: user.id + "",
+            email: user.email,
+            name: user.username,
+            randomKey: "Hey cool",
+          };
+
+          console.log("object", object);
+
+          return object;
+        } catch (error) {
+          console.log(error);
+        } finally {
+          await prisma.$disconnect();
         }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
-
-        console.log("prisma find unique", credentials.email);
-
-        if (!user) {
-          return null;
-        }
-
-        const isPasswordValid = await compare(
-          credentials.password,
-          user.password
-        );
-
-        if (!isPasswordValid) {
-          return null;
-        }
-
-        const object = {
-          id: user.id + "",
-          email: user.email,
-          name: user.username,
-          randomKey: "Hey cool",
-        };
-
-        console.log("object", object);
-
-        return object;
       },
     }),
   ],

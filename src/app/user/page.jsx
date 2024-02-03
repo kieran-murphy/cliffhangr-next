@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 
-import MainLayout from "../layout/main-layout";
 import UserListItem from "@/components/UserListItem";
 import UserSearchBar from "@/components/UserSearchBar";
 
@@ -40,14 +39,13 @@ export default function Home() {
   }, [searchTerm]);
 
   return (
-    <MainLayout>
+    <>
       <UserSearchBar setSearchTerm={setSearchTerm} />
-
       <div>
         {users?.map((user) => {
           return <UserListItem key={user.id} user={user} />;
         })}
       </div>
-    </MainLayout>
+    </>
   );
 }

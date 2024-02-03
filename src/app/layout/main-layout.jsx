@@ -1,40 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-
-const getUserFromJWTCookie = async () => {
-  const authToken = Cookies.get("token");
-  const response = await fetch("/api/session", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ token: authToken }),
-  });
-  const responseData = await response.json();
-  const username = responseData.username;
-  if (username) {
-    return username;
-  }
-};
+import { useRouter } from "next/navigation"; // Import useRouter
+import { useSession } from "next-auth/react"; // Import useSession
+import { useEffect } from "react"; // Import useEffect
 
 const MainLayout = ({ children }) => {
-  const router = useRouter();
-
-  const [user, setUser] = useState("");
+  const { data: session, status } = useSession(); // Also get status to check loading state
+  const router = useRouter(); // Use useRouter hook for redirection
 
   useEffect(() => {
-    (async () => {
-      const user = await getUserFromJWTCookie();
-      setUser(user);
-      if (!user) {
-        router.replace("/logintest");
-      }
-    })();
-  }, [router]);
+    // Redirect to sign in page if not signed in and session loading is completed
+    if (status === "unauthenticated") {
+      router.push("/api/auth/signin");
+    }
+  }, [status, router]);
+
+  // Optional: You can also show loading state while checking session
+  if (status === "loading") {
+    return <div>Loading...</div>; // Or any other loading indicator
+  }
+
+  const username = session?.user?.name || ""; // Directly access username from session
 
   return (
     <>
@@ -50,12 +37,29 @@ const MainLayout = ({ children }) => {
               <h1 className="text-xl font-semibold">Users</h1>
             </Link>
           </li>
-          <li className="hover:bg-gray-700 rounded-md p-2">
-            <Link href="/loginsuccess">
-              <h1 className="text-xl font-semibold">{user}</h1>
-            </Link>
-          </li>
-          {/* Add other navigation links here */}
+
+          {username ? (
+            <>
+              <li className="hover:bg-gray-700 rounded-md p-2">
+                <Link href="/loginsuccess">
+                  <h1 className="text-xl font-semibold">
+                    <pre>{username}</pre>
+                  </h1>
+                </Link>
+              </li>
+              <li className="hover:bg-gray-700 rounded-md p-2">
+                <Link href="/api/auth/signout">
+                  <h1 className="text-xl font-semibold">Sign Out</h1>
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li className="hover:bg-gray-700 rounded-md p-2">
+              <Link href="/api/auth/signin">
+                <h1 className="text-xl font-semibold">Sign In</h1>
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
       <main>{children}</main>
