@@ -22,6 +22,7 @@ const MainLayout = ({ children }) => {
   }
 
   const username = session?.user?.name || ""; // Directly access username from session
+  const userID = session?.user?.id || ""; // Directly access ID from session
 
   return (
     <>
@@ -41,7 +42,7 @@ const MainLayout = ({ children }) => {
           {username ? (
             <>
               <li className="hover:bg-gray-700 rounded-md p-2">
-                <Link href="/loginsuccess">
+                <Link href={`/user/${userID}`}>
                   <h1 className="text-xl font-semibold">
                     <pre>{username}</pre>
                   </h1>
