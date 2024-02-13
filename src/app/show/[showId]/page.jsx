@@ -15,12 +15,14 @@ export default function Home({ params }) {
   const [showForm, setShowForm] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+  const [userReviewID, setUserReviewID] = useState(null);
 
   const { data: session } = useSession(); // Also get status to check loading state
   const router = useRouter();
 
   const showId = params.showId;
-  const userID = session?.user?.id || ""; // Directly access ID from session
+  const userID = session?.user?.id || null; // Directly access ID from session
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,10 +46,42 @@ export default function Home({ params }) {
     }
   }, [showId]);
 
+  useEffect(() => {
+    checkReviewStatus();
+  }, [show, userID]);
+
   const [formData, setFormData] = useState({
     text: "",
     rating: 0,
   });
+
+  //check if user has already reviewed the show
+  // const checkReviewStatus = () => {
+  //   if (show) {
+  //     if (userID) {
+  //       if (show.reviews.some((element) => element.userId === userID)) {
+  //         setAlreadyReviewed(true);
+  //       } else {
+  //         setAlreadyReviewed(false);
+  //       }
+  //     }
+  //   }
+  // };
+  const checkReviewStatus = () => {
+    if (show) {
+      if (userID) {
+        const matchingReview = show.reviews.find(
+          (element) => element.userId === userID
+        );
+        if (matchingReview) {
+          setUserReviewID(matchingReview.id); // This will print the matching review object
+          setAlreadyReviewed(true);
+        } else {
+          setAlreadyReviewed(false);
+        }
+      }
+    }
+  };
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -155,56 +189,67 @@ export default function Home({ params }) {
           <h1>{show.reviews.length} reviews</h1>
         )}
       </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        {showForm ? (
-          <div>
-            <div
-              className="my-2 hover:border cursor-pointer border-cyan-400"
+      {alreadyReviewed ? (
+        <Link href={`/review/${userReviewID}`}>
+          <div className="border border-cyan-400 m-4 w-1/3">
+            <h1 className="font-bold">{"See your review ->"}</h1>
+          </div>
+        </Link>
+      ) : (
+        <div className="border border-cyan-400 m-4 w-1/3">
+          {showForm ? (
+            <div>
+              <div
+                className="my-2 hover:border cursor-pointer border-cyan-400"
+                onClick={() => setShowForm(!showForm)}
+              >
+                collapse
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label htmlFor="text" className="m-2 p-2">
+                    Review:
+                  </label>
+                  <input
+                    className="bg-black outline text-white"
+                    type="text"
+                    id="text"
+                    name="text"
+                    value={formData.text}
+                    onChange={handleInputChange}
+                  />
+                  <br />
+                  <br />
+                  <label htmlFor="text" className="m-2 p-2">
+                    Rating:
+                  </label>
+                  <input
+                    className="bg-black outline text-white"
+                    type="number"
+                    id="rating"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <button
+                  className="my-2 hover:border cursor-pointer border-cyan-400"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          ) : (
+            <h1
+              className="cursor-pointer"
               onClick={() => setShowForm(!showForm)}
             >
-              collapse
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="text" className="m-2 p-2">
-                  Review:
-                </label>
-                <input
-                  className="bg-black outline text-white"
-                  type="text"
-                  id="text"
-                  name="text"
-                  value={formData.text}
-                  onChange={handleInputChange}
-                />
-                <br />
-                <br />
-                <label htmlFor="text" className="m-2 p-2">
-                  Rating:
-                </label>
-                <input
-                  className="bg-black outline text-white"
-                  type="number"
-                  id="rating"
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <button
-                className="my-2 hover:border cursor-pointer border-cyan-400"
-                type="submit"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
-        ) : (
-          <h1 className="cursor-pointer" onClick={() => setShowForm(!showForm)}>
-            Add a review
-          </h1>
-        )}
-      </div>
+              Add a review
+            </h1>
+          )}
+        </div>
+      )}
     </>
   );
 }
