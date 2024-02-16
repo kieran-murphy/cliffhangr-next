@@ -16,7 +16,9 @@ export default function Home({ params }) {
   const [showReviews, setShowReviews] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+  const [alreadyFavorited, setAlreadyFavorited] = useState(false);
   const [userReviewID, setUserReviewID] = useState(null);
+  const [userFavID, setUserFavID] = useState(null);
 
   const { data: session } = useSession(); // Also get status to check loading state
   const router = useRouter();
@@ -48,6 +50,7 @@ export default function Home({ params }) {
 
   useEffect(() => {
     checkReviewStatus();
+    checkFavStatus();
   }, [show, userID]);
 
   const [formData, setFormData] = useState({
@@ -55,18 +58,6 @@ export default function Home({ params }) {
     rating: 0,
   });
 
-  //check if user has already reviewed the show
-  // const checkReviewStatus = () => {
-  //   if (show) {
-  //     if (userID) {
-  //       if (show.reviews.some((element) => element.userId === userID)) {
-  //         setAlreadyReviewed(true);
-  //       } else {
-  //         setAlreadyReviewed(false);
-  //       }
-  //     }
-  //   }
-  // };
   const checkReviewStatus = () => {
     if (show) {
       if (userID) {
@@ -81,6 +72,64 @@ export default function Home({ params }) {
         }
       }
     }
+  };
+
+  const checkFavStatus = () => {
+    if (show) {
+      if (userID) {
+        const matchingFav = show.favoritedBy.find(
+          (element) => element.userId === userID
+        );
+        if (matchingFav) {
+          setUserFavID(matchingFav.id); // This will print the matching review object
+          setAlreadyFavorited(true);
+        } else {
+          setAlreadyFavorited(false);
+        }
+      }
+    }
+  };
+
+  const toggleFavorite = async () => {
+    if (alreadyFavorited) {
+      try {
+        const response = await fetch("http://localhost:3000/api/favoriteshow", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ favoriteShowID: userFavID }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("There was an error deleting the favorite", error);
+        alert("There was an error deleting the favorite");
+      }
+    } else {
+      try {
+        const response = await fetch("http://localhost:3000/api/favoriteshow", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            favoriteShow: {
+              showId: showId,
+              userId: userID,
+            },
+          }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("There was an error submitting the favorite", error);
+        alert("There was an error submitting the favorite");
+      }
+    }
+    window.location.reload();
   };
 
   // Handle input change
@@ -189,6 +238,17 @@ export default function Home({ params }) {
           <h1>{show.reviews.length} reviews</h1>
         )}
       </div>
+      <div
+        className="border border-cyan-400 m-4 w-1/3 cursor-pointer"
+        onClick={toggleFavorite}
+      >
+        {alreadyFavorited ? (
+          <h1 className="font-bold">Favorited ❤️</h1>
+        ) : (
+          <h1 className="font-bold">Click to Favorite </h1>
+        )}
+      </div>
+
       {alreadyReviewed ? (
         <Link href={`/review/${userReviewID}`}>
           <div className="border border-cyan-400 m-4 w-1/3">
