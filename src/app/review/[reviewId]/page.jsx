@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import ReviewCommentListItem from "@/components/ReviewCommentListItem";
@@ -16,8 +18,14 @@ export default function Home({ params }) {
   const [user, setUser] = useState(null);
   const [showComments, setShowComments] = useState(false);
   const [showReacts, setShowReacts] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+
+  const { data: session } = useSession(); // Also get status to check loading state
+  const router = useRouter();
 
   const reviewId = params.reviewId;
+  const sessionUserID = session?.user?.id || null; // Directly access ID from session
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +53,9 @@ export default function Home({ params }) {
     if (review) {
       setShowId(review.showId);
       setUserId(review.userId);
+      if (review.userId === sessionUserID) {
+        setIsUser(true);
+      }
     }
   }, [review]);
 
@@ -91,6 +102,25 @@ export default function Home({ params }) {
       fetchUserData();
     }
   }, [userId]);
+
+  const deleteReview = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/review", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ reviewID: reviewId }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("There was an error deleting the review", error);
+      alert("There was an error deleting the review");
+    }
+    router.replace(`/show/${showId}`);
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -159,6 +189,32 @@ export default function Home({ params }) {
           <h1>{review.CommentOnReview.length} comments</h1>
         )}
       </div>
+      {isUser && (
+        <div
+          className="border border-cyan-400 cursor-pointer m-4 w-1/3"
+          onClick={() => setShowDelete(!showDelete)}
+        >
+          {showDelete ? (
+            <div>
+              <div className="my-2">Are you sure?</div>
+              <div
+                className="my-2 hover:border border-cyan-400"
+                onClick={deleteReview}
+              >
+                yes
+              </div>
+              <div
+                className="my-2 hover:border border-cyan-400"
+                onClick={() => setShowComments(!showDelete)}
+              >
+                no
+              </div>
+            </div>
+          ) : (
+            <h1>delete review?</h1>
+          )}
+        </div>
+      )}
     </div>
   );
 }
