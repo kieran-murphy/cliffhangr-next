@@ -20,6 +20,16 @@ export default function Home({ params }) {
   const [showReacts, setShowReacts] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [isUser, setIsUser] = useState(false);
+  const [userReact, setUserReact] = useState(null);
+  const [userReactID, setUserReactID] = useState(null);
+  const reacts = ["👍", "❤️", "😂", "😡", "😮"];
+  const reactsDict = {
+    LIKE: ["LIKE", "👍"],
+    LOVE: ["LOVE", "❤️"],
+    LAUGH: ["LAUGH", "😂"],
+    ANGRY: ["ANGRY", "😡"],
+    WOW: ["WOW", "😮"],
+  };
 
   const { data: session } = useSession(); // Also get status to check loading state
   const router = useRouter();
@@ -103,6 +113,18 @@ export default function Home({ params }) {
     }
   }, [userId]);
 
+  useEffect(() => {
+    if (userId) {
+      const matchingReact = review.reactOnReviews.find(
+        (element) => element.userId === sessionUserID
+      );
+      if (matchingReact) {
+        setUserReact(matchingReact.react);
+        setUserReactID(matchingReact.id);
+      }
+    }
+  }, [review, sessionUserID, showReacts]);
+
   const deleteReview = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/review", {
@@ -120,6 +142,59 @@ export default function Home({ params }) {
       alert("There was an error deleting the review");
     }
     router.replace(`/show/${showId}`);
+  };
+
+  const addReact = async (react) => {
+    if (userReact) {
+      try {
+        await fetch("http://localhost:3000/api/reactonreview", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ reactOnReviewID: userReactID }),
+        });
+      } catch (error) {
+        console.error("There was an error deleting the review", error);
+        alert("There was an error deleting the review");
+      }
+    }
+    try {
+      await fetch("http://localhost:3000/api/reactonreview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reactOnReview: {
+            userId: sessionUserID,
+            reviewId: reviewId,
+            react: react,
+          },
+        }),
+      });
+      setShowReacts(false);
+    } catch (error) {
+      console.error("There was an error deleting the review", error);
+      alert("There was an error deleting the review");
+    }
+    window.location.reload();
+  };
+
+  const deleteReact = async () => {
+    try {
+      await fetch("http://localhost:3000/api/reactonreview", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ reactOnReviewID: userReactID }),
+      });
+    } catch (error) {
+      console.error("There was an error deleting the review", error);
+      alert("There was an error deleting the review");
+    }
+    window.location.reload();
   };
 
   if (loading) return <p>Loading...</p>;
@@ -160,6 +235,30 @@ export default function Home({ params }) {
             >
               collapse
             </div>
+            {!isUser && (
+              <div className="my-2 flex flex-row place-content-around">
+                {Object.entries(reactsDict).map(([key, [label, emoji]]) =>
+                  label === userReact ? (
+                    <div
+                      key={key}
+                      onClick={() => deleteReact()}
+                      className="border border-cyan-400"
+                    >
+                      {emoji}
+                    </div>
+                  ) : (
+                    <div
+                      key={key}
+                      onClick={() => addReact(label)}
+                      className="hover:border border-cyan-400"
+                    >
+                      {emoji}
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+
             {review.reactOnReviews.map((react) => (
               <ReactListItem key={react.id} react={react} />
             ))}
