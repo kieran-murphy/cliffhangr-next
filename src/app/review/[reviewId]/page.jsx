@@ -17,11 +17,16 @@ export default function Home({ params }) {
   const [show, setShow] = useState(null);
   const [user, setUser] = useState(null);
   const [showComments, setShowComments] = useState(false);
+  const [showCommentForm, setShowCommentForm] = useState(false);
   const [showReacts, setShowReacts] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [userReact, setUserReact] = useState(null);
   const [userReactID, setUserReactID] = useState(null);
+  const [formData, setFormData] = useState({
+    text: "",
+  });
+
   const reacts = ["👍", "❤️", "😂", "😡", "😮"];
   const reactsDict = {
     LIKE: ["LIKE", "👍"],
@@ -197,6 +202,52 @@ export default function Home({ params }) {
     window.location.reload();
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target; // Destructure name and value from event target
+    setFormData({
+      ...formData, // Spread existing formData
+      [name]: value, // Update changed value
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Form Data Submitted:", formData.text);
+
+    // Here you could also send the formData to a server or perform other actions
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/commentonreview",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            commentOnReview: {
+              text: formData.text,
+              reviewId: reviewId,
+              userId: sessionUserID,
+            },
+          }),
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        setFormData({ text: "", rating: 0 });
+        console.log(data);
+        window.location.reload();
+      } else {
+        alert("Submission failed");
+      }
+    } catch (error) {
+      console.error("There was an error submitting the form data", error);
+      alert("There was an error submitting the form data");
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   if (!review) return <p>No review found!</p>;
@@ -288,6 +339,39 @@ export default function Home({ params }) {
           <h1>{review.CommentOnReview.length} comments</h1>
         )}
       </div>
+      {!showCommentForm ? (
+        <div
+          className="border border-cyan-400 cursor-pointer m-4 w-1/3"
+          onClick={() => setShowCommentForm(!showCommentForm)}
+        >
+          Add a comment ✏️
+        </div>
+      ) : (
+        <div className="border border-cyan-400 cursor-pointer m-4 w-1/3">
+          <div
+            className="my-2 hover:border border-cyan-400"
+            onClick={() => setShowCommentForm(!showCommentForm)}
+          >
+            collapse
+          </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              className="bg-black outline text-white"
+              type="text"
+              id="text"
+              name="text"
+              value={formData.text}
+              onChange={handleInputChange}
+            />
+            <button
+              className="my-2 hover:border cursor-pointer border-cyan-400"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      )}
       {isUser && (
         <div
           className="border border-cyan-400 cursor-pointer m-4 w-1/3"
