@@ -226,38 +226,6 @@ const populateReactOnReviews = async () => {
   }
 };
 
-const populateReactOnComments = async () => {
-  const userIds = [];
-  const commentIds = [];
-  const reacts = ["LIKE", "LOVE", "LAUGH", "WOW", "ANGRY"];
-
-  const users = await prisma.user.findMany();
-  const comments = await prisma.commentOnReview.findMany();
-
-  users.map((user) => userIds.push(user.id));
-  comments.map((comment) => commentIds.push(comment.id));
-
-  try {
-    for (let userId of userIds) {
-      for (let commentId of commentIds) {
-        const randomNumber = Math.floor(Math.random() * 50);
-        const randomReact = reacts[Math.floor(Math.random() * reacts.length)];
-        if (randomNumber > 48) {
-          await prisma.reactOnComment.create({
-            data: {
-              userId: userId,
-              commentId: commentId,
-              react: randomReact,
-            },
-          });
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error seeding the database:", error);
-  }
-};
-
 const main = async () => {
   await populateUsers();
   await populateFollows();
@@ -266,7 +234,6 @@ const main = async () => {
   await populateReviews();
   await populateReactOnReviews();
   await populateComments();
-  await populateReactOnComments();
 };
 
 main()

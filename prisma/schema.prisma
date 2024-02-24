@@ -24,7 +24,6 @@ model User {
   reactOnReviews  ReactOnReview[]
   writtenReviews  Review[]          @relation("WrittenReviews")
   CommentOnReview CommentOnReview[]
-  ReactOnComment  ReactOnComment[]
   following       Follow[]          @relation("UserFollows")
   followers       Follow[]          @relation("UserFollowedBy")
 
@@ -88,28 +87,13 @@ model Review {
 }
 
 model CommentOnReview {
-  id             String           @id @default(uuid())
-  userId         String
-  reviewId       String
-  text           String
-  createdAt      DateTime         @default(now())
-  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  review         Review           @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  ReactOnComment ReactOnComment[]
-
-  @@unique([userId, reviewId])
-}
-
-model ReactOnComment {
-  id        String          @id @default(uuid())
+  id        String   @id @default(uuid())
   userId    String
-  commentId String
-  react     React           @default(LIKE)
-  createdAt DateTime        @default(now())
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comment   CommentOnReview @relation(fields: [commentId], references: [id])
-
-  @@unique([userId, commentId])
+  reviewId  String
+  text      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
