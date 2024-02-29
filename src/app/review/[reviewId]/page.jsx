@@ -319,10 +319,7 @@ export default function Home({ params }) {
         )}
       </div>
 
-      <div
-        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowComments(!showComments)}
-      >
+      <div className="border border-cyan-400 cursor-pointer m-4 w-1/3">
         {showComments ? (
           <div>
             <div
@@ -336,7 +333,9 @@ export default function Home({ params }) {
             ))}
           </div>
         ) : (
-          <h1>{review.CommentOnReview.length} comments</h1>
+          <h1 onClick={() => setShowComments(!showComments)}>
+            {review.CommentOnReview.length} comments
+          </h1>
         )}
       </div>
       {!showCommentForm ? (

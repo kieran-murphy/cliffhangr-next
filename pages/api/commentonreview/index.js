@@ -2,6 +2,7 @@ import {
   getCommentOnReviews,
   getCommentOnReview,
   createCommentOnReview,
+  updateCommentOnReview,
   deleteCommentOnReview,
 } from "@/lib/prisma/commentOnReviews";
 
@@ -33,6 +34,22 @@ const handler = async (req, res) => {
     try {
       const data = req.body.commentOnReview;
       const { commentOnReview, error } = await createCommentOnReview(data);
+      if (error) throw new Error(error);
+      return res.status(200).json({ commentOnReview });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  if (req.method === "PUT") {
+    try {
+      const commentOnReviewID = req.query.id; // Assuming the ID is in the query
+      const data = req.body; // Assuming the updated data is in the body
+      const { commentOnReview, error } = await updateCommentOnReview(
+        commentOnReviewID,
+        data
+      );
       if (error) throw new Error(error);
       return res.status(200).json({ commentOnReview });
     } catch (error) {
