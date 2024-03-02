@@ -34,8 +34,8 @@ model Follow {
   id          String @id @default(uuid())
   followingId String
   followerId  String
-  followed    User   @relation(name: "UserFollows", fields: [followingId], references: [id], onDelete: Cascade)
-  followedBy  User   @relation(name: "UserFollowedBy", fields: [followerId], references: [id], onDelete: Cascade)
+  followed    User   @relation(name: "UserFollows", fields: [followerId], references: [id], onDelete: Cascade)
+  followedBy  User   @relation(name: "UserFollowedBy", fields: [followingId], references: [id], onDelete: Cascade)
 
   @@unique([followingId, followerId])
 }

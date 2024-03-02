@@ -27,7 +27,6 @@ export default function Home({ params }) {
     text: "",
   });
 
-  const reacts = ["👍", "❤️", "😂", "😡", "😮"];
   const reactsDict = {
     LIKE: ["LIKE", "👍"],
     LOVE: ["LOVE", "❤️"],

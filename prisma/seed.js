@@ -228,7 +228,7 @@ const populateReactOnReviews = async () => {
 
 const main = async () => {
   await populateUsers();
-  await populateFollows();
+  // await populateFollows();
   await populateShows();
   await populateFavorites();
   await populateReviews();
