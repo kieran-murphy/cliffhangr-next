@@ -33,8 +33,6 @@ export const authOptions = {
             },
           });
 
-          // console.log("prisma find unique", credentials.email);
-
           if (!user) {
             return null;
           }
@@ -52,7 +50,6 @@ export const authOptions = {
             id: user.id + "",
             email: user.email,
             name: user.username,
-            randomKey: "Hey cool",
           };
 
           console.log("object", object);
@@ -66,6 +63,9 @@ export const authOptions = {
       },
     }),
   ],
+  pages: {
+    signIn: "/signIn", // Custom sign-in page
+  },
   callbacks: {
     session: ({ session, token }) => {
       console.log("Session Callback", { session, token });
@@ -74,7 +74,6 @@ export const authOptions = {
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
         },
       };
     },
@@ -85,7 +84,6 @@ export const authOptions = {
         return {
           ...token,
           id: u.id,
-          randomKey: u.randomKey,
         };
       }
       return token;
