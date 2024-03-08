@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -104,6 +105,14 @@ export default function Home() {
             >
               Register
             </button>
+            <br />
+            <br />
+            <span>Already have an account? </span>
+            <Link href="/signIn">
+              <span style={{ color: "blue", textDecoration: "underline" }}>
+                Login
+              </span>
+            </Link>
           </div>
         </form>
       </div>

@@ -1,0 +1,31 @@
+import React, { useEffect } from "react";
+import { useSession } from "next-auth/react"; // Import useSession
+import { useRouter } from "next/router"; // Import useRouter
+
+const PagesLayout = ({ children }) => {
+  const { data: session, status } = useSession(); // Also get status to check loading state
+  const router = useRouter(); // Use useRouter hook for redirection
+
+  useEffect(() => {
+    // Redirect to sign in page if not signed in and session loading is completed
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
+
+  // Optional: You can also show loading state while checking session
+  if (status === "loading") {
+    return <div>Loading...</div>; // Or any other loading indicator
+  }
+
+  return (
+    <div>
+      <nav>
+        <h1>{status}</h1>
+      </nav>
+      <main>{children}</main>
+    </div>
+  );
+};
+
+export default PagesLayout;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ export default function Login() {
         password,
       });
     } catch (error) {
-      console.log("signIn error = ", error);
+      alert("signIn error = ", error);
     }
   };
 
@@ -41,6 +42,14 @@ export default function Login() {
           />
         </div>
         <button type="submit">Sign In</button>
+        <br />
+        <br />
+        <span>Don&#39;t have an account? </span>
+        <Link href="/register">
+          <span style={{ color: "blue", textDecoration: "underline" }}>
+            Register
+          </span>
+        </Link>
       </form>
     </div>
   );
