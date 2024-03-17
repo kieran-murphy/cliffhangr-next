@@ -93,7 +93,7 @@ export default function Home({ params }) {
   const toggleFavorite = async () => {
     if (alreadyFavorited) {
       try {
-        const response = await fetch("http://localhost:3000/api/favoriteshow", {
+        const response = await fetch("/api/favoriteshow", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export default function Home({ params }) {
       }
     } else {
       try {
-        const response = await fetch("http://localhost:3000/api/favoriteshow", {
+        const response = await fetch("/api/favoriteshow", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -148,7 +148,7 @@ export default function Home({ params }) {
 
     // Here you could also send the formData to a server or perform other actions
     try {
-      const response = await fetch("http://localhost:3000/api/review", {
+      const response = await fetch("/api/review", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

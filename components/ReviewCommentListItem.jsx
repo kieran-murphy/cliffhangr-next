@@ -11,16 +11,13 @@ const CommentListItem = ({ comment }) => {
 
   const deleteReview = async (id) => {
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/commentonreview",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ commentOnReviewID: id }),
-        }
-      );
+      const response = await fetch("/api/commentonreview", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ commentOnReviewID: id }),
+      });
 
       const data = await response.json();
       console.log(data);

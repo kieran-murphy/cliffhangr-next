@@ -131,7 +131,7 @@ export default function Home({ params }) {
 
   const deleteReview = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/review", {
+      const response = await fetch("/api/review", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +151,7 @@ export default function Home({ params }) {
   const addReact = async (react) => {
     if (userReact) {
       try {
-        await fetch("http://localhost:3000/api/reactonreview", {
+        await fetch("/api/reactonreview", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -164,7 +164,7 @@ export default function Home({ params }) {
       }
     }
     try {
-      await fetch("http://localhost:3000/api/reactonreview", {
+      await fetch("/api/reactonreview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +187,7 @@ export default function Home({ params }) {
 
   const deleteReact = async () => {
     try {
-      await fetch("http://localhost:3000/api/reactonreview", {
+      await fetch("/api/reactonreview", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -214,22 +214,19 @@ export default function Home({ params }) {
 
     // Here you could also send the formData to a server or perform other actions
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/commentonreview",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      const response = await fetch("/api/commentonreview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          commentOnReview: {
+            text: formData.text,
+            reviewId: reviewId,
+            userId: sessionUserID,
           },
-          body: JSON.stringify({
-            commentOnReview: {
-              text: formData.text,
-              reviewId: reviewId,
-              userId: sessionUserID,
-            },
-          }),
-        }
-      );
+        }),
+      });
 
       const data = await response.json();
       console.log(data);

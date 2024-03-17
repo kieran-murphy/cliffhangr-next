@@ -77,7 +77,7 @@ export default function Home({ params }) {
 
   const follow = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/follow", {
+      const response = await fetch("/api/follow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export default function Home({ params }) {
 
   const unfollow = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/follow", {
+      const response = await fetch("/api/follow", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -153,6 +153,7 @@ export default function Home({ params }) {
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1 className="">Role: {user.role}</h1>
       </div>
+
       <div
         className="border border-cyan-400 cursor-pointer m-4 w-1/3"
         onClick={() => setShowFavorites(!showFavorites)}
