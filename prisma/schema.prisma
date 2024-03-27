@@ -43,6 +43,9 @@ model Follow {
 model Show {
   id            String         @id @default(uuid())
   title         String         @unique
+  image         String
+  year          Int
+  seasons       Int
   averageRating Float          @default(0)
   favoritedBy   FavoriteShow[]
   reviews       Review[]       @relation("ShowReviews")

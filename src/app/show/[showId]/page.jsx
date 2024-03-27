@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 import FavoriteListItem from "@/components/ShowFavoriteListItem";
 import ReviewListItem from "@/components/ReviewListItem";
@@ -190,11 +191,20 @@ export default function Home({ params }) {
           <h1>{"<- Back to shows"}</h1>
         </div>
       </Link>
+      <div>
+        <Image src={show.image} width={500} height={500} alt={show.title} />
+      </div>
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1 className="font-bold">{show.title}</h1>
       </div>
       <div className="border border-cyan-400 m-4 w-1/3">
         <h1>{show.averageRating} average rating</h1>
+      </div>
+      <div className="border border-cyan-400 m-4 w-1/3">
+        <h1>Released {show.year}</h1>
+      </div>
+      <div className="border border-cyan-400 m-4 w-1/3">
+        <h1>{show.seasons} seasons</h1>
       </div>
       <div
         className="border border-cyan-400 cursor-pointer m-4 w-1/3"

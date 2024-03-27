@@ -2,8 +2,7 @@
   "shows": [
     {
       "title": "Lost",
-      "img": "https://pm1.narvii.com/6254/8f6401d09c5faab40e6e2412e0c931c1697d8872_hq.jpg",
-      "trailer": "https://www.youtube.com/",
+      "img": "lost.jpg",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
       "score": 4,
       "seasons": 6,
@@ -11,8 +10,7 @@
     },
     {
       "title": "Ozark",
-      "img": "https://s3.amazonaws.com/static.rogerebert.com/uploads/blog_post/primary_image/streaming/netflix-ozark-season-4-tv-review/OZARK_402_Unit_00159R.jpg",
-      "trailer": "https://www.youtube.com/",
+      "img": "ozark.jpg",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
       "score": 5,
       "seasons": 4,
@@ -20,8 +18,7 @@
     },
     {
       "title": "American Horror Story",
-      "img": "https://media.vanityfair.com/photos/5b27be5ac5251462a0769fc5/16:9/w_2000,h_1125,c_limit/emma-roberts-ahs%20(1).jpg",
-      "trailer": "https://www.youtube.com/",
+      "img": "americanhorrorstory.webp",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
       "score": 4,
       "seasons": 10,
@@ -29,8 +26,7 @@
     },
     {
       "title": "Black Mirror",
-      "img": "https://m.media-amazon.com/images/M/MV5BMTAxMzM1Mjg1NDNeQTJeQWpwZ15BbWU4MDc3MTc5NDQz._V1_.jpg",
-      "trailer": "https://www.youtube.com/",
+      "img": "blackmirror.jpg",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
       "score": 4.5,
       "seasons": 5,
@@ -38,8 +34,7 @@
     },
     {
       "title": "WandaVision",
-      "img": "https://ventsmagazine.com/wp-content/uploads/2021/03/wandavision-colapso-disney.jpg",
-      "trailer": "https://www.youtube.com/",
+      "img": "wandavision.jpg",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
       "score": 3.5,
       "seasons": 1,

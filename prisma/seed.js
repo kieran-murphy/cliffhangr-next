@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
 
+const showsData = require("../data/shows.json");
+
 const prisma = new PrismaClient();
 
 const generatedUsernames = new Set();
@@ -77,24 +79,14 @@ const populateFollows = async () => {
 };
 
 const populateShows = async () => {
-  const titles = [
-    "Breaking Bad",
-    "Ozark",
-    "Better Call Saul",
-    "Wandavision",
-    "Lost",
-    "Gossip Girl",
-    "The Office",
-    "Brooklyn nine nine",
-    "My 600lb life",
-    "Loki",
-  ];
-
   try {
-    for (let title of titles) {
+    for (let show of showsData.shows) {
       await prisma.show.create({
         data: {
-          title: title,
+          title: show.title,
+          image: "/images/" + show.img,
+          year: show.year,
+          seasons: show.seasons,
         },
       });
     }
