@@ -49,6 +49,12 @@ const MainLayout = ({ children }) => {
               tabIndex="0"
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
+              <Link href={`/show`}>
+                <li>
+                  <div>Shows 📺</div>
+                </li>
+              </Link>
+
               <Link href={`/user`}>
                 <li>
                   <div>Users 🧑</div>
@@ -79,6 +85,12 @@ const MainLayout = ({ children }) => {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">
+            <Link href={`/show`}>
+              <li>
+                <div>Shows 📺</div>
+              </li>
+            </Link>
+
             <Link href={`/user`}>
               <li>
                 <div>Users 🧑</div>
