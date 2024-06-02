@@ -26,42 +26,86 @@ const MainLayout = ({ children }) => {
 
   return (
     <>
-      <nav className="bg-gray-800 text-white p-4">
-        <ul className="flex justify-center space-x-4">
-          <li className="hover:bg-gray-700 rounded-md p-2">
-            <Link href="/show">
-              <h1 className="text-xl font-semibold">Shows</h1>
-            </Link>
-          </li>
-          <li className="hover:bg-gray-700 rounded-md p-2">
-            <Link href="/user">
-              <h1 className="text-xl font-semibold">Users</h1>
-            </Link>
-          </li>
-
-          {username ? (
-            <>
-              <li className="hover:bg-gray-700 rounded-md p-2">
-                <Link href={`/user/${userID}`}>
-                  <h1 className="text-xl font-semibold">
-                    <pre>{username}</pre>
-                  </h1>
-                </Link>
-              </li>
-              <li className="hover:bg-gray-700 rounded-md p-2">
-                <Link href="/api/auth/signout">
-                  <h1 className="text-xl font-semibold">Sign Out</h1>
-                </Link>
-              </li>
-            </>
-          ) : (
-            <li className="hover:bg-gray-700 rounded-md p-2">
-              <Link href="/api/auth/signin">
-                <h1 className="text-xl font-semibold">Sign In</h1>
+      <nav className="navbar bg-base-300">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex="0" className="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </label>
+            <ul
+              tabIndex="0"
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <Link href={`/user`}>
+                <li>
+                  <div>Users 🧑</div>
+                </li>
               </Link>
+
+              <li>
+                <div>Theme ☀️</div>
+              </li>
+
+              <Link href={`/admin`}>
+                <li>
+                  <div>Control panel ⚙️</div>
+                </li>
+              </Link>
+              <Link href={`/api/auth/signout`}>
+                <li>
+                  <div>Logout 🖥️</div>
+                </li>
+              </Link>
+            </ul>
+          </div>
+          <Link href={`/`}>
+            <button className="btn btn-ghost normal-case text-xl">
+              cliffhangr
+            </button>
+          </Link>
+        </div>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal p-0">
+            <Link href={`/user`}>
+              <li>
+                <div>Users 🧑</div>
+              </li>
+            </Link>
+
+            <li>
+              <div>Theme ☀️</div>
             </li>
-          )}
-        </ul>
+
+            <Link href={`/admin`}>
+              <li>
+                <div>Control panel ⚙️</div>
+              </li>
+            </Link>
+            <Link href={`/api/auth/signout`}>
+              <li>
+                <div>Logout 🖥️</div>
+              </li>
+            </Link>
+          </ul>
+        </div>
+        <div className="navbar-end">
+          <Link href={`user/${userID}`}>
+            <button className="btn">{username}</button>
+          </Link>
+        </div>
       </nav>
       <main>{children}</main>
     </>

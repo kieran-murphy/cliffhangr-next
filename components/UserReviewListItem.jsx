@@ -35,16 +35,14 @@ const UserReviewListItem = ({ review }) => {
   return (
     <Link href={`/review/${review.id}`}>
       <div className="my-2 hover:border border-cyan-400">
-        <h1 className="">
-          <h1 className="font-bold">{show.title}</h1>
-          {review.rating} ⭐
-          <br />
-          {review.text}
-          {/* <br />
+        <h1 className="font-bold">{show.title}</h1>
+        {review.rating} ⭐
+        <br />
+        {review.text}
+        {/* <br />
           {review.reactOnReviews.length} reacts
           <br />
           {review.CommentOnReview.length} comments */}
-        </h1>
       </div>
     </Link>
   );
