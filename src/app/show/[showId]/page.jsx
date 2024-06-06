@@ -8,6 +8,8 @@ import Image from "next/image";
 
 import FavoriteListItem from "@/components/ShowFavoriteListItem";
 import ReviewListItem from "@/components/ReviewListItem";
+import ReviewConfirmation from "@/components/ReviewConfirmation";
+import ShowReviewList from "@/components/ShowReviewList";
 
 import {
   ImStarEmpty,
@@ -25,6 +27,7 @@ export default function Home({ params }) {
   const [showReviews, setShowReviews] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [avgScore, setAvgScore] = useState(0.0);
   const [alreadyFavorited, setAlreadyFavorited] = useState(false);
   const [userReviewID, setUserReviewID] = useState(null);
@@ -34,6 +37,7 @@ export default function Home({ params }) {
   const router = useRouter();
 
   const showId = params.showId;
+  const user = session?.user || null; // Directly access user from session
   const userID = session?.user?.id || null; // Directly access ID from session
 
   useEffect(() => {
@@ -349,7 +353,6 @@ export default function Home({ params }) {
     <div>
       <div className="min-h-60">
         <Image src={show.image} alt={show.title} width={500} height={200} />
-        {/* <Image src={show.image} width={500} height={500} alt={show.title} /> */}
       </div>
 
       <div className="mx-6">
@@ -408,20 +411,10 @@ export default function Home({ params }) {
           </div>
         </div>
 
-        {/* {show.reviews ? (
-          <ShowReviewList
-            user={user}
-            show={show}
-            reviews={reviews}
-            deleteReview={deleteReview}
-            addReviewComment={addReviewComment}
-            addReaction={addReaction}
-            favoriteShow={favoriteShow}
-          />
-        ) : null} */}
+        {show.reviews ? <ShowReviewList user={user} show={show} /> : null}
       </div>
 
-      {/* {confirm ? <ReviewConfirmation setConfirm={setConfirm} /> : null} */}
+      {confirm ? <ReviewConfirmation setConfirm={setConfirm} /> : null}
 
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">

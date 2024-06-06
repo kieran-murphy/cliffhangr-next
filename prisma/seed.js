@@ -125,24 +125,28 @@ const populateFavorites = async () => {
 };
 
 const populateReviews = async () => {
-  const userIds = [];
+  const usersData = [];
   const showIds = [];
 
   const users = await prisma.user.findMany();
   const shows = await prisma.show.findMany();
 
-  users.map((user) => userIds.push(user.id));
+  users.map((user) => {
+    usersData.push({ id: user.id, username: user.username });
+  });
+
   shows.map((show) => showIds.push(show.id));
 
   try {
-    for (let userId of userIds) {
+    for (let user of usersData) {
       for (let showId of showIds) {
         const randomNumber = Math.floor(Math.random() * 5);
         if (randomNumber > 3) {
           const rating = Math.random() * 4 + 1;
           await prisma.review.create({
             data: {
-              userId: userId,
+              userId: user.id,
+              username: user.username, // Assuming you have a field for username in the review table
               showId: showId,
               text: faker.word.words(10),
               rating: parseFloat(rating.toFixed(1)),
