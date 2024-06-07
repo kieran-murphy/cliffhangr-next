@@ -114,7 +114,7 @@ const MainLayout = ({ children }) => {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link href={`user/${userID}`}>
+          <Link href={`/user/${userID}`}>
             <button className="btn">{username}</button>
           </Link>
         </div>
