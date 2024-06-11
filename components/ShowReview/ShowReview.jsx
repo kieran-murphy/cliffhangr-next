@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import DisplayRating from "./DisplayRating";
+import DisplayRating from "../DisplayRating";
+import "./ShowReview.css";
 
 import { FaRegTimesCircle, FaCaretUp, FaCaretDown } from "react-icons/fa";
 import { ImStarEmpty, ImStarFull, ImHappy, ImClock } from "react-icons/im"; //https://react-icons.github.io/react-icons/icons?name=im
@@ -90,31 +91,24 @@ const ShowReview = ({ user, reviewId, show }) => {
         <input type="checkbox" id={review.text} className="modal-toggle" />
         <label htmlFor={review.text} className="modal cursor-pointer">
           <label className="modal-box relative" htmlFor="">
-            <div className="flex flex-col place-items-center">
-              <div className="flex flex-row place-items-center">
-                <h3 className="text-2xl font-bold mr-4">{review.username}</h3>{" "}
-                <DisplayRating score={review.score} />
+            <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center text-center">
+                <h3 className="text-2xl font-bold mr-4">{review.username}</h3>
+                <DisplayRating rating={review.rating} />
               </div>
               <h1 className="my-2">{review.time}</h1>
               <div className="text-left p-2 h-20 w-full card bg-base-200 rounded-lg">
                 {review.text}
               </div>
-              {/* <div className="mt-1 text-error text-xl">
-              <FaRegTimesCircle
-                onClick={() => {
-                  deleteReview("steve");
-                }}
-              ></FaRegTimesCircle>
-            </div> */}
               {reactionsExpanded ? (
                 <div
                   className="mt-4"
                   onClick={() => setReactionsExpanded(false)}
                 >
-                  {review.reacts.map((react) => {
+                  {review.reactOnReviews.map((react) => {
                     return (
                       <div key={react.user}>
-                        {react.reaction} - {react.user}
+                        {emojiMap[react.react]} - {react.username}
                       </div>
                     );
                   })}
@@ -132,8 +126,9 @@ const ShowReview = ({ user, reviewId, show }) => {
               )}
 
               <div className="divider"></div>
+              <br />
               <h3 className="text-md font-bold">React</h3>
-              <div className="flex flex-row place-items-center">
+              <div className="flex flex-row items-center">
                 <button
                   onClick={() => addReaction(user, "👍", review._id)}
                   className="btn text-red-600 text-xl"
@@ -167,6 +162,7 @@ const ShowReview = ({ user, reviewId, show }) => {
                 </button>
               </div>
               <div className="divider"></div>
+              <br />
               <h3 className="text-md font-bold">Comments</h3>
               {review.CommentOnReview.length === 0 ? (
                 <div className="flex flex-col place-items-center">
@@ -202,24 +198,17 @@ const ShowReview = ({ user, reviewId, show }) => {
                 </div>
               ) : (
                 <div>
-                  {review.CommentOnReview.map((comment) => {
-                    return (
-                      <div className="w-full" key={comment}>
-                        <div className="divider"></div>
-                        <div className="flex flex-row place-content-between place-items-center">
-                          <Image
-                            className="rounded-full w-6 h-6"
-                            src="/images/profile.png"
-                            alt="d"
-                            width={60}
-                            height={60}
-                          />
-                          <h3 className="font-bold mx-2">{comment.user}</h3>
-                          <h3>{comment.text}</h3>
+                  {review.CommentOnReview.map((comment) => (
+                    <div className="w-full my-2" key={comment.id}>
+                      <div className="divider"></div>
+                      <div className="flex flex-row place-content-between">
+                        <div className="comment-box">
+                          <h3 className="user">{comment.username}</h3>
+                          <h3 className="comment">{comment.text}</h3>
                         </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
                   <button
                     className="btn w-full my-4"
                     onClick={() => {

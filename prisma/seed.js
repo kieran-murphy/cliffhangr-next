@@ -161,24 +161,24 @@ const populateReviews = async () => {
 };
 
 const populateComments = async () => {
-  const userIds = [];
-  const reviewIds = [];
-
   const users = await prisma.user.findMany();
   const reviews = await prisma.review.findMany();
 
-  users.map((user) => userIds.push(user.id));
-  reviews.map((review) => reviewIds.push(review.id));
+  const userData = users.map((user) => ({
+    id: user.id,
+    username: user.username,
+  }));
 
   try {
-    for (let userId of userIds) {
-      for (let reviewId of reviewIds) {
+    for (let user of userData) {
+      for (let review of reviews) {
         const randomNumber = Math.floor(Math.random() * 30);
         if (randomNumber > 28) {
           await prisma.commentOnReview.create({
             data: {
-              userId: userId,
-              reviewId: reviewId,
+              userId: user.id,
+              username: user.username, // Include the username
+              reviewId: review.id,
               text: faker.word.words(10),
             },
           });
@@ -198,18 +198,23 @@ const populateReactOnReviews = async () => {
   const users = await prisma.user.findMany();
   const reviews = await prisma.review.findMany();
 
-  users.map((user) => userIds.push(user.id));
+  // Create an array of user objects with id and username
+  const userObjects = users.map((user) => ({
+    id: user.id,
+    username: user.username,
+  }));
   reviews.map((review) => reviewIds.push(review.id));
 
   try {
-    for (let userId of userIds) {
+    for (let user of userObjects) {
       for (let reviewId of reviewIds) {
         const randomNumber = Math.floor(Math.random() * 30);
         const randomReact = reacts[Math.floor(Math.random() * reacts.length)];
         if (randomNumber > 28) {
           await prisma.reactOnReview.create({
             data: {
-              userId: userId,
+              userId: user.id,
+              username: user.username, // Including username here
               reviewId: reviewId,
               react: randomReact,
             },

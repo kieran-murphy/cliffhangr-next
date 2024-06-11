@@ -1,5 +1,5 @@
 import React from "react";
-import ShowReview from "@/components/ShowReview";
+import ShowReview from "@/components/ShowReview/ShowReview";
 
 const ShowReviewList = ({ user, show }) => {
   return (

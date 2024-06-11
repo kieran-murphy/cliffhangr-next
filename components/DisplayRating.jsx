@@ -1,19 +1,28 @@
 import React from "react";
 import ReactStars from "react-stars";
 
-const DisplayRating = ({ score, size }) => {
+const DisplayRating = ({ rating, size }) => {
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
   return (
-    <ReactStars
-      count={5}
-      value={score}
-      onChange={ratingChanged}
-      size={size}
-      color2={"#ffd700"}
-      edit={false}
-    />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        "margin-top": "1rem",
+      }}
+    >
+      <ReactStars
+        count={5}
+        value={rating}
+        onChange={ratingChanged}
+        size={size}
+        color2={"#ffd700"}
+        edit={false}
+      />
+    </div>
   );
 };
 

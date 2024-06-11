@@ -65,6 +65,7 @@ model FavoriteShow {
 model ReactOnReview {
   id        String   @id @default(uuid())
   userId    String
+  username  String
   reviewId  String
   react     React    @default(LIKE)
   createdAt DateTime @default(now())
@@ -93,6 +94,7 @@ model Review {
 model CommentOnReview {
   id        String   @id @default(uuid())
   userId    String
+  username  String
   reviewId  String
   text      String
   createdAt DateTime @default(now())

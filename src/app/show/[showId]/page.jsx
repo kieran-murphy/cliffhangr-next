@@ -379,7 +379,6 @@ export default function Home({ params }) {
           </div>
         </div>
         <p className=" my-8 italic font-light">{show.desc}</p>
-
         <div className="flex w-full place-content-center ">
           <div className="flex flex-col w-full place-content-between">
             {show.reviews.length > 0 ? (
