@@ -124,6 +124,35 @@ const populateFavorites = async () => {
   }
 };
 
+const populateWatchlists = async () => {
+  const userIds = [];
+  const showIds = [];
+
+  const users = await prisma.user.findMany();
+  const shows = await prisma.show.findMany();
+
+  users.map((user) => userIds.push(user.id));
+  shows.map((show) => showIds.push(show.id));
+
+  try {
+    for (let userId of userIds) {
+      for (let showId of showIds) {
+        const randomNumber = Math.floor(Math.random() * 6);
+        if (randomNumber > 4) {
+          await prisma.watchlistShow.create({
+            data: {
+              userId: userId,
+              showId: showId,
+            },
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error seeding the database:", error);
+  }
+};
+
 const populateReviews = async () => {
   const usersData = [];
   const showIds = [];
@@ -232,6 +261,7 @@ const main = async () => {
   // await populateFollows();
   await populateShows();
   await populateFavorites();
+  await populateWatchlists();
   await populateReviews();
   await populateReactOnReviews();
   await populateComments();

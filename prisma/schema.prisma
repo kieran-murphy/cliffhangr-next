@@ -26,6 +26,7 @@ model User {
   CommentOnReview CommentOnReview[]
   following       Follow[]          @relation("UserFollows")
   followers       Follow[]          @relation("UserFollowedBy")
+  watchlistShows  WatchlistShow[]
 
   @@index([username])
 }
@@ -41,17 +42,29 @@ model Follow {
 }
 
 model Show {
-  id            String         @id @default(uuid())
-  title         String         @unique
+  id            String          @id @default(uuid())
+  title         String          @unique
   image         String
   year          Int
   seasons       Int
-  averageRating Float          @default(0)
+  averageRating Float           @default(0)
   favoritedBy   FavoriteShow[]
-  reviews       Review[]       @relation("ShowReviews")
+  reviews       Review[]        @relation("ShowReviews")
+  watchListedBy WatchlistShow[]
 }
 
 model FavoriteShow {
+  id        String   @id @default(uuid())
+  userId    String
+  showId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  show      Show     @relation(fields: [showId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, showId])
+}
+
+model WatchlistShow {
   id        String   @id @default(uuid())
   userId    String
   showId    String
