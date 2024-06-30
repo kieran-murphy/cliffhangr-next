@@ -235,6 +235,9 @@ export default function Home({ params }) {
         )}
       </div>
       <div className="border border-cyan-400 m-4 w-1/3">
+        <h1 className="opacity-70">Watchlist: {user.watchlistShows.length}</h1>
+      </div>
+      <div className="border border-cyan-400 m-4 w-1/3">
         <h1 className="opacity-70">Comments: {user.CommentOnReview.length}</h1>
       </div>
       {!isUser && (

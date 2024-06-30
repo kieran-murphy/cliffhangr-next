@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import FavoriteListItem from "@/components/ShowFavoriteListItem";
+import Rating from "@/components/Rating";
 import ReviewListItem from "@/components/ReviewListItem";
 import ReviewConfirmation from "@/components/ReviewConfirmation";
 import ShowReviewList from "@/components/ShowReviewList";
@@ -17,6 +18,8 @@ import {
   ImClock,
   ImPencil,
   ImPlay,
+  ImHeart,
+  ImHeartBroken,
 } from "react-icons/im";
 
 export default function Home({ params }) {
@@ -30,8 +33,12 @@ export default function Home({ params }) {
   const [confirm, setConfirm] = useState(false);
   const [avgScore, setAvgScore] = useState(0.0);
   const [alreadyFavorited, setAlreadyFavorited] = useState(false);
+  const [alreadyInWatchlist, setAlreadyInWatchlist] = useState(false);
   const [userReviewID, setUserReviewID] = useState(null);
   const [userFavID, setUserFavID] = useState(null);
+  const [userWatchlistID, setUserWatchlistID] = useState(null);
+  const [reviewScore, setReviewScore] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
 
   const { data: session } = useSession(); // Also get status to check loading state
   const router = useRouter();
@@ -65,6 +72,7 @@ export default function Home({ params }) {
   useEffect(() => {
     checkReviewStatus();
     checkFavStatus();
+    checkWatchlistStatus();
   }, [show, userID]);
 
   useEffect(() => {
@@ -110,6 +118,23 @@ export default function Home({ params }) {
     }
   };
 
+  const checkWatchlistStatus = () => {
+    if (show) {
+      console.log("this is a show", show);
+      if (userID) {
+        const matchingWatchlist = show.watchListedBy.find(
+          (element) => element.userId === userID
+        );
+        if (matchingWatchlist) {
+          setUserWatchlistID(matchingWatchlist.id); // This will print the matching review object
+          setAlreadyInWatchlist(true);
+        } else {
+          setAlreadyInWatchlist(false);
+        }
+      }
+    }
+  };
+
   const toggleFavorite = async () => {
     if (alreadyFavorited) {
       try {
@@ -147,6 +172,48 @@ export default function Home({ params }) {
       } catch (error) {
         console.error("There was an error submitting the favorite", error);
         alert("There was an error submitting the favorite");
+      }
+    }
+    window.location.reload();
+  };
+
+  const toggleWatchlist = async () => {
+    if (alreadyInWatchlist) {
+      try {
+        const response = await fetch("/api/watchlistShow", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ WatchlistShowID: userWatchlistID }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("There was an error deleting the favorite", error);
+        alert("There was an error deleting the favorite");
+      }
+    } else {
+      try {
+        const response = await fetch("/api/watchlistShow", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            watchlistShow: {
+              showId: showId,
+              userId: userID,
+            },
+          }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error("There was an error updating the watchlist", error);
+        alert("There was an error updating the watchlist");
       }
     }
     window.location.reload();
@@ -205,6 +272,43 @@ export default function Home({ params }) {
     setAvgScore(avg);
   };
 
+  const addReview = (text, reviewScore, show, user) => {
+    // let reviewTime = new Date().toLocaleDateString();
+    // const review = {
+    //   userId: user._id,
+    //   username: user.name,
+    //   showId: show._id,
+    //   title: show.title,
+    //   score: reviewScore,
+    //   text: text,
+    //   reacts: [],
+    //   comments: [],
+    //   time: reviewTime,
+    // };
+    // // console.log(review);
+    // const RequestOptions = {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     review: review,
+    //   }),
+    // };
+    // fetch(`/reviews/add`, RequestOptions)
+    //   .then((res) => {
+    //     if (!res.ok) {
+    //       return res.text().then((text) => {
+    //         throw new Error(text);
+    //       });
+    //     } else {
+    //       return res.json();
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("caught it!", err);
+    //   });
+    // alert(text);
+  };
+
   const handleReviewChange = (event) => {
     setReviewComment(event.target.value);
   };
@@ -214,142 +318,6 @@ export default function Home({ params }) {
   if (!show) return <p>No show found!</p>;
 
   return (
-    // <>
-    //   <Link href={"/show"}>
-    //     <div className="border border-grey-400 cursor-pointer m-4 w-1/3 opacity-80">
-    //       <h1>{"<- Back to shows"}</h1>
-    //     </div>
-    //   </Link>
-    //   <div>
-    //     <Image src={show.image} width={500} height={500} alt={show.title} />
-    //   </div>
-    //   <div className="border border-cyan-400 m-4 w-1/3">
-    //     <h1 className="font-bold">{show.title}</h1>
-    //   </div>
-    //   <div className="border border-cyan-400 m-4 w-1/3">
-    //     <h1>{show.averageRating} average rating</h1>
-    //   </div>
-    //   <div className="border border-cyan-400 m-4 w-1/3">
-    //     <h1>Released {show.year}</h1>
-    //   </div>
-    //   <div className="border border-cyan-400 m-4 w-1/3">
-    //     <h1>{show.seasons} seasons</h1>
-    //   </div>
-    //   <div
-    //     className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-    //     onClick={() => setShowFavorites(!showFavorites)}
-    //   >
-    //     {showFavorites ? (
-    //       <div>
-    //         <div
-    //           className="my-2 hover:border border-cyan-400"
-    //           onClick={() => setShowFavorites(!showFavorites)}
-    //         >
-    //           collapse
-    //         </div>
-    //         {show.favoritedBy.map((f) => (
-    //           <FavoriteListItem key={f.id} favorite={f} />
-    //         ))}
-    //       </div>
-    //     ) : (
-    //       <h1>{show.favoritedBy.length} favorites</h1>
-    //     )}
-    //   </div>
-    //   <div
-    //     className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-    //     onClick={() => setShowReviews(!showReviews)}
-    //   >
-    //     {showReviews ? (
-    //       <div>
-    //         <div
-    //           className="my-2 hover:border border-cyan-400"
-    //           onClick={() => setShowReviews(!showReviews)}
-    //         >
-    //           collapse
-    //         </div>
-    //         {show.reviews.map((r) => (
-    //           <div key={r.id}>
-    //             <ReviewListItem review={r} />
-    //           </div>
-    //         ))}
-    //       </div>
-    //     ) : (
-    //       <h1>{show.reviews.length} reviews</h1>
-    //     )}
-    //   </div>
-    //   <div
-    //     className="border border-cyan-400 m-4 w-1/3 cursor-pointer"
-    //     onClick={toggleFavorite}
-    //   >
-    //     {alreadyFavorited ? (
-    //       <h1 className="font-bold">Favorited ❤️</h1>
-    //     ) : (
-    //       <h1 className="font-bold">Click to Favorite </h1>
-    //     )}
-    //   </div>
-
-    //   {alreadyReviewed ? (
-    //     <Link href={`/review/${userReviewID}`}>
-    //       <div className="border border-cyan-400 m-4 w-1/3">
-    //         <h1 className="font-bold">{"See your review ->"}</h1>
-    //       </div>
-    //     </Link>
-    //   ) : (
-    //     <div className="border border-cyan-400 m-4 w-1/3">
-    //       {showForm ? (
-    //         <div>
-    //           <div
-    //             className="my-2 hover:border cursor-pointer border-cyan-400"
-    //             onClick={() => setShowForm(!showForm)}
-    //           >
-    //             collapse
-    //           </div>
-    //           <form onSubmit={handleSubmit}>
-    //             <div>
-    //               <label htmlFor="text" className="m-2 p-2">
-    //                 Review:
-    //               </label>
-    //               <input
-    //                 className="bg-black outline text-white"
-    //                 type="text"
-    //                 id="text"
-    //                 name="text"
-    //                 value={formData.text}
-    //                 onChange={handleInputChange}
-    //               />
-    //               <br />
-    //               <br />
-    //               <label htmlFor="text" className="m-2 p-2">
-    //                 Rating:
-    //               </label>
-    //               <input
-    //                 className="bg-black outline text-white"
-    //                 type="number"
-    //                 id="rating"
-    //                 name="rating"
-    //                 value={formData.rating}
-    //                 onChange={handleInputChange}
-    //               />
-    //             </div>
-    //             <button
-    //               className="my-2 hover:border cursor-pointer border-cyan-400"
-    //               type="submit"
-    //             >
-    //               Submit
-    //             </button>
-    //           </form>
-    //         </div>
-    //       ) : (
-    //         <h1
-    //           className="cursor-pointer"
-    //           onClick={() => setShowForm(!showForm)}
-    //         >
-    //           Add a review
-    //         </h1>
-    //       )}
-    //     </div>
-    //   )}
-    // </>
     <div>
       <div className="min-h-60">
         <Image src={show.image} alt={show.title} width={500} height={200} />
@@ -396,16 +364,50 @@ export default function Home({ params }) {
             </label>
 
             <button
-              className="btn gap-2 mt-3 font-bold"
+              className="btn btn-primary gap-2 mt-3 font-bold"
               onClick={() => {
-                addWatchlist("Steve", show._id);
+                toggleFavorite();
                 setLoading(true);
               }}
             >
-              <h1 className="">
-                <ImClock />
-              </h1>
-              Add to watchlist
+              {alreadyFavorited ? (
+                <>
+                  <h1>
+                    <ImHeartBroken />
+                  </h1>
+                  Unfavorite
+                </>
+              ) : (
+                <>
+                  <h1>
+                    <ImHeart />
+                  </h1>
+                  Favorite
+                </>
+              )}
+            </button>
+            <button
+              className="btn gap-2 mt-3 font-bold"
+              onClick={() => {
+                toggleWatchlist();
+                setLoading(true);
+              }}
+            >
+              {alreadyInWatchlist ? (
+                <>
+                  <h1>
+                    <ImClock />
+                  </h1>
+                  Remove from watchlist
+                </>
+              ) : (
+                <>
+                  <h1>
+                    <ImClock />
+                  </h1>
+                  Add to watchlist
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -428,15 +430,14 @@ export default function Home({ params }) {
           <div className="flex flex-col place-content-between">
             <h3 className="mt-4">Review:</h3>
             <textarea
-              value="test"
-              // value={reviewComment}
+              value={reviewComment}
               onChange={handleReviewChange}
               className="textarea textarea-primary"
               placeholder="Your review here"
             ></textarea>
 
             <h3 className="mt-4">Rating:</h3>
-            {/* <Rating setReviewScore={setReviewScore} /> */}
+            <Rating setReviewScore={setReviewScore} />
 
             <label
               className="btn btn-success mt-4"

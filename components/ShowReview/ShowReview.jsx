@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import DisplayRating from "../DisplayRating";
 import "./ShowReview.css";
 
@@ -203,8 +204,10 @@ const ShowReview = ({ user, reviewId, show }) => {
                       <div className="divider"></div>
                       <div className="flex flex-row place-content-between">
                         <div className="comment-box">
-                          <h3 className="user">{comment.username}</h3>
-                          <h3 className="comment">{comment.text}</h3>
+                          <Link href={`/user/${comment.userId}`}>
+                            <h3 className="user">{comment.username}</h3>
+                            <h3 className="comment">{comment.text}</h3>
+                          </Link>
                         </div>
                       </div>
                     </div>
