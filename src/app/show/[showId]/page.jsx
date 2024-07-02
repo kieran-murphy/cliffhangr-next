@@ -120,7 +120,6 @@ export default function Home({ params }) {
 
   const checkWatchlistStatus = () => {
     if (show) {
-      console.log("this is a show", show);
       if (userID) {
         const matchingWatchlist = show.watchListedBy.find(
           (element) => element.userId === userID

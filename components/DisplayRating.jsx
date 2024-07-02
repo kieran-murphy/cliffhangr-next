@@ -11,7 +11,7 @@ const DisplayRating = ({ rating, size }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        "margin-top": "1rem",
+        marginTop: "1rem",
       }}
     >
       <ReactStars
