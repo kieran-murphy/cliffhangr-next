@@ -155,7 +155,7 @@ const populateWatchlists = async () => {
 
 const populateReviews = async () => {
   const usersData = [];
-  const showIds = [];
+  const showsData = [];
 
   const users = await prisma.user.findMany();
   const shows = await prisma.show.findMany();
@@ -164,11 +164,13 @@ const populateReviews = async () => {
     usersData.push({ id: user.id, username: user.username });
   });
 
-  shows.map((show) => showIds.push(show.id));
+  shows.map((show) => {
+    showsData.push({ id: show.id, title: show.title });
+  });
 
   try {
     for (let user of usersData) {
-      for (let showId of showIds) {
+      for (let show of showsData) {
         const randomNumber = Math.floor(Math.random() * 5);
         if (randomNumber > 3) {
           const rating = Math.random() * 4 + 1;
@@ -176,7 +178,8 @@ const populateReviews = async () => {
             data: {
               userId: user.id,
               username: user.username, // Assuming you have a field for username in the review table
-              showId: showId,
+              showId: show.id,
+              title: show.title,
               text: faker.word.words(10),
               rating: parseFloat(rating.toFixed(1)),
             },

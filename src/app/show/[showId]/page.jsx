@@ -272,39 +272,35 @@ export default function Home({ params }) {
   };
 
   const addReview = (text, reviewScore, show, user) => {
-    // let reviewTime = new Date().toLocaleDateString();
-    // const review = {
-    //   userId: user._id,
-    //   username: user.name,
-    //   showId: show._id,
-    //   title: show.title,
-    //   score: reviewScore,
-    //   text: text,
-    //   reacts: [],
-    //   comments: [],
-    //   time: reviewTime,
-    // };
-    // // console.log(review);
-    // const RequestOptions = {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     review: review,
-    //   }),
-    // };
-    // fetch(`/reviews/add`, RequestOptions)
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       return res.text().then((text) => {
-    //         throw new Error(text);
-    //       });
-    //     } else {
-    //       return res.json();
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("caught it!", err);
-    //   });
+    const review = {
+      userId: user.id,
+      username: user.name,
+      showId: show.id,
+      title: show.title,
+      rating: reviewScore,
+      text: text,
+    };
+    // console.log(review);
+    const RequestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        review: review,
+      }),
+    };
+    fetch(`/api/review`, RequestOptions)
+      .then(async (res) => {
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(text);
+          });
+        } else {
+          return res.json();
+        }
+      })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
     // alert(text);
   };
 
@@ -354,13 +350,20 @@ export default function Home({ params }) {
               </h1>
             ) : null}
 
-            <label
-              htmlFor="my-modal"
-              className="btn btn-success w-full mt-4 gap-2"
-            >
-              <ImPencil />
-              Write a Review
-            </label>
+            {alreadyReviewed ? (
+              <label className="btn btn-success w-full mt-4 gap-2">
+                <ImPencil />
+                See my Review
+              </label>
+            ) : (
+              <label
+                htmlFor="my-modal"
+                className="btn btn-success w-full mt-4 gap-2"
+              >
+                <ImPencil />
+                Write a Review
+              </label>
+            )}
 
             <button
               className="btn btn-primary gap-2 mt-3 font-bold"
@@ -445,7 +448,7 @@ export default function Home({ params }) {
                 addReview(reviewComment, reviewScore, show, user);
                 setReviewComment("");
                 setReviewScore(0);
-                setLoading(true);
+                window.location.reload();
               }}
             >
               Create

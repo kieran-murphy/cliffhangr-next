@@ -96,6 +96,7 @@ model Review {
   user            User              @relation("WrittenReviews", fields: [userId], references: [id], onDelete: Cascade)
   userId          String
   username        String
+  title           String
   show            Show              @relation("ShowReviews", fields: [showId], references: [id], onDelete: Cascade)
   showId          String
   reactOnReviews  ReactOnReview[]
