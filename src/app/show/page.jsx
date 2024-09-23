@@ -41,8 +41,7 @@ export default function Home() {
   return (
     <>
       <ShowSearchBar setSearchTerm={setSearchTerm} />
-
-      <div>
+      <div className="m-4">
         {shows?.map((show) => {
           return <ShowListItem key={show.id} show={show} />;
         })}
