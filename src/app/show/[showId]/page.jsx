@@ -351,10 +351,7 @@ export default function Home({ params }) {
             ) : null}
 
             {alreadyReviewed ? (
-              <label className="btn btn-success w-full mt-4 gap-2">
-                <ImPencil />
-                See my Review
-              </label>
+              <></>
             ) : (
               <label
                 htmlFor="my-modal"
