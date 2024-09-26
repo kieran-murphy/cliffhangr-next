@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <>
       <UserSearchBar setSearchTerm={setSearchTerm} />
-      <div>
+      <div className="m-4">
         {users?.map((user) => {
           return <UserListItem key={user.id} user={user} />;
         })}

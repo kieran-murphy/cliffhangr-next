@@ -13,7 +13,7 @@ const UserSearchBar = ({ setSearchTerm }) => {
   };
 
   return (
-    <div className="border border-cyan-400 m-4 w-1/3 bg-blue-400 text-black">
+    <div className="m-4">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -21,11 +21,8 @@ const UserSearchBar = ({ setSearchTerm }) => {
           onChange={handleInputChange}
           placeholder="Search here..."
           aria-label="Search Bar"
-          className="w-full p-2 text-black"
+          className="input input-bordered input-primary w-full max-w-xs"
         />
-        <button type="submit" className="p-2 bg-cyan-500 text-white">
-          Search
-        </button>
       </form>
     </div>
   );
