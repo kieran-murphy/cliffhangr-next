@@ -2,25 +2,22 @@
 
 import React, { use, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { FaRegCheckSquare } from "react-icons/fa";
+import Image from "next/image";
 
-import UserReviewListItem from "@/components/UserReviewListItem";
-import UserFavoriteListItem from "@/components/UserFavoriteListItem";
-import UserFollowerListItem from "@/components/UserFollowerListItem";
-import UserFollowingListItem from "@/components/UserFollowingListItem";
+import Favourites from "@/components/Favourites";
+import ProfileReviews from "@/components/ProfileReviews";
+import Watchlist from "@/components/Watchlist";
 
 export default function Home({ params }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showComments, setShowComments] = useState(false);
-  const [showReviews, setShowReviews] = useState(false);
-  const [showFavorites, setShowFavorites] = useState(false);
-  const [showFollowing, setShowFollowing] = useState(false);
-  const [showFollowers, setShowFollowers] = useState(false);
+  const [avgScore, setAvgScore] = useState(0.0);
   const [isFollower, setIsFollower] = useState(false);
   const [isFollowerID, setIsFollowerID] = useState(false);
   const [isUser, setIsUser] = useState(false);
+  const [tab, setTab] = useState("profile");
 
   const { data: session } = useSession(); // Also get status to check loading state
 
@@ -138,127 +135,123 @@ export default function Home({ params }) {
   if (!user) return <p>No user found!</p>;
 
   return (
-    <>
-      <Link href={"/user"}>
-        <div className="border border-grey-400 cursor-pointer m-4 w-1/3 opacity-80">
-          <h1>{"<- Back to users"}</h1>
+    <div>
+      <div className="w-full flex flex-row lg:flex-col place-content-evenly">
+        <div className="avatar my-8 ">
+          <div className="w-20 rounded-full ring ring-slate-400 ring-offset-base-100 ring-offset-2">
+            <Image
+              src={"/images/profile.png"}
+              alt="profile"
+              width={80}
+              height={80}
+            />
+          </div>
         </div>
-      </Link>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="font-bold">{user.username}</h1>
+        <div className="self-center flex flex-col">
+          <h1 className="text-xl font-bold ">{user.username} </h1>
+          {user.isAdmin ? (
+            <div className="flex flex-row">
+              <FaCheckCircle className="h-4 ml-6 mr-1 text-info" />{" "}
+              <h1 className="font-light text-xs">Admin</h1>
+            </div>
+          ) : null}
+        </div>
       </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="">{user.email}</h1>
-      </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="">Role: {user.role}</h1>
+      <div className="flex place-content-center tabs tabs-boxed ">
+        <a
+          className={`tab ${tab === "profile" ? "tab-active" : ""}`}
+          onClick={() => setTab("profile")}
+        >
+          Profile
+        </a>
+        <a
+          className={`tab ${tab === "reviews" ? "tab-active" : ""}`}
+          onClick={() => setTab("reviews")}
+        >
+          Reviews
+        </a>
+        <a
+          className={`tab ${tab === "favourites" ? "tab-active" : ""}`}
+          onClick={() => setTab("favourites")}
+        >
+          Favourites
+        </a>
+        <a
+          className={`tab ${tab === "watchlist" ? "tab-active" : ""}`}
+          onClick={() => setTab("watchlist")}
+        >
+          Watchlist
+        </a>
       </div>
 
-      <div
-        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowFavorites(!showFavorites)}
-      >
-        {showFavorites ? (
-          <div>
-            <div
-              className="my-2 hover:border border-cyan-400"
-              onClick={() => setShowFavorites(!showFavorites)}
-            >
-              collapse
+      <div className="w-full flex place-content-center">
+        {tab === "profile" ? (
+          <div className="flex flex-col w-full place-content-center">
+            {!isUser && (
+              <>
+                {isFollower ? (
+                  <div className="flex place-content-center mx-6 mt-6">
+                    <button
+                      className="btn w-full"
+                      onClick={() => {
+                        unfollow("Steve", user.name);
+                      }}
+                    >
+                      Following <FaRegCheckSquare className="ml-2" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex place-content-center mx-6 mt-6">
+                    <button
+                      className="btn btn-info w-full"
+                      onClick={() => {
+                        follow("Steve", user.name);
+                      }}
+                    >
+                      Follow +
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+            <div className=" stats stats-vertical shadow text-center m-6 bg-base-200">
+              <div className="stat">
+                <div className="stat-title">Reviews</div>
+                <div className="stat-value text-success">
+                  {user.writtenReviews.length}
+                </div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">Avg Score</div>
+                <div className="stat-value text-success">
+                  {user.writtenReviews.length > 0 ? avgScore : 0}
+                </div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">Following</div>
+                <div className="stat-value text-warning">
+                  {user.following.length}
+                </div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">Followers</div>
+                <div className="stat-value text-secondary">
+                  {user.followers.length}
+                </div>
+              </div>
             </div>
-            {user.favoriteShows.map((favorite) => (
-              <UserFavoriteListItem key={favorite.id} favorite={favorite} />
-            ))}
           </div>
+        ) : tab === "watchlist" ? (
+          <Watchlist watchlist={user.watchlistShows} />
+        ) : tab === "favourites" ? (
+          <Favourites favourites={user.favoriteShows} />
         ) : (
-          <h1>{user.favoriteShows.length} favorites</h1>
+          <ProfileReviews reviews={user.writtenReviews} />
         )}
       </div>
-      <div
-        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowReviews(!showReviews)}
-      >
-        {showReviews ? (
-          <div>
-            <div
-              className="my-2 hover:border border-cyan-400"
-              onClick={() => setShowReviews(!showReviews)}
-            >
-              collapse
-            </div>
-            {user.writtenReviews.map((review) => (
-              <UserReviewListItem key={review.id} review={review} />
-            ))}
-          </div>
-        ) : (
-          <h1>{user.writtenReviews.length} reviews</h1>
-        )}
-      </div>
-      <div
-        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowFollowing(!showFollowing)}
-      >
-        {showFollowing ? (
-          <div>
-            <div
-              className="my-2 hover:border border-cyan-400"
-              onClick={() => setShowFollowing(!showFollowing)}
-            >
-              collapse
-            </div>
-            {user.following.map((follow) => (
-              <UserFollowingListItem key={follow.id} follow={follow} />
-            ))}
-          </div>
-        ) : (
-          <h1>{user.following.length} following</h1>
-        )}
-      </div>
-      <div
-        className="border border-cyan-400 cursor-pointer m-4 w-1/3"
-        onClick={() => setShowFollowers(!showFollowers)}
-      >
-        {showFollowers ? (
-          <div>
-            <div
-              className="my-2 hover:border border-cyan-400"
-              onClick={() => setShowFollowers(!showFollowers)}
-            >
-              collapse
-            </div>
-            {user.followers.map((follow) => (
-              <UserFollowerListItem key={follow.id} follow={follow} />
-            ))}
-          </div>
-        ) : (
-          <h1>{user.followers.length} followers</h1>
-        )}
-      </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="opacity-70">Watchlist: {user.watchlistShows.length}</h1>
-      </div>
-      <div className="border border-cyan-400 m-4 w-1/3">
-        <h1 className="opacity-70">Comments: {user.CommentOnReview.length}</h1>
-      </div>
-      {!isUser && (
-        <>
-          {isFollower ? (
-            <div
-              className="border border-cyan-400 m-4 w-1/3 cursor-pointer"
-              onClick={() => unfollow()}
-            >
-              <h1 className="font-bold">Unfollow</h1>
-            </div>
-          ) : (
-            <div
-              className="border border-cyan-400 m-4 w-1/3 cursor-pointer"
-              onClick={() => follow()}
-            >
-              <h1 className="font-bold">Follow</h1>
-            </div>
-          )}
-        </>
-      )}
-    </>
+    </div>
   );
 }
