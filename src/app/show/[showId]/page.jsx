@@ -410,7 +410,6 @@ export default function Home({ params }) {
             </button>
           </div>
         </div>
-
         {show.reviews ? <ShowReviewList user={user} show={show} /> : null}
       </div>
 

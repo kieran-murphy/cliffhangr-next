@@ -14,6 +14,8 @@ const ShowReview = ({ user, reviewId, show }) => {
   const [reacts, setReacts] = useState([]);
   const [review, setReview] = useState(null);
   const [error, setError] = useState(null);
+  const [userReact, setUserReact] = useState(null);
+  const [userReactID, setUserReactID] = useState(null);
 
   const emojiMap = {
     LIKE: "👍",
@@ -21,6 +23,14 @@ const ShowReview = ({ user, reviewId, show }) => {
     LAUGH: "😂",
     WOW: "😮",
     ANGRY: "😡",
+  };
+
+  const reactsDict = {
+    LIKE: ["LIKE", "👍"],
+    LOVE: ["LOVE", "❤️"],
+    LAUGH: ["LAUGH", "😂"],
+    ANGRY: ["ANGRY", "😡"],
+    WOW: ["WOW", "😮"],
   };
 
   useEffect(() => {
@@ -63,9 +73,61 @@ const ShowReview = ({ user, reviewId, show }) => {
     }
   }, [review]);
 
+  useEffect(() => {
+    if (user) {
+      if (review) {
+        const userId = user.id;
+        const matchingReact = review.reactOnReviews.find(
+          (element) => element.userId === userId
+        );
+        if (matchingReact) {
+          setUserReact(matchingReact.react);
+          setUserReactID(matchingReact.id);
+        }
+      }
+    }
+  }, [review, user]);
+
   function handleChange(event) {
     setCommentText(event.target.value);
   }
+
+  const addReact = async (react) => {
+    if (userReact) {
+      try {
+        await fetch("/api/reactonreview", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ reactOnReviewID: userReactID }),
+        });
+      } catch (error) {
+        console.error("There was an error deleting the review", error);
+        alert("There was an error deleting the review");
+      }
+    }
+    try {
+      await fetch("/api/reactonreview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reactOnReview: {
+            userId: user.id,
+            reviewId: reviewId,
+            react: react,
+            username: user.name,
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("There was an error adding the review", error);
+      alert("There was an error adding the review");
+    }
+    window.location.reload();
+  };
 
   return (
     review !== null && (
@@ -104,11 +166,11 @@ const ShowReview = ({ user, reviewId, show }) => {
               {reactionsExpanded ? (
                 <div
                   className="mt-4"
-                  onClick={() => setReactionsExpanded(false)}
+                  // onClick={() => setReactionsExpanded(false)}
                 >
-                  {review.reactOnReviews.map((react) => {
+                  {review.reactOnReviews.map((react, index) => {
                     return (
-                      <div key={react.user}>
+                      <div key={`${react.user}-${index}`}>
                         {emojiMap[react.react]} - {react.username}
                       </div>
                     );
@@ -129,39 +191,35 @@ const ShowReview = ({ user, reviewId, show }) => {
               <div className="divider"></div>
               <br />
               <h3 className="text-md font-bold">React</h3>
-              <div className="flex flex-row items-center">
-                <button
-                  onClick={() => addReaction(user, "👍", review._id)}
-                  className="btn text-red-600 text-xl"
-                >
-                  👍
-                </button>
-                <button
-                  onClick={() => addReaction(user, "😍", review._id)}
-                  className="btn text-green-500 text-xl"
-                >
-                  😍
-                </button>
-                <button
-                  onClick={() => addReaction(user, "😂", review._id)}
-                  className="btn text-red-600 text-xl"
-                >
-                  😂
-                </button>
-                <button
-                  onClick={() => addReaction(user, "😮", review._id)}
-                  className="btn text-red-600 text-xl"
-                >
-                  😮
-                </button>
-
-                <button
-                  onClick={() => addReaction(user, "😡", review._id)}
-                  className="btn text-red-600 text-xl"
-                >
-                  😡
-                </button>
+              <div
+                className="flex flex-row items-center"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                {Object.entries(reactsDict).map(([key, [label, emoji]]) =>
+                  label === userReact ? (
+                    <button
+                      key={key}
+                      onClick={() => deleteReact(label)}
+                      className="btn text-xl"
+                      style={{ boxShadow: "0 0 10px rgba(255, 255, 255, 0.2)" }}
+                    >
+                      {emoji}
+                    </button>
+                  ) : (
+                    <button
+                      key={key}
+                      onClick={() => addReact(label)}
+                      className="btn text-xl"
+                    >
+                      {emoji}
+                    </button>
+                  )
+                )}
               </div>
+
               <div className="divider"></div>
               <br />
               <h3 className="text-md font-bold">Comments</h3>
