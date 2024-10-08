@@ -129,6 +129,29 @@ const ShowReview = ({ user, reviewId, show }) => {
     window.location.reload();
   };
 
+  const addReviewComment = async (comment) => {
+    try {
+      await fetch("/api/commentonreview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          commentOnReview: {
+            userId: user.id,
+            username: user.name,
+            reviewId: reviewId,
+            text: comment,
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("There was an error adding the comment", error);
+      alert("There was an error adding the comment");
+    }
+    window.location.reload();
+  };
+
   return (
     review !== null && (
       <div className="my-4 pt-1 text-center h-10 ">
@@ -138,11 +161,6 @@ const ShowReview = ({ user, reviewId, show }) => {
         >
           <h1 className="font-bold">{review.username}</h1>
           <h1>{review.rating}⭐</h1>
-          {/* {review.text.length > 16 ? (
-            <h1>{review.text.substring(0, 16)}...</h1>
-          ) : (
-            <h1>{review.text}</h1>
-          )} */}
           <div className="flex flex-row place-items-center">
             <h1>{review.upvotes}</h1>
             {reacts.slice(0, 3).map((react) => {
@@ -236,7 +254,7 @@ const ShowReview = ({ user, reviewId, show }) => {
                       <button
                         className="btn w-full"
                         onClick={() => {
-                          addReviewComment(user, commentText, review._id);
+                          addReviewComment(commentText);
                           setCommentInput(false);
                         }}
                       >
@@ -270,15 +288,23 @@ const ShowReview = ({ user, reviewId, show }) => {
                       </div>
                     </div>
                   ))}
-                  <button
-                    className="btn w-full my-4"
-                    onClick={() => {
-                      addReviewComment(user, commentText, review._id);
-                      setCommentInput(false);
-                    }}
-                  >
-                    Add
-                  </button>
+                  <div className="flex flex-col place-items-center">
+                    <textarea
+                      className="textarea textarea-primary my-2"
+                      value={commentText}
+                      onChange={handleChange}
+                      placeholder="Your comment here"
+                    ></textarea>
+                    <button
+                      className="btn w-full"
+                      onClick={() => {
+                        addReviewComment(commentText);
+                        setCommentInput(false);
+                      }}
+                    >
+                      Add
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
