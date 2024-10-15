@@ -3,11 +3,13 @@
 import React, { use, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaRegCheckSquare } from "react-icons/fa";
+
 import Image from "next/image";
 
 import Favourites from "@/components/Favourites";
 import ProfileReviews from "@/components/ProfileReviews";
 import Watchlist from "@/components/Watchlist";
+import SmallUser from "@/components/SmallUser";
 
 export default function Home({ params }) {
   const [user, setUser] = useState(null);
@@ -16,6 +18,8 @@ export default function Home({ params }) {
   const [avgScore, setAvgScore] = useState(0.0);
   const [isFollower, setIsFollower] = useState(false);
   const [isFollowerID, setIsFollowerID] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [tab, setTab] = useState("profile");
 
@@ -231,16 +235,63 @@ export default function Home({ params }) {
 
               <div className="stat">
                 <div className="stat-title">Following</div>
-                <div className="stat-value text-warning">
-                  {user.following.length}
-                </div>
+                {!showFollowing ? (
+                  <div
+                    className="stat-value text-warning"
+                    onClick={() => {
+                      setShowFollowing(true);
+                    }}
+                  >
+                    {user.following.length}
+                  </div>
+                ) : (
+                  <div
+                    className=""
+                    onClick={() => {
+                      setShowFollowing(false);
+                    }}
+                  >
+                    {user.following.map((f) => (
+                      <div key={f.id}>
+                        <SmallUser userId={f.followingId} />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div className="stat">
+              {/* <div className="stat">
                 <div className="stat-title">Followers</div>
                 <div className="stat-value text-secondary">
                   {user.followers.length}
                 </div>
+              </div> */}
+
+              <div className="stat">
+                <div className="stat-title">Followers</div>
+                {!showFollowers ? (
+                  <div
+                    className="stat-value text-secondary"
+                    onClick={() => {
+                      setShowFollowers(true);
+                    }}
+                  >
+                    {user.followers.length}
+                  </div>
+                ) : (
+                  <div
+                    className=""
+                    onClick={() => {
+                      setShowFollowing(false);
+                    }}
+                  >
+                    {user.followers.map((f) => (
+                      <div key={f.id}>
+                        <SmallUser userId={f.followerId} />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
