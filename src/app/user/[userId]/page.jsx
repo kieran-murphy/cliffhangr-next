@@ -15,7 +15,7 @@ export default function Home({ params }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [avgScore, setAvgScore] = useState(0.0);
+  const [avgScore, setAvgScore] = useState(0);
   const [isFollower, setIsFollower] = useState(false);
   const [isFollowerID, setIsFollowerID] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -63,16 +63,24 @@ export default function Home({ params }) {
     };
 
     const checkIsUser = () => {
-      console.log(sessionUserID);
-      console.log(userId);
       if (sessionUserID === userId) {
         setIsUser(true);
       }
     };
 
+    const calculateAverageReviews = () => {
+      const totalRating = user.writtenReviews.reduce(
+        (sum, review) => sum + review.rating,
+        0
+      );
+      const avgRating = totalRating / user.writtenReviews.length;
+      setAvgScore(avgRating);
+    };
+
     if (user) {
       checkFollowing();
       checkIsUser();
+      calculateAverageReviews();
     }
   }, [user, sessionUserID]);
 
@@ -219,7 +227,7 @@ export default function Home({ params }) {
               </>
             )}
             <div className=" stats stats-vertical shadow text-center m-6 bg-base-200">
-              <div className="stat">
+              <div className="stat" onClick={() => setTab("reviews")}>
                 <div className="stat-title">Reviews</div>
                 <div className="stat-value text-success">
                   {user.writtenReviews.length}
