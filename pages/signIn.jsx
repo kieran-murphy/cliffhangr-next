@@ -20,33 +20,42 @@ export default function Login() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Login</h1>
+    <div className="text-center">
+      <h1 className="text-2xl my-8">Login</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
+        <div className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Email</span>
+          </div>
           <input
             type="email"
+            placeholder="Type here"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="input input-bordered input-error w-full max-w-xs"
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+          <div className="label">
+            <span className="label-text">Password</span>
+          </div>
           <input
             type="password"
+            placeholder="Type here"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="input input-bordered input-error w-full max-w-xs"
           />
         </div>
-        <button type="submit">Sign In</button>
+
+        <button className="btn btn-primary w-full mt-4 gap-2" type="submit">
+          Sign In
+        </button>
         <br />
         <br />
         <span>Don&#39;t have an account? </span>
         <Link href="/register">
-          <span style={{ color: "blue", textDecoration: "underline" }}>
+          <span style={{ color: "teal", textDecoration: "underline" }}>
             Register
           </span>
         </Link>

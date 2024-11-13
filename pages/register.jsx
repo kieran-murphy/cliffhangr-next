@@ -50,72 +50,70 @@ export default function Home() {
   };
 
   return (
-    <div className="App bg-gray-100 h-screen flex justify-center items-center">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h1 className="text-2xl mb-4 text-gray-600">Register</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Username:
-            </label>
+    <div className="text-center">
+      <h1 className="text-2xl my-8">Register</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <div className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text">Username</span>
+            </div>
             <input
-              type="text"
+              type="username"
+              placeholder="Type here"
+              id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md text-black"
+              className="input input-bordered input-error w-full max-w-xs"
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Email:
-            </label>
+            <div className="label">
+              <span className="label-text">Email</span>
+            </div>
             <input
               type="email"
+              placeholder="Type here"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md text-black"
+              className="input input-bordered input-error w-full max-w-xs"
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Password:
-            </label>
+            <div className="label">
+              <span className="label-text">Password</span>
+            </div>
             <input
               type="password"
+              placeholder="Type here"
+              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md text-black"
+              className="input input-bordered input-error w-full max-w-xs"
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Confirm Password:
-            </label>
+            <div className="label">
+              <span className="label-text">Confirm Password</span>
+            </div>
             <input
               type="password"
+              placeholder="Type here"
+              id="confirmpassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md text-black"
+              className="input input-bordered input-error w-full max-w-xs"
             />
           </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-            >
-              Register
-            </button>
-            <br />
-            <br />
-            <span>Already have an account? </span>
-            <Link href="/signIn">
-              <span style={{ color: "blue", textDecoration: "underline" }}>
-                Login
-              </span>
-            </Link>
-          </div>
-        </form>
-      </div>
+
+          <button className="btn btn-primary w-full mt-4 gap-2" type="submit">
+            Register
+          </button>
+          <br />
+          <br />
+          <span>Already have an account? </span>
+          <Link href="/signIn">
+            <span style={{ color: "teal", textDecoration: "underline" }}>
+              Login
+            </span>
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

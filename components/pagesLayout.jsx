@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "../src/app/globals.css";
 import { useSession } from "next-auth/react"; // Import useSession
 import { useRouter } from "next/router"; // Import useRouter
 
@@ -19,10 +20,7 @@ const PagesLayout = ({ children }) => {
   }
 
   return (
-    <div>
-      <nav>
-        <h1>{status}</h1>
-      </nav>
+    <div className="text-center m-8">
       <main>{children}</main>
     </div>
   );
