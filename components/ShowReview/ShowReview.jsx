@@ -152,6 +152,22 @@ const ShowReview = ({ user, reviewId, show }) => {
     window.location.reload();
   };
 
+  const deleteReview = async () => {
+    try {
+      await fetch("/api/review", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ reviewID: reviewId }),
+      });
+    } catch (error) {
+      console.error("There was an error deleting the review", error);
+      alert("There was an error deleting the review");
+    }
+    window.location.reload();
+  };
+
   return (
     review !== null && (
       <div className="my-4 pt-1 text-center h-10 ">
@@ -263,7 +279,7 @@ const ShowReview = ({ user, reviewId, show }) => {
                     </div>
                   ) : (
                     <div>
-                      <h3>No comments yet. Add one!</h3>
+                      <h3 className="m-4">No comments yet. Add one!</h3>
                       <button
                         className="btn w-full"
                         onClick={() => setCommentInput(true)}
@@ -271,6 +287,16 @@ const ShowReview = ({ user, reviewId, show }) => {
                         +
                       </button>
                     </div>
+                  )}
+                  {user.id === review.userId && (
+                    <button
+                      className="btn btn-outline btn-error w-full my-4"
+                      onClick={() => {
+                        deleteReview();
+                      }}
+                    >
+                      Delete Review
+                    </button>
                   )}
                 </div>
               ) : (
