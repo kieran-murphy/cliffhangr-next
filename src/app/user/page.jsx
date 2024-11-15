@@ -10,6 +10,8 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+
     const getUsers = async () => {
       const RequestOptions = {
         method: "GET",
@@ -33,9 +35,16 @@ export default function Home() {
 
     const fetchUsers = async () => {
       const users = await getUsers();
-      setUsers(users);
+      if (isMounted) {
+        setUsers(users);
+      }
     };
+
     fetchUsers();
+
+    return () => {
+      isMounted = false;
+    };
   }, [searchTerm]);
 
   return (
