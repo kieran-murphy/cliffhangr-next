@@ -39,6 +39,62 @@
       "score": 3.5,
       "seasons": 1,
       "year": 2021
+    },
+    {
+      "title": "Breaking Bad",
+      "img": "breakingbad.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 5,
+      "seasons": 5,
+      "year": 2008
+    },
+    {
+      "title": "Better Call Saul",
+      "img": "bettercallsaul.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 6,
+      "year": 2015
+    },
+    {
+      "title": "Gossip Girl",
+      "img": "gossipgirl.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 5,
+      "seasons": 6,
+      "year": 2007
+    },
+    {
+      "title": "Modern Family",
+      "img": "modernfamily.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 11,
+      "year": 2009
+    },
+    {
+      "title": "Suits",
+      "img": "suits.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 3.5,
+      "seasons": 9,
+      "year": 2011
+    },
+    {
+      "title": "Love Death + Robots",
+      "img": "lovedeathrobots.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 3,
+      "year": 2019
+    },
+    {
+      "title": "Orange Is The New Black",
+      "img": "orangeisthenewblack.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4,
+      "seasons": 7,
+      "year": 2013
     }
   ]
 }
