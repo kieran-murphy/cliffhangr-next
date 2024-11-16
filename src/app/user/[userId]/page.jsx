@@ -237,7 +237,7 @@ export default function Home({ params }) {
               <div className="stat">
                 <div className="stat-title">Avg Score</div>
                 <div className="stat-value text-success">
-                  {user.writtenReviews.length > 0 ? avgScore : 0}
+                  {user.writtenReviews.length > 0 ? avgScore.toFixed(2) : 0}
                 </div>
               </div>
 
