@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import UserListItem from "@/components/UserListItem";
 import UserSearchBar from "@/components/UserSearchBar";
@@ -8,6 +8,8 @@ import UserSearchBar from "@/components/UserSearchBar";
 export default function Home() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 8;
 
   useEffect(() => {
     let isMounted = true;
@@ -47,13 +49,47 @@ export default function Home() {
     };
   }, [searchTerm]);
 
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(users.length / usersPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <>
       <UserSearchBar setSearchTerm={setSearchTerm} />
       <div className="m-4">
-        {users?.map((user) => {
-          return <UserListItem key={user.id} user={user} />;
-        })}
+        {currentUsers.map((user) => (
+          <UserListItem key={user.id} user={user} />
+        ))}
+      </div>
+      <div className="flex flex-row place-content-between m-4">
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="btn mx-1"
+        >
+          {"< Prev"}
+        </button>
+        <button
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(users.length / usersPerPage)}
+          className="btn mx-1"
+        >
+          {"Next >"}
+        </button>
       </div>
     </>
   );
