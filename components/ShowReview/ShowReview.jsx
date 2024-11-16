@@ -262,7 +262,7 @@ const ShowReview = ({ user, reviewId, show }) => {
                   {commentInput ? (
                     <div className="flex flex-col place-items-center">
                       <textarea
-                        className="textarea textarea-primary my-2"
+                        className="textarea textarea-primary my-4"
                         value={commentText}
                         onChange={handleChange}
                         placeholder="Your comment here"
@@ -316,7 +316,7 @@ const ShowReview = ({ user, reviewId, show }) => {
                   ))}
                   <div className="flex flex-col place-items-center">
                     <textarea
-                      className="textarea textarea-primary my-2"
+                      className="textarea textarea-primary my-4"
                       value={commentText}
                       onChange={handleChange}
                       placeholder="Your comment here"
