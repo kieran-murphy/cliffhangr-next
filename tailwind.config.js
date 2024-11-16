@@ -17,7 +17,7 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     styled: true,
-    themes: ["dracula", "pastel"],
+    themes: ["dracula"],
     base: true,
     utils: true,
     logs: true,
