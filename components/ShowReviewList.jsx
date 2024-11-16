@@ -3,6 +3,9 @@ import ShowReview from "@/components/ShowReview/ShowReview";
 
 const ShowReviewList = ({ user, show }) => {
   const [sortedReviews, setSortedReviews] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 8;
+
   useEffect(() => {
     const sortingReviews = [...show.reviews].sort((a, b) => {
       if (a.userId === user.id) return -1;
@@ -11,6 +14,27 @@ const ShowReviewList = ({ user, show }) => {
     });
     setSortedReviews(sortingReviews);
   }, [user, show]);
+
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = sortedReviews.slice(
+    indexOfFirstReview,
+    indexOfLastReview
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(sortedReviews.length / reviewsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="my-6">
@@ -22,8 +46,8 @@ const ShowReviewList = ({ user, show }) => {
       <hr className="m-1 opacity-50" />
       <div>
         {show !== null &&
-          (sortedReviews.length > 0 ? (
-            sortedReviews.map((review) => (
+          (currentReviews.length > 0 ? (
+            currentReviews.map((review) => (
               <ShowReview
                 key={review.id}
                 user={user}
@@ -34,6 +58,25 @@ const ShowReviewList = ({ user, show }) => {
           ) : (
             <div className="mx-2">No reviews yet</div>
           ))}
+      </div>
+
+      <div className="flex flex-row place-content-between m-4">
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="btn mx-1"
+        >
+          {"< Prev"}
+        </button>
+        <button
+          onClick={nextPage}
+          disabled={
+            currentPage === Math.ceil(sortedReviews.length / reviewsPerPage)
+          }
+          className="btn mx-1"
+        >
+          {"Next >"}
+        </button>
       </div>
     </div>
   );
