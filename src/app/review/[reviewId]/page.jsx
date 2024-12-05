@@ -48,7 +48,6 @@ export default function Home({ params }) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data.review);
         setReview(data.review);
       } catch (error) {
         setError(error);
@@ -67,7 +66,6 @@ export default function Home({ params }) {
   }
 
   const addReact = async (react) => {
-    console.log("Adding react");
     if (userReact) {
       try {
         await fetch("/api/reactonreview", {
@@ -83,7 +81,6 @@ export default function Home({ params }) {
       }
     }
     try {
-      console.log("------logging user-------", user);
       await fetch("/api/reactonreview", {
         method: "POST",
         headers: {
