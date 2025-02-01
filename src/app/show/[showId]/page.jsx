@@ -314,141 +314,142 @@ export default function Home({ params }) {
 
   return (
     <div>
-      <div className="min-h-60">
+      <div className="min-h-60 flex justify-center">
         <Image src={show.image} alt={show.title} width={500} height={200} />
       </div>
-
-      <div className="mx-6">
-        <div className="my-4 flex flex-row place-content-between">
-          <div>
-            <h1 className="font-bold text-3xl">{show.title}</h1>
-            <h1 className="font-light text-lg">
-              {show.seasons} season
-              {show.seasons > 1 ? "s" : ""}
-            </h1>
-          </div>
-          <div className="flex flex-col text-center">
-            <h1 className="font-bold text-2xl">2006</h1>
-            <a
-              href={`https://www.youtube.com/results?sp=mAEA&search_query=${show.title}+trailer`}
-            >
-              <button className="btn btn-sm btn-info gap-2">
-                <div className="flex flex-row">
-                  <ImPlay className="mr-1" />
-                  Trailer
-                </div>
-              </button>
-            </a>
-          </div>
-        </div>
-        <p className=" my-8 italic font-light">{show.desc}</p>
-        <div className="flex w-full place-content-center ">
-          <div className="flex flex-col w-full place-content-between">
-            {show.reviews.length > 0 ? (
-              <h1 className="font-light text-lg text-center">
-                {avgScore} out of 5 stars ⭐
+      <div className="mx-6 w-full md:w-1/2 mx-auto">
+        <div className="mx-6">
+          <div className="my-4 flex flex-row place-content-between">
+            <div>
+              <h1 className="font-bold text-3xl">{show.title}</h1>
+              <h1 className="font-light text-lg">
+                {show.seasons} season
+                {show.seasons > 1 ? "s" : ""}
               </h1>
-            ) : null}
-
-            {alreadyReviewed ? (
-              <></>
-            ) : (
-              <label
-                htmlFor="my-modal"
-                className="btn btn-success w-full mt-4 gap-2"
+            </div>
+            <div className="flex flex-col text-center">
+              <h1 className="font-bold text-2xl">2006</h1>
+              <a
+                href={`https://www.youtube.com/results?sp=mAEA&search_query=${show.title}+trailer`}
               >
-                <ImPencil />
-                Write a Review
-              </label>
-            )}
-
-            <button
-              className="btn btn-primary gap-2 mt-3 font-bold"
-              onClick={() => {
-                toggleFavorite();
-                setLoading(true);
-              }}
-            >
-              {alreadyFavorited ? (
-                <>
-                  <h1>
-                    <ImHeartBroken />
-                  </h1>
-                  Unfavorite
-                </>
-              ) : (
-                <>
-                  <h1>
-                    <ImHeart />
-                  </h1>
-                  Favorite
-                </>
-              )}
-            </button>
-            <button
-              className="btn gap-2 mt-3 font-bold"
-              onClick={() => {
-                toggleWatchlist();
-                setLoading(true);
-              }}
-            >
-              {alreadyInWatchlist ? (
-                <>
-                  <h1>
-                    <ImClock />
-                  </h1>
-                  Remove from watchlist
-                </>
-              ) : (
-                <>
-                  <h1>
-                    <ImClock />
-                  </h1>
-                  Add to watchlist
-                </>
-              )}
-            </button>
+                <button className="btn btn-sm btn-info gap-2">
+                  <div className="flex flex-row">
+                    <ImPlay className="mr-1" />
+                    Trailer
+                  </div>
+                </button>
+              </a>
+            </div>
           </div>
+          <p className=" my-8 italic font-light">{show.desc}</p>
+          <div className="flex w-full place-content-center ">
+            <div className="flex flex-col w-full place-content-between">
+              {show.reviews.length > 0 ? (
+                <h1 className="font-light text-lg text-center">
+                  {avgScore} out of 5 stars ⭐
+                </h1>
+              ) : null}
+
+              {alreadyReviewed ? (
+                <></>
+              ) : (
+                <label
+                  htmlFor="my-modal"
+                  className="btn btn-success w-full mt-4 gap-2"
+                >
+                  <ImPencil />
+                  Write a Review
+                </label>
+              )}
+
+              <button
+                className="btn btn-primary gap-2 mt-3 font-bold"
+                onClick={() => {
+                  toggleFavorite();
+                  setLoading(true);
+                }}
+              >
+                {alreadyFavorited ? (
+                  <>
+                    <h1>
+                      <ImHeartBroken />
+                    </h1>
+                    Unfavorite
+                  </>
+                ) : (
+                  <>
+                    <h1>
+                      <ImHeart />
+                    </h1>
+                    Favorite
+                  </>
+                )}
+              </button>
+              <button
+                className="btn gap-2 mt-3 font-bold"
+                onClick={() => {
+                  toggleWatchlist();
+                  setLoading(true);
+                }}
+              >
+                {alreadyInWatchlist ? (
+                  <>
+                    <h1>
+                      <ImClock />
+                    </h1>
+                    Remove from watchlist
+                  </>
+                ) : (
+                  <>
+                    <h1>
+                      <ImClock />
+                    </h1>
+                    Add to watchlist
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+          {show.reviews ? <ShowReviewList user={user} show={show} /> : null}
         </div>
-        {show.reviews ? <ShowReviewList user={user} show={show} /> : null}
-      </div>
 
-      {confirm ? <ReviewConfirmation setConfirm={setConfirm} /> : null}
+        {confirm ? <ReviewConfirmation setConfirm={setConfirm} /> : null}
 
-      <input type="checkbox" id="my-modal" className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box relative">
-          <label
-            htmlFor="my-modal"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="text-2xl font-bold text-center">Create Review</h3>
-          <div className="flex flex-col place-content-between">
-            <h3 className="mt-4">Review:</h3>
-            <textarea
-              value={reviewComment}
-              onChange={handleReviewChange}
-              className="textarea textarea-primary"
-              placeholder="Your review here"
-            ></textarea>
-
-            <h3 className="mt-4">Rating:</h3>
-            <Rating setReviewScore={setReviewScore} />
-
+        <input type="checkbox" id="my-modal" className="modal-toggle" />
+        <div className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box relative">
             <label
-              className="btn btn-success mt-4"
               htmlFor="my-modal"
-              onClick={() => {
-                addReview(reviewComment, reviewScore, show, user);
-                setReviewComment("");
-                setReviewScore(0);
-                window.location.reload();
-              }}
+              className="btn btn-sm btn-circle absolute right-2 top-2"
             >
-              Create
+              ✕
             </label>
+            <h3 className="text-2xl font-bold text-center">Create Review</h3>
+            <div className="flex flex-col place-content-between">
+              <h3 className="mt-4">Review:</h3>
+              <textarea
+                value={reviewComment}
+                onChange={handleReviewChange}
+                className="textarea textarea-primary"
+                placeholder="Your review here"
+              ></textarea>
+
+              <h3 className="mt-4">Rating:</h3>
+              <Rating setReviewScore={setReviewScore} />
+
+              <label
+                className="btn btn-success mt-4"
+                htmlFor="my-modal"
+                onClick={() => {
+                  addReview(reviewComment, reviewScore, show, user);
+                  setReviewComment("");
+                  setReviewScore(0);
+                  window.location.reload();
+                }}
+              >
+                Create
+              </label>
+            </div>
           </div>
         </div>
       </div>
