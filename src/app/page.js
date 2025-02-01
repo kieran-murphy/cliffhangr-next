@@ -9,13 +9,13 @@ export default function Home() {
 
   if (user) {
     return (
-      <div>
-        <h1 className="text-lg m-8">Welcome to cliffhangr!</h1>
-        <div className="mx-6 pt-10">
+      <div className="flex flex-col p-4 sm:p-8">
+        <h1 className="text-lg m-8 text-center">Welcome to cliffhangr!</h1>
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Link href={`/show`}>
             <label
               htmlFor="my-modal"
-              className="btn btn-primary w-full mt-4 gap-2"
+              className="btn btn-primary w-full sm:w-auto mt-4 gap-2"
             >
               See Shows
             </label>
@@ -23,7 +23,7 @@ export default function Home() {
           <Link href={`/user`}>
             <label
               htmlFor="my-modal"
-              className="btn btn-secondary w-full mt-4 gap-2"
+              className="btn btn-secondary w-full sm:w-auto mt-4 gap-2"
             >
               See Users
             </label>
@@ -31,13 +31,15 @@ export default function Home() {
           <Link href={`/user/${user.id}`}>
             <label
               htmlFor="my-modal"
-              className="btn btn-success w-full mt-4 gap-2"
+              className="btn btn-accent w-full sm:w-auto mt-4 gap-2"
             >
-              See My Page
+              My Profile
             </label>
           </Link>
         </div>
       </div>
     );
   }
+
+  return <div>Please log in to see the content.</div>;
 }
