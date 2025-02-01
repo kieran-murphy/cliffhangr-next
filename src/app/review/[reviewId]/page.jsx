@@ -12,6 +12,7 @@ export default function Home({ params }) {
   const [reactionsExpanded, setReactionsExpanded] = useState(false);
   const [reacts, setReacts] = useState([]);
   const [review, setReview] = useState(null);
+  const [show, setShow] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userReact, setUserReact] = useState(null);
@@ -60,6 +61,52 @@ export default function Home({ params }) {
       fetchData();
     }
   }, [reviewId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/show?id=${review.showId}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setShow(data.show);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    console.log("------------show useeffect------------", review);
+    if (review) {
+      console.log("------------fetching show------------");
+      fetchData();
+    }
+  }, [review]);
+
+  // Ensure data fetching is correct
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/show?id=${params.showId}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setShow(data.show);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.showId) {
+      fetchData();
+    }
+  }, [params.showId]);
 
   function handleChange(event) {
     setCommentText(event.target.value);
@@ -141,15 +188,21 @@ export default function Home({ params }) {
     window.location.reload();
   };
 
+  // Handle loading and error states
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+  if (!show) return <p>No show found!</p>;
+
   if (!review) return <p>No review found!</p>;
 
+  // Render the show title conditionally
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center text-center">
         <h3 className="text-2xl font-bold mr-4">{review.username}</h3>
-        <h3 className="text-2xl font-bold mr-4">{sessionUserID}</h3>
+        <h3 className="text-2xl font-bold mr-4">
+          {show?.title || "Title not available"}
+        </h3>
         <DisplayRating rating={review.rating} />
       </div>
       <h1 className="my-2">{review.time}</h1>
