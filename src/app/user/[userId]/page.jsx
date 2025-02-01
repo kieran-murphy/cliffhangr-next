@@ -148,8 +148,8 @@ export default function Home({ params }) {
 
   return (
     <div>
-      <div className="w-full flex flex-row lg:flex-col place-content-evenly">
-        <div className="avatar my-8 ">
+      <div className="w-full flex flex-row place-content-center">
+        <div className="avatar my-8 mx-4">
           <div className="w-20 rounded-full ring ring-slate-400 ring-offset-base-100 ring-offset-2">
             <Image
               src={"/images/profile.png"}
@@ -196,7 +196,7 @@ export default function Home({ params }) {
         </a>
       </div>
 
-      <div className="w-full flex place-content-center">
+      <div className="w-full md:w-1/2 mx-auto flex place-content-center">
         {tab === "profile" ? (
           <div className="flex flex-col w-full place-content-center">
             {!isUser && (
@@ -267,13 +267,6 @@ export default function Home({ params }) {
                   </div>
                 )}
               </div>
-
-              {/* <div className="stat">
-                <div className="stat-title">Followers</div>
-                <div className="stat-value text-secondary">
-                  {user.followers.length}
-                </div>
-              </div> */}
 
               <div className="stat">
                 <div className="stat-title">Followers</div>
