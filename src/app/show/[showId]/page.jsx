@@ -314,8 +314,14 @@ export default function Home({ params }) {
 
   return (
     <div>
-      <div className="min-h-60 flex justify-center">
-        <Image src={show.image} alt={show.title} width={500} height={200} />
+      <div className="min-h-60 flex justify-center m-4">
+        <Image
+          className="rounded-lg"
+          src={show.image}
+          alt={show.title}
+          width={500}
+          height={200}
+        />
       </div>
       <div className="w-full md:w-1/2 mx-auto">
         <div className="mx-6">
