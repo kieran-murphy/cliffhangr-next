@@ -10,7 +10,6 @@ export default function Home({ params }) {
   const [commentText, setCommentText] = useState("");
   const [commentInput, setCommentInput] = useState(false);
   const [reactionsExpanded, setReactionsExpanded] = useState(false);
-  const [reacts, setReacts] = useState([]);
   const [review, setReview] = useState(null);
   const [show, setShow] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -78,12 +77,25 @@ export default function Home({ params }) {
         setLoading(false);
       }
     };
-    console.log("------------show useeffect------------", review);
     if (review) {
-      console.log("------------fetching show------------");
       fetchData();
     }
   }, [review]);
+
+  useEffect(() => {
+    if (user) {
+      if (review) {
+        const userId = user.id;
+        const matchingReact = review.reactOnReviews.find(
+          (element) => element.userId === userId
+        );
+        if (matchingReact) {
+          setUserReact(matchingReact.react);
+          setUserReactID(matchingReact.id);
+        }
+      }
+    }
+  }, [review, user]);
 
   // Ensure data fetching is correct
   useEffect(() => {
@@ -197,18 +209,25 @@ export default function Home({ params }) {
 
   // Render the show title conditionally
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center m-4">
       <div className="flex flex-col items-center text-center">
-        <h3 className="text-2xl font-bold mr-4">{review.username}</h3>
+        {/* <h3 className="text-2xl font-bold mr-4">{review.username}</h3> */}
         <h3 className="text-2xl font-bold mr-4">
           {show?.title || "Title not available"}
         </h3>
         <DisplayRating rating={review.rating} />
       </div>
-      <h1 className="my-2">{review.time}</h1>
-      <div className="text-left p-2 h-20 w-full card bg-base-200 rounded-lg">
-        {review.text}
+      <div className="divider"></div>
+      <div>
+        <h3 className="text-left opacity-70 mb-2 italic">{review.username}:</h3>
+        <div className="text-left p-2 h-20 mx-auto card bg-base-200 rounded-lg">
+          {review.text}
+        </div>
       </div>
+
+      <div className="divider"></div>
+
+      <h3 className="text-md font-bold">Reacts</h3>
       {reactionsExpanded ? (
         <div className="mt-4">
           {review.reactOnReviews.map((react, index) => {
@@ -220,17 +239,19 @@ export default function Home({ params }) {
           })}
         </div>
       ) : (
-        <div className="mt-4" onClick={() => setReactionsExpanded(true)}>
-          {reacts.slice(0, 3).map((react) => {
-            return react;
-          })}
-          {review.reactOnReviews.length}
-        </div>
+        review.reactOnReviews.length > 0 && (
+          <div className="flex flex-col place-items-center w-1/2">
+            <button
+              className="btn w-full"
+              onClick={() => setReactionsExpanded(true)}
+            >
+              See {review.reactOnReviews.length} reacts
+            </button>
+          </div>
+        )
       )}
-
-      <div className="divider"></div>
       <br />
-      <h3 className="text-md font-bold">React</h3>
+
       <div
         className="flex flex-row items-center"
         style={{
@@ -243,7 +264,7 @@ export default function Home({ params }) {
             <button
               key={key}
               onClick={() => deleteReact(label)}
-              className="btn text-xl"
+              className="btn text-xl mx-1"
               style={{ boxShadow: "0 0 10px rgba(255, 255, 255, 0.2)" }}
             >
               {emoji}
@@ -252,7 +273,7 @@ export default function Home({ params }) {
             <button
               key={key}
               onClick={() => addReact(label)}
-              className="btn text-xl"
+              className="btn text-xl mx-1"
             >
               {emoji}
             </button>
@@ -262,7 +283,9 @@ export default function Home({ params }) {
 
       <div className="divider"></div>
       <br />
-      <h3 className="text-md font-bold">Comments</h3>
+      <h3 className="text-md font-bold">
+        {review.CommentOnReview.length} Comments
+      </h3>
       {review.CommentOnReview.length === 0 ? (
         <div className="flex flex-col place-items-center">
           {commentInput ? (
@@ -285,7 +308,7 @@ export default function Home({ params }) {
             </div>
           ) : (
             <div>
-              <h3 className="m-4">No comments yet. Add one!</h3>
+              <h3 className="m-4 italic">No comments yet. Add one!</h3>
               <button
                 className="btn w-full"
                 onClick={() => setCommentInput(true)}
@@ -322,13 +345,13 @@ export default function Home({ params }) {
           ))}
           <div className="flex flex-col place-items-center">
             <textarea
-              className="textarea textarea-primary my-4"
+              className="textarea textarea-primary my-4 w-full"
               value={commentText}
               onChange={handleChange}
               placeholder="Your comment here"
             ></textarea>
             <button
-              className="btn w-full"
+              className="btn btn-primary w-full"
               onClick={() => {
                 addReviewComment(commentText);
                 setCommentInput(false);
