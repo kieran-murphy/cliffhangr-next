@@ -60,7 +60,7 @@ const ShowReviewList = ({ user, show }) => {
           ))}
       </div>
 
-      <div className="flex flex-row place-content-between m-4">
+      <div className="flex flex-row place-content-between my-4">
         <button
           onClick={prevPage}
           disabled={currentPage === 1}

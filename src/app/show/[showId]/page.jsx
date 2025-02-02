@@ -317,7 +317,7 @@ export default function Home({ params }) {
       <div className="min-h-60 flex justify-center">
         <Image src={show.image} alt={show.title} width={500} height={200} />
       </div>
-      <div className="mx-6 w-full md:w-1/2 mx-auto">
+      <div className="w-full md:w-1/2 mx-auto">
         <div className="mx-6">
           <div className="my-4 flex flex-row place-content-between">
             <div>
