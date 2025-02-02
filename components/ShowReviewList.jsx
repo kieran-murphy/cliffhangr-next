@@ -48,12 +48,7 @@ const ShowReviewList = ({ user, show }) => {
         {show !== null &&
           (currentReviews.length > 0 ? (
             currentReviews.map((review) => (
-              <ShowReview
-                key={review.id}
-                user={user}
-                reviewId={review.id}
-                show={show}
-              />
+              <ShowReview key={review.id} user={user} reviewId={review.id} />
             ))
           ) : (
             <div className="mx-2">No reviews yet</div>

@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import DisplayRating from "../DisplayRating";
 import "./ShowReview.css";
 
-import { FaRegTimesCircle, FaCaretUp, FaCaretDown } from "react-icons/fa";
-import { ImStarEmpty, ImStarFull, ImHappy, ImClock } from "react-icons/im"; //https://react-icons.github.io/react-icons/icons?name=im
-
-const ShowReview = ({ user, reviewId, show }) => {
-  const [commentText, setCommentText] = useState("");
-  const [commentInput, setCommentInput] = useState(false);
-  const [reactionsExpanded, setReactionsExpanded] = useState(false);
+const ShowReview = ({ user, reviewId }) => {
   const [reacts, setReacts] = useState([]);
   const [review, setReview] = useState(null);
   const [error, setError] = useState(null);
@@ -23,14 +15,6 @@ const ShowReview = ({ user, reviewId, show }) => {
     LAUGH: "😂",
     WOW: "😮",
     ANGRY: "😡",
-  };
-
-  const reactsDict = {
-    LIKE: ["LIKE", "👍"],
-    LOVE: ["LOVE", "❤️"],
-    LAUGH: ["LAUGH", "😂"],
-    ANGRY: ["ANGRY", "😡"],
-    WOW: ["WOW", "😮"],
   };
 
   useEffect(() => {
