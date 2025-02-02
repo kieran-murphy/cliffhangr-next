@@ -91,20 +91,10 @@ const ShowReview = ({ user, reviewId, show }) => {
   return (
     review !== null && (
       <Link href={`/review/${reviewId}`}>
-        <div className="my-4 pt-1 text-center h-10 ">
-          <div
-            htmlFor={review.text}
-            className="btn modal-button flex flex-row place-content-evenly"
-          >
+        <div className="my-4 pt-1 h-10 ">
+          <div className="btn modal-button flex flex-row place-content-between p-4">
             <h1 className="font-bold">{review.username}</h1>
             <h1>{review.rating}⭐</h1>
-            <div className="flex flex-row place-items-center">
-              <h1>{review.upvotes}</h1>
-              {reacts.slice(0, 3).map((react) => {
-                return <h1 key={react}>{react}</h1>;
-              })}
-              {review.reactOnReviews.length}
-            </div>
           </div>
         </div>
       </Link>
