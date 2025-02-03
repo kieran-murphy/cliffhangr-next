@@ -22,6 +22,7 @@ export default function Home({ params }) {
   const [showFollowing, setShowFollowing] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [tab, setTab] = useState("profile");
+  const [editMode, setEditMode] = useState(false);
 
   const { data: session } = useSession(); // Also get status to check loading state
 
@@ -199,102 +200,133 @@ export default function Home({ params }) {
       <div className="w-full md:w-1/2 mx-auto flex place-content-center">
         {tab === "profile" ? (
           <div className="flex flex-col w-full place-content-center">
-            {!isUser && (
+            {!editMode ? (
               <>
-                {isFollower ? (
-                  <div className="flex place-content-center mx-6 mt-6">
-                    <button
-                      className="btn w-full"
-                      onClick={() => {
-                        unfollow("Steve", user.name);
-                      }}
-                    >
-                      Following <FaRegCheckSquare className="ml-2" />
-                    </button>
-                  </div>
+                {!isUser ? (
+                  <>
+                    {isFollower ? (
+                      <div className="flex place-content-center mx-6 mt-6">
+                        <button
+                          className="btn w-full"
+                          onClick={() => {
+                            unfollow("Steve", user.name);
+                          }}
+                        >
+                          Following <FaRegCheckSquare className="ml-2" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex place-content-center mx-6 mt-6">
+                        <button
+                          className="btn btn-info w-full"
+                          onClick={() => {
+                            follow("Steve", user.name);
+                          }}
+                        >
+                          Follow +
+                        </button>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="flex place-content-center mx-6 mt-6">
                     <button
-                      className="btn btn-info w-full"
-                      onClick={() => {
-                        follow("Steve", user.name);
-                      }}
+                      className="btn btn-secondary w-full"
+                      onClick={() => setEditMode(true)}
                     >
-                      Follow +
+                      Edit my profile
                     </button>
                   </div>
                 )}
+                <div className=" stats stats-vertical shadow text-center m-6 bg-base-200">
+                  <div className="stat" onClick={() => setTab("reviews")}>
+                    <div className="stat-title">Reviews</div>
+                    <div className="stat-value text-success">
+                      {user.writtenReviews.length}
+                    </div>
+                  </div>
+
+                  <div className="stat">
+                    <div className="stat-title">Avg Score</div>
+                    <div className="stat-value text-success">
+                      {user.writtenReviews.length > 0 ? avgScore.toFixed(2) : 0}
+                    </div>
+                  </div>
+
+                  <div className="stat">
+                    <div className="stat-title">Following</div>
+                    {!showFollowing ? (
+                      <div
+                        className="stat-value text-warning"
+                        onClick={() => {
+                          setShowFollowing(true);
+                        }}
+                      >
+                        {user.following.length}
+                      </div>
+                    ) : (
+                      <div
+                        className=""
+                        onClick={() => {
+                          setShowFollowing(false);
+                        }}
+                      >
+                        {user.following.map((f) => (
+                          <div key={f.id}>
+                            <SmallUser userId={f.followingId} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="stat">
+                    <div className="stat-title">Followers</div>
+                    {!showFollowers ? (
+                      <div
+                        className="stat-value text-secondary"
+                        onClick={() => {
+                          setShowFollowers(true);
+                        }}
+                      >
+                        {user.followers.length}
+                      </div>
+                    ) : (
+                      <div
+                        className=""
+                        onClick={() => {
+                          setShowFollowing(false);
+                        }}
+                      >
+                        {user.followers.map((f) => (
+                          <div key={f.id}>
+                            <SmallUser userId={f.followerId} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </>
+            ) : (
+              <div className="flex flex-col place-content-center mx-6 mt-6">
+                <div className="form-control">
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    className="input input-secondary"
+                  />
+                </div>
+                <div className="flex place-content-center mt-6">
+                  <button
+                    className="btn btn-secondary w-full"
+                    onClick={() => setEditMode(false)}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
             )}
-            <div className=" stats stats-vertical shadow text-center m-6 bg-base-200">
-              <div className="stat" onClick={() => setTab("reviews")}>
-                <div className="stat-title">Reviews</div>
-                <div className="stat-value text-success">
-                  {user.writtenReviews.length}
-                </div>
-              </div>
-
-              <div className="stat">
-                <div className="stat-title">Avg Score</div>
-                <div className="stat-value text-success">
-                  {user.writtenReviews.length > 0 ? avgScore.toFixed(2) : 0}
-                </div>
-              </div>
-
-              <div className="stat">
-                <div className="stat-title">Following</div>
-                {!showFollowing ? (
-                  <div
-                    className="stat-value text-warning"
-                    onClick={() => {
-                      setShowFollowing(true);
-                    }}
-                  >
-                    {user.following.length}
-                  </div>
-                ) : (
-                  <div
-                    className=""
-                    onClick={() => {
-                      setShowFollowing(false);
-                    }}
-                  >
-                    {user.following.map((f) => (
-                      <div key={f.id}>
-                        <SmallUser userId={f.followingId} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="stat">
-                <div className="stat-title">Followers</div>
-                {!showFollowers ? (
-                  <div
-                    className="stat-value text-secondary"
-                    onClick={() => {
-                      setShowFollowers(true);
-                    }}
-                  >
-                    {user.followers.length}
-                  </div>
-                ) : (
-                  <div
-                    className=""
-                    onClick={() => {
-                      setShowFollowing(false);
-                    }}
-                  >
-                    {user.followers.map((f) => (
-                      <div key={f.id}>
-                        <SmallUser userId={f.followerId} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
         ) : tab === "watchlist" ? (
           <Watchlist watchlist={user.watchlistShows} />
