@@ -23,6 +23,8 @@ export default function Home({ params }) {
   const [isUser, setIsUser] = useState(false);
   const [tab, setTab] = useState("profile");
   const [editMode, setEditMode] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [newImageUrl, setNewImageUrl] = useState("");
 
   const { data: session } = useSession(); // Also get status to check loading state
 
@@ -85,6 +87,13 @@ export default function Home({ params }) {
     }
   }, [user, sessionUserID]);
 
+  useEffect(() => {
+    if (editMode && user) {
+      setNewUsername(user.username);
+      setNewImageUrl(user.imageUrl || "");
+    }
+  }, [editMode, user]);
+
   const follow = async () => {
     try {
       const response = await fetch("/api/follow", {
@@ -141,6 +150,30 @@ export default function Home({ params }) {
       alert("There was an error submitting the form data");
     }
     // alert("unfollow");
+  };
+
+  const updateProfile = async () => {
+    try {
+      const response = await fetch("/api/user", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID: userId,
+          // data: { username: newUsername, profilePicture: newImageUrl },
+          data: { username: newUsername },
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+      // Optionally update the local user state with the updated values
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert("Profile update failed");
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -311,16 +344,33 @@ export default function Home({ params }) {
             ) : (
               <div className="flex flex-col place-content-center mx-6 mt-6">
                 <div className="form-control">
+                  <label htmlFor="username-input" className="label">
+                    Username
+                  </label>
                   <input
                     type="text"
+                    id="username-input"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
                     placeholder="Username"
-                    className="input input-secondary"
+                    className="input input-secondary my-2"
+                  />
+                  <label htmlFor="image-url-input" className="label">
+                    Image URL
+                  </label>
+                  <input
+                    type="text"
+                    id="image-url-input"
+                    value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    placeholder="Image URL"
+                    className="input input-secondary my-2"
                   />
                 </div>
                 <div className="flex place-content-center mt-6">
                   <button
                     className="btn btn-secondary w-full"
-                    onClick={() => setEditMode(false)}
+                    onClick={updateProfile}
                   >
                     Save
                   </button>
