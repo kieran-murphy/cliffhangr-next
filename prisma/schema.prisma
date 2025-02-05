@@ -15,6 +15,7 @@ datasource db {
 model User {
   id              String            @id @default(uuid())
   profilePicture  Bytes?
+  imageUrl        String?
   username        String            @unique
   email           String            @unique
   role            Role              @default(BASIC)
