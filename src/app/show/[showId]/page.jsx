@@ -11,6 +11,7 @@ import Rating from "@/components/Rating";
 import ReviewListItem from "@/components/ReviewListItem";
 import ReviewConfirmation from "@/components/ReviewConfirmation";
 import ShowReviewList from "@/components/ShowReviewList";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 import {
   ImStarEmpty,
@@ -308,7 +309,7 @@ export default function Home({ params }) {
     setReviewComment(event.target.value);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>Error: {error.message}</p>;
   if (!show) return <p>No show found!</p>;
 

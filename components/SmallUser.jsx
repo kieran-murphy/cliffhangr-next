@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const SmallUser = ({ userId }) => {
   const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ const SmallUser = ({ userId }) => {
     }
   }, [userId]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>Error: {userId}</p>;
   if (!user) return <p>No user found!</p>;
 

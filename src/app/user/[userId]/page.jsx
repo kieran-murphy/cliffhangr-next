@@ -10,6 +10,7 @@ import Favourites from "@/components/Favourites";
 import ProfileReviews from "@/components/ProfileReviews";
 import Watchlist from "@/components/Watchlist";
 import SmallUser from "@/components/SmallUser";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Home({ params }) {
   const [user, setUser] = useState(null);
@@ -175,7 +176,7 @@ export default function Home({ params }) {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>Error: {error.message}</p>;
   if (!user) return <p>No user found!</p>;
 

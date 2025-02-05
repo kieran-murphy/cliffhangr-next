@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "../src/app/globals.css";
 import { useSession } from "next-auth/react"; // Import useSession
 import { useRouter } from "next/router"; // Import useRouter
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const PagesLayout = ({ children }) => {
   const { data: session, status } = useSession(); // Also get status to check loading state
@@ -16,7 +17,7 @@ const PagesLayout = ({ children }) => {
 
   // Optional: You can also show loading state while checking session
   if (status === "loading") {
-    return <div>Loading...</div>; // Or any other loading indicator
+    return <LoadingSpinner />; // Or any other loading indicator
   }
 
   return (

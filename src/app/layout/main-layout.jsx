@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"; // Import useRouter
 import { useSession } from "next-auth/react"; // Import useSession
 import { useEffect } from "react"; // Import useEffect
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const MainLayout = ({ children }) => {
   const { data: session, status } = useSession(); // Also get status to check loading state
@@ -18,7 +19,7 @@ const MainLayout = ({ children }) => {
 
   // Optional: You can also show loading state while checking session
   if (status === "loading") {
-    return <div>Loading...</div>; // Or any other loading indicator
+    return <LoadingSpinner />; // Or any other loading indicator
   }
 
   const username = session?.user?.name || ""; // Directly access username from session

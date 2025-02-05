@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import DisplayRating from "@/components/DisplayRating";
 import "@/components/ShowReview/ShowReview.css";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Home({ params }) {
   const [commentText, setCommentText] = useState("");
@@ -201,7 +202,7 @@ export default function Home({ params }) {
   };
 
   // Handle loading and error states
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>Error: {error.message}</p>;
   if (!show) return <p>No show found!</p>;
 
