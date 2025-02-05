@@ -68,7 +68,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="w-full md:w-1/2 mx-auto flex flex-col place-content-center">
       <UserSearchBar setSearchTerm={setSearchTerm} />
       <div className="m-4">
         {currentUsers.map((user) => (
@@ -91,6 +91,6 @@ export default function Home() {
           {"Next >"}
         </button>
       </div>
-    </>
+    </div>
   );
 }
