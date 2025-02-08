@@ -23,13 +23,11 @@ const populateUsers = async () => {
   for (let i = 0; i < userCount; i++) {
     const username = generateUniqueUsername();
     const email = `${username}@cliffhangr.com`;
-    const imageUrl = "/images/profile.png";
     const password = "password";
 
     users.push({
       username: username,
       email: email,
-      imageUrl: imageUrl,
       password: password,
     });
   }

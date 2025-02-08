@@ -185,7 +185,12 @@ export default function Home({ params }) {
       <div className="w-full flex flex-row place-content-center">
         <div className="avatar my-8 mx-4">
           <div className="w-20 rounded-full ring ring-slate-400 ring-offset-base-100 ring-offset-2">
-            <Image src={user.imageUrl} alt="profile" width={80} height={80} />
+            <Image
+              src={user.imageUrl || "/images/profile.png"}
+              alt="profile"
+              width={80}
+              height={80}
+            />
           </div>
         </div>
         <div className="self-center flex flex-col">
