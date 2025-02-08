@@ -20,7 +20,7 @@ export default function Login() {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center w-full md:w-1/2 mx-auto">
       <h1 className="text-2xl my-8">Login</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-control w-full max-w-xs">

@@ -50,7 +50,7 @@ export default function Home() {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center w-full md:w-1/2 mx-auto">
       <h1 className="text-2xl my-8">Register</h1>
       <form onSubmit={handleSubmit}>
         <div>
