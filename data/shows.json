@@ -95,6 +95,54 @@
       "score": 4,
       "seasons": 7,
       "year": 2013
+    },
+    {
+      "title": "Succession",
+      "img": "succession.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 4,
+      "year": 2018
+    },
+    {
+      "title": "The White Lotus",
+      "img": "whitelotus.png",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 3,
+      "year": 2021
+    },
+    {
+      "title": "Dexter",
+      "img": "dexter.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 8,
+      "year": 2006
+    },
+    {
+      "title": "House",
+      "img": "house.png",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.5,
+      "seasons": 8,
+      "year": 2004
+    },
+    {
+      "title": "The Bear",
+      "img": "thebear.jpeg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.0,
+      "seasons": 3,
+      "year": 2022
+    },
+    {
+      "title": "Prison Break",
+      "img": "prisonbreak.jpg",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu",
+      "score": 4.0,
+      "seasons": 5,
+      "year": 2005
     }
   ]
 }
