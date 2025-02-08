@@ -62,10 +62,6 @@ const MainLayout = ({ children }) => {
                 </li>
               </Link>
 
-              <li>
-                <div>Theme ☀️</div>
-              </li>
-
               <Link href={`/api/auth/signout`}>
                 <li>
                   <div>Logout 🖥️</div>
@@ -92,10 +88,6 @@ const MainLayout = ({ children }) => {
                 <div>Users 🧑</div>
               </li>
             </Link>
-
-            <li>
-              <div>Theme ☀️</div>
-            </li>
 
             <Link href={`/api/auth/signout`}>
               <li>
