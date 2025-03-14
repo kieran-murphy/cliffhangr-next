@@ -135,6 +135,10 @@ export default function Home({ params }) {
     }
   };
 
+  const sleep = (seconds) => {
+    return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+  };
+
   const toggleFavorite = async () => {
     if (alreadyFavorited) {
       try {
@@ -272,7 +276,7 @@ export default function Home({ params }) {
     setAvgScore(avg);
   };
 
-  const addReview = (text, reviewScore, show, user) => {
+  const addReview = async (text, reviewScore, show, user) => {
     const review = {
       userId: user.id,
       username: user.name,
@@ -289,7 +293,7 @@ export default function Home({ params }) {
         review: review,
       }),
     };
-    fetch(`/api/review`, RequestOptions)
+    await fetch(`/api/review`, RequestOptions)
       .then(async (res) => {
         if (!res.ok) {
           return res.text().then((text) => {
@@ -447,8 +451,9 @@ export default function Home({ params }) {
               <label
                 className="btn btn-success mt-4"
                 htmlFor="my-modal"
-                onClick={() => {
-                  addReview(reviewComment, reviewScore, show, user);
+                onClick={async () => {
+                  await addReview(reviewComment, reviewScore, show, user);
+                  await sleep(0.5);
                   setReviewComment("");
                   setReviewScore(0);
                   window.location.reload();
