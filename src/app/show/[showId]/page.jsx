@@ -446,7 +446,10 @@ export default function Home({ params }) {
               ></textarea>
 
               <h3 className="mt-4">Rating:</h3>
-              <Rating setReviewScore={setReviewScore} />
+              <Rating
+                reviewScore={reviewScore}
+                setReviewScore={setReviewScore}
+              />
 
               <label
                 className="btn btn-success mt-4"
