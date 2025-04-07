@@ -195,12 +195,6 @@ export default function Home({ params }) {
         </div>
         <div className="self-center flex flex-col">
           <h1 className="text-xl font-bold ">{user.username} </h1>
-          {user.isAdmin ? (
-            <div className="flex flex-row">
-              <FaCheckCircle className="h-4 ml-6 mr-1 text-info" />{" "}
-              <h1 className="font-light text-xs">Admin</h1>
-            </div>
-          ) : null}
         </div>
       </div>
       <div className="flex place-content-center tabs tabs-boxed ">
