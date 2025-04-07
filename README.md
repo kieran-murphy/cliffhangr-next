@@ -17,8 +17,9 @@ npm run dev
 To connect the PostgreSQL server:
 
 Add the PostgreSQL url in the .env file as DATABASE_URL 
+For example:
 ```bash
-DATABASE_URL="url"
+DATABASE_URL="postgresql://testuser:password@localhost:5432/testdb?schema=public"
 ```
 
 To delete all records in the database:
