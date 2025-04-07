@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import DisplayRating from "./DisplayRating";
-// import getShow from "../functions/getShow";
 
-const SmallReview = ({ showId, score }) => {
+const SmallReview = ({ showId }) => {
   const [show, setShow] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

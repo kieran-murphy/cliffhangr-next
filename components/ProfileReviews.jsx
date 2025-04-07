@@ -10,7 +10,6 @@ const ProfileReviews = ({ reviews }) => {
             <SmallReview
               showId={review.showId}
               key={review.showId}
-              score={review.score}
             />
           );
         })

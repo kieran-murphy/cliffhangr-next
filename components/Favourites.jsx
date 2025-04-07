@@ -10,7 +10,6 @@ const Favourites = ({ favourites }) => {
             <SmallReview
               showId={fav.showId}
               key={fav.showId}
-              score={fav.score}
             />
           );
         })
