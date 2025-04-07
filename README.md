@@ -22,6 +22,10 @@ For example:
 DATABASE_URL="postgresql://testuser:password@localhost:5432/testdb?schema=public"
 ```
 
+To setup the database initially on a new machine:
+
+Run `npx prisma db push`
+
 To delete all records in the database:
 
 Run `node prisma/delete.js`
