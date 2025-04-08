@@ -70,6 +70,7 @@ export default function Home({ params }) {
     }
   }, [showId]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     checkReviewStatus();
     checkFavStatus();

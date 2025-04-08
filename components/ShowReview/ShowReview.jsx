@@ -36,6 +36,7 @@ const ShowReview = ({ user, reviewId }) => {
     }
   }, [reviewId]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (review !== null) {
       let arr = [];

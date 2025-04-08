@@ -55,6 +55,7 @@ export default function Home({ params }) {
     }
   }, [userId]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const checkFollowing = () => {
       let matchingFollow = user.followers.find(
