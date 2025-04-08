@@ -37,3 +37,11 @@ Run `node prisma/seed.js`
 After making changes to the prisma schema (make sure the database is empty before running this command):
 
 Run `npx prisma migrate dev`
+
+To build the project
+
+Run `npm run build`, this will create the `.next` directory
+
+To run the built project
+
+Run `npm start`
