@@ -1,13 +1,13 @@
 .comment-box {
-    padding-top: 1rem;
-    text-align: left;
+  padding-top: 1rem;
+  text-align: left;
+}
 
-    .user {
-      font-weight: bold;
-      font-size: small;
-    }
+.comment-box .user {
+  font-weight: bold;
+  font-size: small;
+}
 
-    .comment {
-      font-size: small
-    }
-  }
+.comment-box .comment {
+  font-size: small;
+}
