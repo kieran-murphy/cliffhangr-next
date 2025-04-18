@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  binaryTargets = ["native", "linux-arm64-openssl-1.1.x"]
+  binaryTargets = ["native"]
   provider      = "prisma-client-js"
   seed          = "node seed.js"
 }
