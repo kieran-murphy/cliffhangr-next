@@ -7,7 +7,7 @@ const Watchlist = ({ watchlist }) => {
       {watchlist.length !== 0 ? (
         watchlist.map((w) => {
           return (
-            <SmallReview showId={w.showId} key={w.showId} />
+            <SmallReview show={w.show} key={w.show.id} />
           );
         })
       ) : (

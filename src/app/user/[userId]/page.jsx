@@ -5,9 +5,15 @@ export default async function Page({ params }) {
   const user = await prisma.user.findUnique({
     where: { id: params.userId },
     include: {
-      writtenReviews: true,
-      favoriteShows: true,
-      watchlistShows: true,
+      writtenReviews: {
+        include: { show: true },
+      },
+      favoriteShows: {
+        include: { show: true },
+      },
+      watchlistShows: {
+        include: { show: true },
+      },
       followers: true,
       following: true,
     },

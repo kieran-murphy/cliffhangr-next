@@ -7,8 +7,8 @@ const ProfileReviews = ({ reviews }) => {
         reviews.map((review) => {
           return (
             <SmallReview
-              showId={review.showId}
-              key={review.showId}
+              show={review.show}
+              key={review.show.id}
             />
           );
         })
