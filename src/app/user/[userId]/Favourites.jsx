@@ -1,5 +1,5 @@
 import React from "react";
-import SmallReview from "./SmallReview";
+import SmallReview from "@/components/SmallReview";
 
 const Favourites = ({ favourites }) => {
   return (
