@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import DisplayRating from "@/components/DisplayRating";
-import "@/components/ShowReview/ShowReview.css";
+import "./Review.css";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Home({ params }) {
@@ -335,7 +335,8 @@ export default function Home({ params }) {
             <div className="w-full my-2" key={comment.id}>
               <div className="divider"></div>
               <div className="flex flex-row place-content-between">
-                <div className="comment-box">
+                {/* <div className="comment-box"> */}
+                <div>
                   <Link href={`/user/${comment.userId}`}>
                     <h3 className="user">{comment.username}</h3>
                     <h3 className="comment">{comment.text}</h3>
