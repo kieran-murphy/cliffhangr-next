@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ShowReview from "@/components/ShowReview/ShowReview";
+import ShowReview from "./ShowReview/ShowReview";
 
 const ShowReviewList = ({ user, show }) => {
   const [sortedReviews, setSortedReviews] = useState([]);
@@ -21,8 +21,6 @@ const ShowReviewList = ({ user, show }) => {
     indexOfFirstReview,
     indexOfLastReview
   );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const nextPage = () => {
     if (currentPage < Math.ceil(sortedReviews.length / reviewsPerPage)) {
@@ -48,7 +46,7 @@ const ShowReviewList = ({ user, show }) => {
         {show !== null &&
           (currentReviews.length > 0 ? (
             currentReviews.map((review) => (
-              <ShowReview key={review.id} user={user} reviewId={review.id} />
+              <ShowReview key={review.id} review={review} />
             ))
           ) : (
             <div className="mx-2">No reviews yet</div>
