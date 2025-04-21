@@ -7,7 +7,8 @@ export default async function Page({ params }) {
     include: {
       reviews: {
         include: {
-          reactOnReviews: true
+          reactOnReviews: true,
+          user: true,
         }
       },
       favoritedBy: true,

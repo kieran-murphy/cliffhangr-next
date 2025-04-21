@@ -187,7 +187,6 @@ export default function ShowClient({ show, showId }) {
   const addReview = async (text, reviewScore, show, user) => {
     const review = {
       userId: user.id,
-      username: user.name,
       showId: show.id,
       title: show.title,
       rating: reviewScore,
