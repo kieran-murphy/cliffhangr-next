@@ -79,7 +79,6 @@ model WatchlistShow {
 model ReactOnReview {
   id        String   @id @default(uuid())
   userId    String
-  username  String
   reviewId  String
   react     React    @default(LIKE)
   createdAt DateTime @default(now())
@@ -96,7 +95,6 @@ model Review {
   createdAt       DateTime          @default(now())
   user            User              @relation("WrittenReviews", fields: [userId], references: [id], onDelete: Cascade)
   userId          String
-  username        String
   title           String
   show            Show              @relation("ShowReviews", fields: [showId], references: [id], onDelete: Cascade)
   showId          String
@@ -109,7 +107,6 @@ model Review {
 model CommentOnReview {
   id        String   @id @default(uuid())
   userId    String
-  username  String
   reviewId  String
   text      String
   createdAt DateTime @default(now())

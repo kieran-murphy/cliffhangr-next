@@ -176,7 +176,6 @@ const populateReviews = async () => {
           await prisma.review.create({
             data: {
               userId: user.id,
-              username: user.username, // Assuming you have a field for username in the review table
               showId: show.id,
               title: show.title,
               text: faker.word.words(10),
@@ -197,7 +196,6 @@ const populateComments = async () => {
 
   const userData = users.map((user) => ({
     id: user.id,
-    username: user.username,
   }));
 
   try {
@@ -208,7 +206,6 @@ const populateComments = async () => {
           await prisma.commentOnReview.create({
             data: {
               userId: user.id,
-              username: user.username, // Include the username
               reviewId: review.id,
               text: faker.word.words(10),
             },
@@ -222,7 +219,6 @@ const populateComments = async () => {
 };
 
 const populateReactOnReviews = async () => {
-  const userIds = [];
   const reviewIds = [];
   const reacts = ["LIKE", "LOVE", "LAUGH", "WOW", "ANGRY"];
 
@@ -232,7 +228,6 @@ const populateReactOnReviews = async () => {
   // Create an array of user objects with id and username
   const userObjects = users.map((user) => ({
     id: user.id,
-    username: user.username,
   }));
   reviews.map((review) => reviewIds.push(review.id));
 
@@ -245,7 +240,6 @@ const populateReactOnReviews = async () => {
           await prisma.reactOnReview.create({
             data: {
               userId: user.id,
-              username: user.username, // Including username here
               reviewId: reviewId,
               react: randomReact,
             },
@@ -260,7 +254,7 @@ const populateReactOnReviews = async () => {
 
 const main = async () => {
   await populateUsers();
-  // await populateFollows();
+  await populateFollows();
   await populateShows();
   await populateFavorites();
   await populateWatchlists();
