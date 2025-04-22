@@ -276,7 +276,7 @@ export default function UserClientPage({ user, userId }) {
                       >
                         {user.following.map((f) => (
                           <div key={f.id}>
-                            <SmallUser userId={f.followingId} />
+                            <SmallUser user={f.followedBy} />
                           </div>
                         ))}
                       </div>
@@ -303,7 +303,7 @@ export default function UserClientPage({ user, userId }) {
                       >
                         {user.followers.map((f) => (
                           <div key={f.id}>
-                            <SmallUser userId={f.followerId} />
+                            <SmallUser user={f.followed} />
                           </div>
                         ))}
                       </div>

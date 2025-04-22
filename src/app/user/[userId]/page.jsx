@@ -14,10 +14,30 @@ export default async function Page({ params }) {
       watchlistShows: {
         include: { show: true },
       },
-      followers: true,
-      following: true,
+      followers: {
+        select: {
+          followed: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      },
+      following: {
+        select: {
+          followedBy: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      },
+      
     },
   });
+  
 
   return <UserClientPage user={user} userId={params.userId} />;
 }
