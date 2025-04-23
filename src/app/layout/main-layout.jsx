@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import useRouter
-import { useSession } from "next-auth/react"; // Import useSession
-import { useEffect } from "react"; // Import useEffect
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useUser } from "@/context/UserProvider";
 
 const MainLayout = ({ children }) => {
-  const { data: session, status } = useSession(); // Also get status to check loading state
-  const router = useRouter(); // Use useRouter hook for redirection
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { userInfo, setUserInfo } = useUser();
 
   useEffect(() => {
     // Redirect to sign in page if not signed in and session loading is completed
@@ -17,13 +19,29 @@ const MainLayout = ({ children }) => {
     }
   }, [status, router]);
 
-  // Optional: You can also show loading state while checking session
-  if (status === "loading") {
-    return <LoadingSpinner />; // Or any other loading indicator
-  }
+  useEffect(() => {
+    const fetchUsername = async () => {
+      if (session) {
+        try {
+          const response = await fetch(`/api/user?id=${session.user.id}`);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json();
+          setUserInfo(data.user);
+        } catch (error) {
+          console.error("Failed to fetch username:", error);
+        }
+      }
+    };
 
-  const username = session?.user?.name || ""; // Directly access username from session
-  const userID = session?.user?.id || ""; // Directly access ID from session
+    fetchUsername();
+  }, [session]);
+
+
+  if (status === "loading") {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -97,9 +115,11 @@ const MainLayout = ({ children }) => {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link href={`/user/${userID}`}>
-            <button className="btn">{username}</button>
-          </Link>
+          {userInfo?.username &&
+            <Link href={`/user/${userInfo?.id}`}>
+              <button className="btn">{userInfo?.username}</button>
+            </Link>
+          }
         </div>
       </nav>
       <main>{children}</main>

@@ -9,9 +9,9 @@ import Favourites from "./Favourites";
 import ProfileReviews from "./ProfileReviews";
 import Watchlist from "./Watchlist";
 import SmallUser from "@/components/SmallUser";
+import { useUser } from "@/context/UserProvider";
 
 export default function User({ params }) {
-  const [user, setUser] = useState(null);
   const [avgScore, setAvgScore] = useState(0);
   const [isFollower, setIsFollower] = useState(false);
   const [isFollowerID, setIsFollowerID] = useState(false);
@@ -23,6 +23,7 @@ export default function User({ params }) {
   const [newUsername, setNewUsername] = useState("");
   const [newImageUrl, setNewImageUrl] = useState("");
 
+  const { userInfo, setUserInfo } = useUser();
   const { userId } = params;
   const { data: session } = useSession();
   const sessionUserID = session?.user?.id || null;
@@ -31,7 +32,7 @@ export default function User({ params }) {
     try {
       const res = await fetch(`/api/user?id=${userId}`);
       const data = await res.json();
-      setUser(data.user);
+      setUserInfo(data.user);
     } catch (err) {
       console.error("Failed to fetch user", err);
     }
@@ -42,9 +43,9 @@ export default function User({ params }) {
   }, [userId]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!userInfo) return;
 
-    const matchingFollow = user.followers.find(
+    const matchingFollow = userInfo.followers.find(
       (f) => f.followerId === sessionUserID
     );
     setIsFollower(!!matchingFollow);
@@ -52,19 +53,19 @@ export default function User({ params }) {
 
     setIsUser(sessionUserID === userId);
 
-    const totalRating = user.writtenReviews.reduce(
+    const totalRating = userInfo.writtenReviews.reduce(
       (sum, r) => sum + r.rating,
       0
     );
-    setAvgScore(user.writtenReviews.length ? totalRating / user.writtenReviews.length : 0);
-  }, [user, sessionUserID]);
+    setAvgScore(userInfo.writtenReviews.length ? totalRating / userInfo.writtenReviews.length : 0);
+  }, [userInfo, sessionUserID]);
 
   useEffect(() => {
-    if (editMode && user) {
-      setNewUsername(user.username);
-      setNewImageUrl(user.imageUrl || "");
+    if (editMode && userInfo) {
+      setNewUsername(userInfo.username);
+      setNewImageUrl(userInfo.imageUrl || "");
     }
-  }, [editMode, user]);
+  }, [editMode, userInfo]);
 
   const follow = async () => {
     await fetch("/api/follow", {
@@ -98,11 +99,13 @@ export default function User({ params }) {
         data: { username: newUsername, imageUrl: newImageUrl },
       }),
     });
-    fetchUser();
+    const res = await fetch(`/api/user?id=${userId}`);
+    const updated = await res.json();
+    setUserInfo(updated.user);
     setEditMode(false);
   };
 
-  if (!user) return <p>Loading...</p>;
+  if (!userInfo) return <p>Loading...</p>;
 
   return (
     <div>
@@ -110,7 +113,7 @@ export default function User({ params }) {
         <div className="avatar my-8 mx-4">
           <div className="w-20 rounded-full ring ring-slate-400 ring-offset-base-100 ring-offset-2">
             <Image
-              src={user.imageUrl || "/images/profile.png"}
+              src={userInfo.imageUrl || "/images/profile.png"}
               alt="profile"
               width={80}
               height={80}
@@ -118,7 +121,7 @@ export default function User({ params }) {
           </div>
         </div>
         <div className="self-center flex flex-col">
-          <h1 className="text-xl font-bold ">{user.username}</h1>
+          <h1 className="text-xl font-bold ">{userInfo.username}</h1>
         </div>
       </div>
 
@@ -169,13 +172,13 @@ export default function User({ params }) {
                   <div className="stat" onClick={() => setTab("reviews")}>
                     <div className="stat-title">Reviews</div>
                     <div className="stat-value text-success">
-                      {user.writtenReviews.length}
+                      {userInfo.writtenReviews.length}
                     </div>
                   </div>
                   <div className="stat">
                     <div className="stat-title">Avg Score</div>
                     <div className="stat-value text-success">
-                      {user.writtenReviews.length ? avgScore.toFixed(2) : 0}
+                      {userInfo.writtenReviews.length ? avgScore.toFixed(2) : 0}
                     </div>
                   </div>
                   <div className="stat">
@@ -184,10 +187,10 @@ export default function User({ params }) {
                       className="stat-value text-warning"
                       onClick={() => setShowFollowing((p) => !p)}
                     >
-                      {user.following.length}
+                      {userInfo.following.length}
                     </div>
                     {showFollowing &&
-                      user.following.map((f) => (
+                      userInfo.following.map((f) => (
                         <SmallUser key={f.id} user={f.followedBy} />
                       ))}
                   </div>
@@ -197,10 +200,10 @@ export default function User({ params }) {
                       className="stat-value text-secondary"
                       onClick={() => setShowFollowers((p) => !p)}
                     >
-                      {user.followers.length}
+                      {userInfo.followers.length}
                     </div>
                     {showFollowers &&
-                      user.followers.map((f) => (
+                      userInfo.followers.map((f) => (
                         <SmallUser key={f.id} user={f.followed} />
                       ))}
                   </div>
@@ -229,11 +232,11 @@ export default function User({ params }) {
             )}
           </div>
         ) : tab === "watchlist" ? (
-          <Watchlist watchlist={user.watchlistShows} />
+          <Watchlist watchlist={userInfo.watchlistShows} />
         ) : tab === "favourites" ? (
-          <Favourites favourites={user.favoriteShows} />
+          <Favourites favourites={userInfo.favoriteShows} />
         ) : (
-          <ProfileReviews reviews={user.writtenReviews} />
+          <ProfileReviews reviews={userInfo.writtenReviews} />
         )}
       </div>
     </div>
