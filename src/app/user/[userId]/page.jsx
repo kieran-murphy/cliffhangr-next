@@ -12,6 +12,7 @@ import SmallUser from "@/components/SmallUser";
 import { useUser } from "@/context/UserProvider";
 
 export default function User({ params }) {
+  const [user, setUser] = useState(null);
   const [avgScore, setAvgScore] = useState(0);
   const [isFollower, setIsFollower] = useState(false);
   const [isFollowerID, setIsFollowerID] = useState(false);
@@ -32,7 +33,7 @@ export default function User({ params }) {
     try {
       const res = await fetch(`/api/user?id=${userId}`);
       const data = await res.json();
-      setUserInfo(data.user);
+      setUser(data.user);
     } catch (err) {
       console.error("Failed to fetch user", err);
     }
@@ -40,32 +41,33 @@ export default function User({ params }) {
 
   useEffect(() => {
     fetchUser();
-  }, [userId]);
+  }, [userId, editMode]);
 
   useEffect(() => {
+    if (!user) return;
     if (!userInfo) return;
 
-    const matchingFollow = userInfo.followers.find(
+    const matchingFollow = user.followers.find(
       (f) => f.followerId === sessionUserID
     );
     setIsFollower(!!matchingFollow);
     setIsFollowerID(matchingFollow?.id || null);
 
-    setIsUser(sessionUserID === userId);
+    setIsUser(userInfo.id === userId);
 
-    const totalRating = userInfo.writtenReviews.reduce(
+    const totalRating = user.writtenReviews.reduce(
       (sum, r) => sum + r.rating,
       0
     );
-    setAvgScore(userInfo.writtenReviews.length ? totalRating / userInfo.writtenReviews.length : 0);
-  }, [userInfo, sessionUserID]);
+    setAvgScore(user.writtenReviews.length ? totalRating / user.writtenReviews.length : 0);
+  }, [user, userInfo]);
 
   useEffect(() => {
-    if (editMode && userInfo) {
-      setNewUsername(userInfo.username);
-      setNewImageUrl(userInfo.imageUrl || "");
+    if (editMode && user) {
+      setNewUsername(user.username);
+      setNewImageUrl(user.imageUrl || "");
     }
-  }, [editMode, userInfo]);
+  }, [editMode, user]);
 
   const follow = async () => {
     await fetch("/api/follow", {
@@ -102,10 +104,11 @@ export default function User({ params }) {
     const res = await fetch(`/api/user?id=${userId}`);
     const updated = await res.json();
     setUserInfo(updated.user);
+    setNewUsername(updated.user.username)
     setEditMode(false);
   };
 
-  if (!userInfo) return <p>Loading...</p>;
+  if (!user) return <p>Loading...</p>;
 
   return (
     <div>
@@ -113,7 +116,7 @@ export default function User({ params }) {
         <div className="avatar my-8 mx-4">
           <div className="w-20 rounded-full ring ring-slate-400 ring-offset-base-100 ring-offset-2">
             <Image
-              src={userInfo.imageUrl || "/images/profile.png"}
+              src={user.imageUrl || "/images/profile.png"}
               alt="profile"
               width={80}
               height={80}
@@ -121,7 +124,7 @@ export default function User({ params }) {
           </div>
         </div>
         <div className="self-center flex flex-col">
-          <h1 className="text-xl font-bold ">{userInfo.username}</h1>
+          <h1 className="text-xl font-bold ">{isUser ? userInfo.username : user.username}</h1>
         </div>
       </div>
 
@@ -172,13 +175,13 @@ export default function User({ params }) {
                   <div className="stat" onClick={() => setTab("reviews")}>
                     <div className="stat-title">Reviews</div>
                     <div className="stat-value text-success">
-                      {userInfo.writtenReviews.length}
+                      {user.writtenReviews.length}
                     </div>
                   </div>
                   <div className="stat">
                     <div className="stat-title">Avg Score</div>
                     <div className="stat-value text-success">
-                      {userInfo.writtenReviews.length ? avgScore.toFixed(2) : 0}
+                      {user.writtenReviews.length ? avgScore.toFixed(2) : 0}
                     </div>
                   </div>
                   <div className="stat">
@@ -187,10 +190,10 @@ export default function User({ params }) {
                       className="stat-value text-warning"
                       onClick={() => setShowFollowing((p) => !p)}
                     >
-                      {userInfo.following.length}
+                      {user.following.length}
                     </div>
                     {showFollowing &&
-                      userInfo.following.map((f) => (
+                      user.following.map((f) => (
                         <SmallUser key={f.id} user={f.followedBy} />
                       ))}
                   </div>
@@ -200,10 +203,10 @@ export default function User({ params }) {
                       className="stat-value text-secondary"
                       onClick={() => setShowFollowers((p) => !p)}
                     >
-                      {userInfo.followers.length}
+                      {user.followers.length}
                     </div>
                     {showFollowers &&
-                      userInfo.followers.map((f) => (
+                      user.followers.map((f) => (
                         <SmallUser key={f.id} user={f.followed} />
                       ))}
                   </div>
@@ -232,11 +235,11 @@ export default function User({ params }) {
             )}
           </div>
         ) : tab === "watchlist" ? (
-          <Watchlist watchlist={userInfo.watchlistShows} />
+          <Watchlist watchlist={user.watchlistShows} />
         ) : tab === "favourites" ? (
-          <Favourites favourites={userInfo.favoriteShows} />
+          <Favourites favourites={user.favoriteShows} />
         ) : (
-          <ProfileReviews reviews={userInfo.writtenReviews} />
+          <ProfileReviews reviews={user.writtenReviews} />
         )}
       </div>
     </div>
