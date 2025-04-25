@@ -32,6 +32,13 @@ const populateUsers = async () => {
     });
   }
 
+  // Add test user for development purposes
+  users.push({
+    username: "testuser",
+    email: "testuser@cliffhangr.com",
+    password: "password",
+  });
+
   try {
     for (let user of users) {
       try {
