@@ -8,13 +8,15 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "node prisma/seed.js",
-    "delete": "node prisma/delete.js"
+    "delete": "node prisma/delete.js",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
     "autoprefixer": "^10.4.14",
     "bcrypt": "^5.1.1",
     "daisyui": "^4.11.1",
+    "dotenv": "^16.5.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "js-cookie": "^3.0.5",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@playwright/test": "^1.52.0",
     "@types/react": "18.2.48",
     "postcss-nesting": "^13.0.1",
     "prisma": "^5.1.1"

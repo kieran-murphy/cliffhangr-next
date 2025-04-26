@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script is used to build the project and run tests.
+# This script is used to build the project.
 
 # Remove the previous build
 rm -rf ../.next
