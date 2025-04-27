@@ -9,7 +9,9 @@
     "lint": "next lint",
     "seed": "node prisma/seed.js",
     "delete": "node prisma/delete.js",
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "test:api": "npx playwright test tests/api",
+    "test:e2e": "npx playwright test tests/e2e"
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
