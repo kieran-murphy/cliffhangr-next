@@ -45,3 +45,21 @@ Run `npm run build`, this will create the `.next` directory
 To run the built project
 
 Run `npm start`
+
+## Testing
+
+Tests are built using Playwright so before running make sure Playwright is installed on the local machine using `npx playwright install`. Installing the official extension [Playwright Test for VSCode](https://marketplace.visualstudio.com/items/?itemName=ms-playwright.playwright) by Microsoft is also highly recommended for developing and debugging these tests.
+
+Before running any tests make sure the server is running.
+
+Before running any tests make sure to add the PLAYWRIGHT_HEADLESS variable in the .env file:
+For example:
+```bash
+PLAYWRIGHT_HEADLESS=false
+```
+
+To run all tests run `npm run test`
+
+To run API tests run `npm run test:api`
+
+To run end to end tests run `npm run test:e2e`
