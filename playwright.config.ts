@@ -12,5 +12,8 @@ export default defineConfig({
         colorScheme: 'dark',
         headless: PLAYWRIGHT_HEADLESS,
         baseURL: BASE_URL,
+        launchOptions: {
+            slowMo: 500,
+          },
     },
 });
