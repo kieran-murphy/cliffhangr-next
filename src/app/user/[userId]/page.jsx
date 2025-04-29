@@ -188,6 +188,7 @@ export default function User({ params }) {
                     <div className="stat-title">Following</div>
                     <div
                       className="stat-value text-warning"
+                      id="following"
                       onClick={() => setShowFollowing((p) => !p)}
                     >
                       {user.following.length}
