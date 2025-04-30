@@ -39,3 +39,8 @@ export async function getRandomUserToFollow(request: APIRequestContext) {
   );
   return candidates[Math.floor(Math.random() * candidates.length)].username;
 }
+
+export async function getRandomUserToUnfollow(request: APIRequestContext) {
+  const following = await getTestUserFollowing(request);
+  return following[Math.floor(Math.random() * following.length)].followedBy.username;
+}
