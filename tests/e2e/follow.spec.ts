@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./utils/login";
-import { testUser } from "./data/testuser";
+import { goToProfilePage, login } from "./utils/utils";
 import { getRandomUserToFollow, getRandomUserToUnfollow } from "./utils/userApi";
 
 test.describe("Follow Related Tests", () => {
@@ -14,7 +13,7 @@ test.describe("Follow Related Tests", () => {
     await page.getByRole("link", { name: searchUser }).click();
     await page.getByRole("button", { name: "Follow +", exact: true }).click();
 
-    await page.getByRole("button", { name: testUser.username }).click();
+    await goToProfilePage(page);
     await page.locator("#following").click();
     await expect(page.getByRole("link", { name: searchUser, exact: true })).toBeVisible();
   });
@@ -22,12 +21,12 @@ test.describe("Follow Related Tests", () => {
   test("Unfollow User Test", async ({ request, page }) => {
     const searchUser = await getRandomUserToUnfollow(request);
     await login(page);
-    await page.getByRole("button", { name: testUser.username }).click();
+    await goToProfilePage(page);
     await page.locator("#following").click();
     await page.getByRole("link", { name: searchUser, exact: true }).click();
     await page.getByRole("button", { name: "Following", exact: true }).click();
 
-    await page.getByRole("button", { name: testUser.username }).click();
+    await goToProfilePage(page);
     await page.locator("#following").click();
     await expect(page.getByRole("link", { name: searchUser, exact: true })).not.toBeVisible();
   });

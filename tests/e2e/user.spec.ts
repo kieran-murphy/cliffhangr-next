@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from './utils/login';
+import { goToProfilePage, login } from './utils/utils';
 import { testUser } from './data/testuser';
 
 test.describe('User Related Tests', () => {
@@ -9,7 +9,7 @@ test.describe('User Related Tests', () => {
     const updatedUsername = testUser.username + '1';
 
     await login(page);
-    await page.getByRole('button', { name: 'testuser' }).click();
+    await goToProfilePage(page);
 
     await page.getByRole('button', { name: 'Edit my profile' }).click();
     await page.getByRole('textbox').first().fill(updatedUsername);

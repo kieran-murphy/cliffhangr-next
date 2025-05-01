@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from './utils/login';
+import { login } from './utils/utils';
 import { getRandomUser } from './utils/userApi';
 import { getRandomShow } from './utils/showApi';
 
