@@ -29,6 +29,14 @@ export async function getTestUserFollowing(request: APIRequestContext) {
   return user.following;
 }
 
+export async function getTestUserFavourites(request: APIRequestContext) {
+  const testUserId = await getTestUserId(request);
+  const res = await request.get(`/api/user?id=${testUserId}`);
+  if (!res.ok()) throw new Error(`API returned ${res.status()}`);
+  const { user } = await res.json();
+  return user.favoriteShows;
+}
+
 export async function getRandomUserToFollow(request: APIRequestContext) {
   const res = await request.get("/api/user");
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
@@ -43,4 +51,18 @@ export async function getRandomUserToFollow(request: APIRequestContext) {
 export async function getRandomUserToUnfollow(request: APIRequestContext) {
   const following = await getTestUserFollowing(request);
   return following[Math.floor(Math.random() * following.length)].followedBy.username;
+}
+
+export async function getRandomShowToFavourite(request: APIRequestContext) {
+  const res = await request.get("/api/show");
+  if (!res.ok()) throw new Error(`API returned ${res.status()}`);
+  const { shows } = await res.json();
+  const favs = await getTestUserFavourites(request);
+  const candidates = shows.filter((s) => !favs.includes(s.id));
+  return candidates[Math.floor(Math.random() * candidates.length)].title;
+}
+
+export async function getRandomShowToUnfavourite(request: APIRequestContext) {
+  const favs = await getTestUserFavourites(request);
+  return favs[Math.floor(Math.random() * favs.length)].show.title;
 }
