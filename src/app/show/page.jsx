@@ -18,8 +18,10 @@ export default function Home() {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       };
+      // Encode the search term to handle special characters
+      const encoded = encodeURIComponent(searchTerm)
       const response = await fetch(
-        `/api/show?search=${searchTerm}`,
+        `/api/show?search=${encoded}`,
         RequestOptions
       );
       if (!response.ok) {
