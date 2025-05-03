@@ -45,6 +45,14 @@ export async function getTestUserWatchlist(request: APIRequestContext) {
   return user.watchlistShows;
 }
 
+export async function getTestUserReviews(request: APIRequestContext) {
+  const testUserId = await getTestUserId(request);
+  const res = await request.get(`/api/user?id=${testUserId}`);
+  if (!res.ok()) throw new Error(`API returned ${res.status()}`);
+  const { user } = await res.json();
+  return user.writtenReviews;
+}
+
 export async function getRandomUserToFollow(request: APIRequestContext) {
   const res = await request.get("/api/user");
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
@@ -87,4 +95,14 @@ export async function getRandomShowToWatchlist(request: APIRequestContext) {
 export async function getRandomShowToUnwatchlist(request: APIRequestContext) {
   const watchlist = await getTestUserWatchlist(request);
   return watchlist[Math.floor(Math.random() * watchlist.length)].show.title;
+}
+
+export async function getRandomShowToReview(request: APIRequestContext) {
+  const res = await request.get("/api/show");
+  if (!res.ok()) throw new Error(`API returned ${res.status()}`);
+  const { shows } = await res.json();
+  const reviews = await getTestUserReviews(request);
+  const reviewedIds = new Set(reviews.map(r => r.showId));
+  const candidates = shows.filter(s => !reviewedIds.has(s.id));
+  return candidates[Math.floor(Math.random() * candidates.length)].title;
 }

@@ -128,10 +128,11 @@ export default function User({ params }) {
         </div>
       </div>
 
-      <div className="flex place-content-center tabs tabs-boxed">
+      <div className="flex place-content-center tabs tabs-boxed"  id="user-tabs">
         {["profile", "reviews", "favourites", "watchlist"].map((t) => (
           <a
             key={t}
+            id={t}
             className={`tab ${tab === t ? "tab-active" : ""}`}
             onClick={() => setTab(t)}
           >
