@@ -18,3 +18,8 @@ export const login = async (page: Page) => {
     await page.locator('button[type="submit"]').click();
     await expect(page.getByRole('button', { name: testUser.username })).toBeVisible();
 }
+
+export const getRandomReaction = (): string => {
+    const reacts: string[] = ['👍','😍','😂','😡','😮']
+    return reacts[Math.floor(Math.random() * reacts.length)];
+}

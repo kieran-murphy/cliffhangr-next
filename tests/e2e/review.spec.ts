@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { getRandomReviewWithComments, getRandomShowToReview } from "./utils/userApi";
-import { goToProfilePage, login } from "./utils/utils";
+import { getRandomReaction, goToProfilePage, login } from "./utils/utils";
 import { getRandomShow } from "./utils/showApi";
 import { testUser } from './data/testuser';
 import { faker } from "@faker-js/faker";
@@ -36,5 +36,17 @@ test.describe("Review Related Tests", () => {
     await page.getByRole('button', { name: 'Add' }).click();
     await expect(page.locator('#comment').getByText(commentUsername)).toBeVisible();
     await expect(page.locator('#comment').getByText(commentText)).toBeVisible();
+  });
+
+  test("React On Review Test", async ({ request, page }) => {
+    const reaction = getRandomReaction();
+    const reactUsername = testUser.username;
+    const reviewId = await getRandomReviewWithComments(request);
+
+    await login(page);
+    await page.goto(`/review/${reviewId}`);
+    await page.getByRole('button', { name: reaction }).click();
+    await page.locator('#see-reacts').click();
+    await expect(page.getByText(`${reaction} - ${reactUsername}`)).toBeVisible();
   });
 });

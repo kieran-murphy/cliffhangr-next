@@ -23,7 +23,7 @@ export default function ReviewClient({ review }) {
 
   const reactsDict = {
     LIKE: ["LIKE", "👍"],
-    LOVE: ["LOVE", "❤️"],
+    LOVE: ["LOVE", "😍"],
     LAUGH: ["LAUGH", "😂"],
     ANGRY: ["ANGRY", "😡"],
     WOW: ["WOW", "😮"],
@@ -163,6 +163,7 @@ export default function ReviewClient({ review }) {
           <div className="flex flex-col place-items-center w-1/2">
             <button
               className="btn w-full"
+              id="see-reacts"
               onClick={() => setReactionsExpanded(true)}
             >
               See {review.reactOnReviews.length} reacts
