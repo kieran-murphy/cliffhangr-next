@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { getRandomShowToReview } from "./utils/userApi";
+import { getRandomReviewWithComments, getRandomShowToReview } from "./utils/userApi";
 import { goToProfilePage, login } from "./utils/utils";
 import { getRandomShow } from "./utils/showApi";
 import { testUser } from './data/testuser';
@@ -27,15 +27,10 @@ test.describe("Review Related Tests", () => {
   test("Comment On Review Test", async ({ request, page }) => {
     const commentText = faker.word.words(10);
     const commentUsername = testUser.username;
-    const showToSearch = await getRandomShow(request);
+    const reviewId = await getRandomReviewWithComments(request);
 
     await login(page);
-    await page.getByRole("link", { name: "See Shows" }).click();
-    await page.getByRole("textbox", { name: "Search" }).fill(showToSearch);
-    await page.getByRole("textbox", { name: "Search" }).press("Enter");
-    await page.getByRole("link", { name: showToSearch }).click();
-    await page.locator("#review-list").getByRole("link").first().click();
-    await page.getByRole('button', { name: '+' }).click();
+    await page.goto(`/review/${reviewId}`);
     await page.getByRole('textbox', { name: 'Your comment here' }).click();
     await page.getByRole('textbox', { name: 'Your comment here' }).fill(commentText);
     await page.getByRole('button', { name: 'Add' }).click();

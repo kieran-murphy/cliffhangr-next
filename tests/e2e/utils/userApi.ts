@@ -114,3 +114,13 @@ export async function getRandomShowToReview(request: APIRequestContext) {
   const candidates = shows.filter(s => !reviewedIds.has(s.id));
   return candidates[Math.floor(Math.random() * candidates.length)].title;
 }
+
+export async function getRandomReviewWithComments(request: APIRequestContext) {
+  const res = await request.get("/api/review");
+  if (!res.ok()) throw new Error(`API returned ${res.status()}`);
+  const { reviews } = await res.json();
+  const candidates = reviews.filter(r => r.CommentOnReview.length > 0);
+  if (candidates.length === 0) throw new Error("No reviews with comments");
+  const candidateReview = candidates[Math.floor(Math.random() * candidates.length)]
+  return candidateReview.id;
+}
