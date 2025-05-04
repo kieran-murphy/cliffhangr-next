@@ -87,9 +87,11 @@ export async function getRandomShowToWatchlist(request: APIRequestContext) {
   const res = await request.get("/api/show");
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { shows } = await res.json();
-  const watchlist = await getTestUserWatchlist(request);
-  const candidates = shows.filter((s) => !watchlist.includes(s.id));
-  return candidates[Math.floor(Math.random() * candidates.length)].title;
+  const watchlistEntries = await getTestUserWatchlist(request);
+  const watchlistIds = watchlistEntries.map(entry => entry.showId);
+  const candidates = shows.filter(s => !watchlistIds.includes(s.id));
+  const pick = candidates[Math.floor(Math.random() * candidates.length)];
+  return pick.title;
 }
 
 export async function getRandomShowToUnwatchlist(request: APIRequestContext) {
