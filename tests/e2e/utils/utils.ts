@@ -1,8 +1,13 @@
 import { expect, Page } from '@playwright/test';
 import { testUser } from '../data/testuser';
 
+export function sleep(seconds: number) {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
+
 export const goToProfilePage = async (page: Page) => {
     page.getByRole('button', { name: testUser.username }).click()
+    await sleep(1);
     await expect(page.getByRole('button', { name: testUser.username })).toBeVisible();
 }
 

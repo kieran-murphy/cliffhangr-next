@@ -58,10 +58,15 @@ export async function getRandomUserToFollow(request: APIRequestContext) {
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { users } = await res.json();
   const following = await getTestUserFollowing(request);
+  const followedIds = new Set(following.map(f => f.followedBy.id));
   const candidates = users.filter(
-    (u) => u.username !== "testuser" && !following.includes(u.id)
+    u => u.username !== "testuser" && !followedIds.has(u.id)
   );
-  return candidates[Math.floor(Math.random() * candidates.length)].username;
+  if (candidates.length === 0) {
+    throw new Error("No users left to follow");
+  }
+  const pick = Math.floor(Math.random() * candidates.length);
+  return candidates[pick].username;
 }
 
 export async function getRandomUserToUnfollow(request: APIRequestContext) {
@@ -73,8 +78,9 @@ export async function getRandomShowToFavourite(request: APIRequestContext) {
   const res = await request.get("/api/show");
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { shows } = await res.json();
-  const favs = await getTestUserFavourites(request);
-  const candidates = shows.filter((s) => !favs.includes(s.id));
+  const favObjects = await getTestUserFavourites(request);
+  const favIds = new Set(favObjects.map(f => f.showId));
+  const candidates = shows.filter(s => !favIds.has(s.id));
   return candidates[Math.floor(Math.random() * candidates.length)].title;
 }
 
