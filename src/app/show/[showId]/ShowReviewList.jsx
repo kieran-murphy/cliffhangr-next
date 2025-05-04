@@ -42,7 +42,7 @@ const ShowReviewList = ({ user, show }) => {
       </div>
 
       <hr className="m-1 opacity-50" />
-      <div>
+      <div id="review-list">
         {show !== null &&
           (currentReviews.length > 0 ? (
             currentReviews.map((review) => (

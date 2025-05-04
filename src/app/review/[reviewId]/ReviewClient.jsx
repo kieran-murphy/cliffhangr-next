@@ -253,7 +253,7 @@ export default function ReviewClient({ review }) {
           {review.CommentOnReview.map((comment) => (
             <div className="w-full my-2" key={comment.id}>
               <div className="divider"></div>
-              <div className="flex flex-row place-content-between">
+              <div className="flex flex-row place-content-between" id="comment">
                 <div>
                   <Link href={`/user/${comment.userId}`}>
                     <h3 className="user">{comment.user.username}</h3>
