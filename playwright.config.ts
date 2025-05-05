@@ -7,6 +7,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const PLAYWRIGHT_HEADLESS = process.env.PLAYWRIGHT_HEADLESS !== 'false';
 
 export default defineConfig({
+    workers: 1,
     testDir: './tests',
     use: {
         colorScheme: 'dark',
