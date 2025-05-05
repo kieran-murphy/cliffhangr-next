@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation'
 import Link from "next/link";
+
 import DisplayRating from "@/components/DisplayRating";
 import "./Review.css";
 
@@ -31,6 +33,8 @@ export default function ReviewClient({ review }) {
 
   const { data: session } = useSession(); // Also get status to check loading state
   const user = session?.user || null; // Directly access user from session
+
+  const router = useRouter()
 
   useEffect(() => {
     if (user) {
@@ -122,7 +126,7 @@ export default function ReviewClient({ review }) {
       console.error("There was an error deleting the review", error);
       alert("There was an error deleting the review");
     }
-    window.location.reload();
+    router.push(`/show/${review.show.id}`);
   };
 
   // Handle loading and error states
