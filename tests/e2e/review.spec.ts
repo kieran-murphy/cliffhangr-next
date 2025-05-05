@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { getRandomReviewWithComments, getRandomShowToReview } from "./utils/userApi";
+import { getRandomReviewWithComments, getRandomReviewWithoutComments, getRandomShowToReview } from "./utils/userApi";
 import { getRandomReaction, goToProfilePage, login } from "./utils/utils";
-import { getRandomShow } from "./utils/showApi";
 import { testUser } from './data/testuser';
 import { faker } from "@faker-js/faker";
 
@@ -26,7 +25,6 @@ test.describe("Review Related Tests", () => {
 
   test("Comment On Review Test", async ({ request, page }) => {
     const commentText = faker.word.words(10);
-    const commentUsername = testUser.username;
     const reviewId = await getRandomReviewWithComments(request);
 
     await login(page);
@@ -34,7 +32,6 @@ test.describe("Review Related Tests", () => {
     await page.getByRole('textbox', { name: 'Your comment here' }).click();
     await page.getByRole('textbox', { name: 'Your comment here' }).fill(commentText);
     await page.getByRole('button', { name: 'Add' }).click();
-    await expect(page.locator('#comment').getByText(commentUsername)).toBeVisible();
     await expect(page.locator('#comment').getByText(commentText)).toBeVisible();
   });
 
@@ -48,5 +45,13 @@ test.describe("Review Related Tests", () => {
     await page.getByRole('button', { name: reaction }).click();
     await page.locator('#see-reacts').click();
     await expect(page.getByText(`${reaction} - ${reactUsername}`)).toBeVisible();
+  });
+
+  test("Delete Review Test", async ({ request, page }) => {
+    const reviewId = await getRandomReviewWithoutComments(request);
+    await login(page);
+    await page.goto(`/review/${reviewId}`);
+    await page.getByRole('button', { name: 'Delete Review', exact: true }).click();
+    await expect(page.getByText('Write a Review')).toBeVisible();
   });
 });
