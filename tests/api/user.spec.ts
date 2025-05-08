@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { getRandomUser } from "tests/e2e/utils/userApi";
 
-test.describe("Favourite Related Tests", () => {
+test.describe("User Related Tests", () => {
   test("GET /api/user", async ({ request }) => {
     const response = await request.get("/api/user");
     expect(response.ok()).toBeTruthy();
@@ -30,9 +29,9 @@ test.describe("Favourite Related Tests", () => {
     // 3. Make sure the payload matches what we pulled from the list
     const fetched = await userRequest.json();
     expect(fetched.user).toMatchObject({
-        id: randomUser.id,
-        username: randomUser.username,
-        email: randomUser.email,
-      })
+      id: randomUser.id,
+      username: randomUser.username,
+      email: randomUser.email,
+    })
   });
 });
