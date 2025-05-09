@@ -139,7 +139,7 @@ export default function ShowClient({ show, showId }) {
   const toggleWatchlist = async () => {
     if (alreadyInWatchlist) {
       try {
-        const response = await fetch("/api/watchlistShow", {
+        const response = await fetch("/api/watchlistshow", {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -150,12 +150,12 @@ export default function ShowClient({ show, showId }) {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error("There was an error deleting the favorite", error);
-        alert("There was an error deleting the favorite");
+        console.error("There was an error updating the watchlist", error);
+        alert("There was an error updating the watchlist");
       }
     } else {
       try {
-        const response = await fetch("/api/watchlistShow", {
+        const response = await fetch("/api/watchlistshow", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
