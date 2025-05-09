@@ -10,11 +10,9 @@ const handler = async (req, res) => {
     const WatchlistShowID = req.query.id;
     if (WatchlistShowID) {
       try {
-        const { WatchlistShow, error } = await getWatchlistShow(
-          WatchlistShowID
-        );
+        const { watchlistShow, error } = await getWatchlistShow(WatchlistShowID);
         if (error) throw new Error(error);
-        return res.status(200).json({ WatchlistShow });
+        return res.status(200).json({ watchlistShow });
       } catch (error) {
         return res.status(500).json({ error: error.message });
       }
