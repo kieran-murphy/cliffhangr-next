@@ -19,7 +19,6 @@
     "bcrypt": "^5.1.1",
     "daisyui": "^4.11.1",
     "dotenv": "^16.5.0",
-    "eslint": "8.46.0",
     "eslint-config-next": "^15.3.2",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
@@ -37,6 +36,7 @@
     "@faker-js/faker": "^8.0.2",
     "@playwright/test": "^1.52.0",
     "@types/react": "18.2.48",
+    "eslint": "^9.26.0",
     "postcss-nesting": "^13.0.1",
     "prisma": "^5.1.1"
   }
