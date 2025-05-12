@@ -18,6 +18,7 @@ export default function Home() {
       const RequestOptions = {
         method: "GET",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",   
       };
       // Encode the search term to handle special characters
       const encoded = encodeURIComponent(searchTerm)
