@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("User Related Tests", () => {
-  test("GET /api/user", async ({ request }) => {
-    const response = await request.get("/api/user");
+  test("GET /api/user", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/user");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("User Related Tests", () => {
     expect(body.count).toBe(body.users.length);
   });
 
-  test("GET /api/user/:id", async ({ request }) => {
+  test("GET /api/user/:id", async ({ authRequest }) => {
     // 1. Grab a random user
-    const res = await request.get('/api/user')
+    const res = await authRequest.get('/api/user')
     const { users } = await res.json()
     const randomUser = users[Math.floor(Math.random() * users.length)]
 
     // 2. Request that single user by id
-    const userRequest = await request.get(`/api/user?id=${randomUser.id}`);
+    const userRequest = await authRequest.get(`/api/user?id=${randomUser.id}`);
     expect(userRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list

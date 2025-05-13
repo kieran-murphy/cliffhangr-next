@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("Favorite Related Tests", () => {
-  test("GET /api/favoriteshow", async ({ request }) => {
-    const response = await request.get("/api/favoriteshow");
+  test("GET /api/favoriteshow", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/favoriteshow");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("Favorite Related Tests", () => {
     expect(body.count).toBe(body.favoriteShows.length);
   });
 
-  test("GET /api/favoriteshow/:id", async ({ request }) => {
+  test("GET /api/favoriteshow/:id", async ({ authRequest }) => {
     // 1. Grab a random favorite
-    const res = await request.get('/api/favoriteshow')
+    const res = await authRequest.get('/api/favoriteshow')
     const { favoriteShows } = await res.json()
     const randomFavorite = favoriteShows[Math.floor(Math.random() * favoriteShows.length)]
 
     // 2. Request that single favorite by id
-    const favoriteRequest = await request.get(`/api/favoriteshow?id=${randomFavorite.id}`);
+    const favoriteRequest = await authRequest.get(`/api/favoriteshow?id=${randomFavorite.id}`);
     expect(favoriteRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list

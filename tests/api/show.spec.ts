@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("Show Related Tests", () => {
-  test("GET /api/show", async ({ request }) => {
-    const response = await request.get("/api/show");
+  test("GET /api/show", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/show");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("Show Related Tests", () => {
     expect(body.count).toBe(body.shows.length);
   });
 
-  test("GET /api/show/:id", async ({ request }) => {
+  test("GET /api/show/:id", async ({ authRequest }) => {
     // 1. Grab a random show
-    const res = await request.get('/api/show')
+    const res = await authRequest.get('/api/show')
     const { shows } = await res.json()
     const randomShow = shows[Math.floor(Math.random() * shows.length)]
 
     // 2. Request that single show by id
-    const showRequest = await request.get(`/api/show?id=${randomShow.id}`);
+    const showRequest = await authRequest.get(`/api/show?id=${randomShow.id}`);
     expect(showRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list

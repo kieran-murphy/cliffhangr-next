@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("Follow Related Tests", () => {
-  test("GET /api/follow", async ({ request }) => {
-    const response = await request.get("/api/follow");
+  test("GET /api/follow", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/follow");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("Follow Related Tests", () => {
     expect(body.count).toBe(body.follows.length);
   });
 
-  test("GET /api/follow/:id", async ({ request }) => {
+  test("GET /api/follow/:id", async ({ authRequest }) => {
     // 1. Grab a random follow
-    const res = await request.get('/api/follow')
+    const res = await authRequest.get('/api/follow')
     const { follows } = await res.json()
     const randomFollow = follows[Math.floor(Math.random() * follows.length)]
 
     // 2. Request that single follow by id
-    const followRequest = await request.get(`/api/follow?id=${randomFollow.id}`);
+    const followRequest = await authRequest.get(`/api/follow?id=${randomFollow.id}`);
     expect(followRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list

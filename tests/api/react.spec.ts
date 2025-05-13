@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("React Related Tests", () => {
-  test("GET /api/reactonreview", async ({ request }) => {
-    const response = await request.get("/api/reactonreview");
+  test("GET /api/reactonreview", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/reactonreview");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("React Related Tests", () => {
     expect(body.count).toBe(body.reactOnReviews.length);
   });
 
-  test("GET /api/reactonreview/:id", async ({ request }) => {
+  test("GET /api/reactonreview/:id", async ({ authRequest }) => {
     // 1. Grab a random react
-    const res = await request.get('/api/reactonreview')
+    const res = await authRequest.get('/api/reactonreview')
     const { reactOnReviews: reacts } = await res.json()
     const randomreact = reacts[Math.floor(Math.random() * reacts.length)]
 
     // 2. Request that single react by id
-    const reactRequest = await request.get(`/api/reactonreview?id=${randomreact.id}`);
+    const reactRequest = await authRequest.get(`/api/reactonreview?id=${randomreact.id}`);
     expect(reactRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list

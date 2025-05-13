@@ -8,11 +8,11 @@ export async function middleware(req: NextRequest) {
     if (req.nextUrl.pathname.startsWith("/api/auth/")) {
         return NextResponse.next()
       }
-    // only protect your API routes
+    // Protect only API routes
     if (req.nextUrl.pathname.startsWith("/api/")) {
         const token = await getToken({ req, secret: SECRET })
         if (!token) {
-            // return a 401 JSON instead of redirecting
+            // Return a 401 JSON instead of redirecting
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
         }
     }
 
-    // for everything else, let it through
+    // For everything else, let it through
     return NextResponse.next()
 }
 

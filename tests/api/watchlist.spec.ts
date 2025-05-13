@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("Watchlist Related Tests", () => {
-  test("GET /api/watchlistshow", async ({ request }) => {
-    const response = await request.get("/api/watchlistshow");
+  test("GET /api/watchlistshow", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/watchlistshow");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("Watchlist Related Tests", () => {
     expect(body.count).toBe(body.watchlistShows.length);
   });
 
-  test("GET /api/watchlistshow/:id", async ({ request }) => {
+  test("GET /api/watchlistshow/:id", async ({ authRequest }) => {
     // 1. Grab a random watchlistShow
-    const res = await request.get('/api/watchlistshow')
+    const res = await authRequest.get('/api/watchlistshow')
     const { watchlistShows } = await res.json()
     const randomWatchlist = watchlistShows[Math.floor(Math.random() * watchlistShows.length)]
 
     // 2. Request that single watchlistShow by id
-    const watchlistRequest = await request.get(`/api/watchlistshow?id=${randomWatchlist.id}`);
+    const watchlistRequest = await authRequest.get(`/api/watchlistshow?id=${randomWatchlist.id}`);
     expect(watchlistRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list

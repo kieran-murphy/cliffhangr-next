@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 
 test.describe("Review Related Tests", () => {
-  test("GET /api/review", async ({ request }) => {
-    const response = await request.get("/api/review");
+  test("GET /api/review", async ({ authRequest }) => {
+    const response = await authRequest.get("/api/review");
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -16,14 +16,14 @@ test.describe("Review Related Tests", () => {
     expect(body.count).toBe(body.reviews.length);
   });
 
-  test("GET /api/review/:id", async ({ request }) => {
+  test("GET /api/review/:id", async ({ authRequest }) => {
     // 1. Grab a random review
-    const res = await request.get('/api/review')
+    const res = await authRequest.get('/api/review')
     const { reviews } = await res.json()
     const randomReview = reviews[Math.floor(Math.random() * reviews.length)]
 
     // 2. Request that single review by id
-    const reviewRequest = await request.get(`/api/review?id=${randomReview.id}`);
+    const reviewRequest = await authRequest.get(`/api/review?id=${randomReview.id}`);
     expect(reviewRequest.ok()).toBeTruthy();
 
     // 3. Make sure the payload matches what we pulled from the list
