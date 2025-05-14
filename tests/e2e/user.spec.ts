@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 import { goToProfilePage, login } from './utils/utils';
 import { testUser } from './data/testuser';
 import { faker } from "@faker-js/faker";

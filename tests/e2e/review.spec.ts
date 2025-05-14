@@ -1,12 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 import { getRandomReviewWithComments, getRandomReviewWithoutComments, getRandomShowToReview } from "./utils/userApi";
 import { getRandomReaction, goToProfilePage, login } from "./utils/utils";
 import { testUser } from './data/testuser';
 import { faker } from "@faker-js/faker";
 
 test.describe("Review Related Tests", () => {
-  test("Create Review Test", async ({ request, page }) => {
-    const showToSearch = await getRandomShowToReview(request);
+  test("Create Review Test", async ({ authRequest, page }) => {
+    const showToSearch = await getRandomShowToReview(authRequest);
 
     await login(page);
     await page.getByRole("link", { name: "See Shows" }).click();
@@ -23,9 +23,9 @@ test.describe("Review Related Tests", () => {
     await expect(page.getByRole("link", { name: showToSearch })).toBeVisible();
   });
 
-  test("Comment On Review Test", async ({ request, page }) => {
+  test("Comment On Review Test", async ({ authRequest, page }) => {
     const commentText = faker.word.words(10);
-    const reviewId = await getRandomReviewWithComments(request);
+    const reviewId = await getRandomReviewWithComments(authRequest);
 
     await login(page);
     await page.goto(`/review/${reviewId}`);
@@ -35,10 +35,10 @@ test.describe("Review Related Tests", () => {
     await expect(page.locator('#comment').getByText(commentText)).toBeVisible();
   });
 
-  test("React On Review Test", async ({ request, page }) => {
+  test("React On Review Test", async ({ authRequest, page }) => {
     const reaction = getRandomReaction();
     const reactUsername = testUser.username;
-    const reviewId = await getRandomReviewWithComments(request);
+    const reviewId = await getRandomReviewWithComments(authRequest);
 
     await login(page);
     await page.goto(`/review/${reviewId}`);
@@ -47,8 +47,8 @@ test.describe("Review Related Tests", () => {
     await expect(page.getByText(`${reaction} - ${reactUsername}`)).toBeVisible();
   });
 
-  test("Delete Review Test", async ({ request, page }) => {
-    const reviewId = await getRandomReviewWithoutComments(request);
+  test("Delete Review Test", async ({ authRequest, page }) => {
+    const reviewId = await getRandomReviewWithoutComments(authRequest);
     await login(page);
     await page.goto(`/review/${reviewId}`);
     await page.getByRole('button', { name: 'Delete Review', exact: true }).click();

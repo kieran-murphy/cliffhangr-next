@@ -1,11 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 import { login } from './utils/utils';
 import { getRandomUser } from './utils/userApi';
 import { getRandomShow } from './utils/showApi';
 
 test.describe('Search Related Tests', () => {
-  test('Search User Test', async ({ request, page }) => {
-    const searchUser = await getRandomUser(request);
+  test('Search User Test', async ({ authRequest, page }) => {
+    const searchUser = await getRandomUser(authRequest);
 
     await login(page);
     await page.getByRole('link', { name: 'See Users' }).click();
@@ -14,8 +14,8 @@ test.describe('Search Related Tests', () => {
     await expect(page.getByRole('link', { name: searchUser })).toBeVisible();
   });
 
-  test('Search Show Test', async ({ request, page }) => {
-    const searchShow = await getRandomShow(request);
+  test('Search Show Test', async ({ authRequest, page }) => {
+    const searchShow = await getRandomShow(authRequest);
 
     await login(page);
     await page.getByRole('link', { name: 'See Shows' }).click();

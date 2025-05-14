@@ -1,10 +1,10 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 import { getRandomShowToFavourite, getRandomShowToUnfavourite } from "./utils/userApi";
 import { goToProfilePage, login } from "./utils/utils";
 
 test.describe("Favourite Related Tests", () => {
-  test("Favourite Show Test", async ({ request, page }) => {
-    const showToSearch = await getRandomShowToFavourite(request);
+  test("Favourite Show Test", async ({ authRequest, page }) => {
+    const showToSearch = await getRandomShowToFavourite(authRequest);
 
     await login(page);
     await page.getByRole("link", { name: "See Shows" }).click();
@@ -18,8 +18,8 @@ test.describe("Favourite Related Tests", () => {
     await expect(page.getByRole("link", { name: showToSearch, exact: true })).toBeVisible();
   });
 
-  test("Unfavourite Show Test", async ({ request, page }) => {
-      const showToSearch = await getRandomShowToUnfavourite(request);
+  test("Unfavourite Show Test", async ({ authRequest, page }) => {
+      const showToSearch = await getRandomShowToUnfavourite(authRequest);
       await login(page);
       await goToProfilePage(page);
       await page.getByText('Favourites').click();

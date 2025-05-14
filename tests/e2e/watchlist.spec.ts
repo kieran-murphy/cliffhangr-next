@@ -1,10 +1,10 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 import { getRandomShowToWatchlist, getRandomShowToUnwatchlist } from "./utils/userApi";
 import { goToProfilePage, login } from "./utils/utils";
 
 test.describe("Watchlist Related Tests", () => {
-  test("Add Show To Watchlist Test", async ({ request, page }) => {
-    const showToSearch = await getRandomShowToWatchlist(request);
+  test("Add Show To Watchlist Test", async ({ authRequest, page }) => {
+    const showToSearch = await getRandomShowToWatchlist(authRequest);
 
     await login(page);
     await page.getByRole("link", { name: "See Shows" }).click();
@@ -18,8 +18,8 @@ test.describe("Watchlist Related Tests", () => {
     await expect(page.getByRole("link", { name: showToSearch, exact: true })).toBeVisible();
   });
 
-  test("Remove Show From Watchlist Test", async ({ request, page }) => {
-      const showToSearch = await getRandomShowToUnwatchlist(request);
+  test("Remove Show From Watchlist Test", async ({ authRequest, page }) => {
+      const showToSearch = await getRandomShowToUnwatchlist(authRequest);
       await login(page);
       await goToProfilePage(page);
       await page.getByText('Watchlist').click();

@@ -1,10 +1,10 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '../fixtures';
 import { goToProfilePage, login } from "./utils/utils";
 import { getRandomUserToFollow, getRandomUserToUnfollow } from "./utils/userApi";
 
 test.describe("Follow Related Tests", () => {
-  test("Follow User Test", async ({ request, page }) => {
-    const searchUser = await getRandomUserToFollow(request);
+  test("Follow User Test", async ({ authRequest, page }) => {
+    const searchUser = await getRandomUserToFollow(authRequest);
 
     await login(page);
     await page.getByRole("link", { name: "See Users" }).click();
@@ -18,8 +18,8 @@ test.describe("Follow Related Tests", () => {
     await expect(page.getByRole("link", { name: searchUser, exact: true })).toBeVisible();
   });
 
-  test("Unfollow User Test", async ({ request, page }) => {
-    const searchUser = await getRandomUserToUnfollow(request);
+  test("Unfollow User Test", async ({ authRequest, page }) => {
+    const searchUser = await getRandomUserToUnfollow(authRequest);
     await login(page);
     await goToProfilePage(page);
     await page.locator("#following").click();
