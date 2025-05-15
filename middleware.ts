@@ -8,6 +8,9 @@ export async function middleware(req: NextRequest) {
     if (req.nextUrl.pathname.startsWith("/api/auth/")) {
         return NextResponse.next()
       }
+    if (req.nextUrl.pathname === "/api/user" && req.method === "POST") {
+        return NextResponse.next()
+    }
     // Protect only API routes
     if (req.nextUrl.pathname.startsWith("/api/")) {
         const token = await getToken({ req, secret: SECRET })
