@@ -14,7 +14,7 @@
     "test:e2e": "npx playwright test tests/e2e"
   },
   "dependencies": {
-    "@prisma/client": "^5.1.1",
+    "@prisma/client": "^5.22.0",
     "autoprefixer": "^10.4.14",
     "bcrypt": "^5.1.1",
     "daisyui": "^4.11.1",
@@ -35,9 +35,13 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "@playwright/test": "^1.52.0",
-    "@types/react": "18.2.48",
+    "@types/bcrypt": "^5.0.2",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@types/react-stars": "^2.2.4",
     "eslint": "^9.26.0",
     "postcss-nesting": "^13.0.1",
-    "prisma": "^5.1.1"
+    "prisma": "^5.1.1",
+    "typescript": "^5.8.3"
   }
 }
