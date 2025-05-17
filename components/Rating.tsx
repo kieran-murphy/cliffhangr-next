@@ -1,10 +1,16 @@
 import React from "react";
 import ReactStars from "react-stars";
 
-const Rating = ({ reviewScore, setReviewScore }) => {
-  const ratingChanged = (newRating) => {
+type RatingProps = {
+  reviewScore: number;
+  setReviewScore: (newRating: number) => void;
+}
+
+const Rating = ({ reviewScore, setReviewScore }: RatingProps): React.JSX.Element => {
+  const ratingChanged = (newRating: number): void => {
     setReviewScore(newRating);
   };
+  
   return (
     <ReactStars
       count={5}

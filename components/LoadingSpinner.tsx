@@ -1,5 +1,6 @@
-// components/Spinner.js
-export default function LoadingSpinner() {
+import React from "react";
+
+const LoadingSpinner = (): React.JSX.Element => {
   return (
     <div
       style={{
@@ -13,3 +14,5 @@ export default function LoadingSpinner() {
     </div>
   );
 }
+
+export default LoadingSpinner;

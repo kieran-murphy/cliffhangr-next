@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 
-const UserSearchBar = ({ setSearchTerm }) => {
-  const [inputValue, setInputValue] = useState("");
+export interface UserSearchBarProps {
+  setSearchTerm: (term: string) => void;
+}
 
-  const handleInputChange = (event) => {
+const UserSearchBar = ({ setSearchTerm }: UserSearchBarProps): React.JSX.Element => {
+  const [inputValue, setInputValue] = useState<string>("");
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputValue(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    setSearchTerm(inputValue);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
+    setSearchTerm(inputValue);
   };
 
   return (

@@ -1,10 +1,12 @@
 import React from "react";
 import ReactStars from "react-stars";
 
-const DisplayRating = ({ rating, size }) => {
-  const ratingChanged = (newRating) => {
-    console.log(newRating);
-  };
+export interface DisplayRatingProps {
+  rating: number;
+  size: number;
+}
+
+const DisplayRating = ({ rating, size }: DisplayRatingProps): React.JSX.Element => {
   return (
     <div
       style={{
@@ -17,9 +19,8 @@ const DisplayRating = ({ rating, size }) => {
       <ReactStars
         count={5}
         value={rating}
-        onChange={ratingChanged}
         size={size}
-        color2={"#ffd700"}
+        color2="#ffd700"
         edit={false}
       />
     </div>
