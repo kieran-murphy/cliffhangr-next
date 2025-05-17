@@ -5,6 +5,9 @@
       "@/components/*": [
         "components/*"
       ],
+      "@/types/*": [
+        "types/*"
+      ],
       "@/context/*": [
         "src/context/*"
       ],
@@ -40,7 +43,7 @@
     ],
     "noEmit": true,
     "incremental": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "plugins": [
@@ -53,7 +56,10 @@
     "next-auth.d.ts",
     "next-env.d.ts",
     "src/**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "components/**/*",
+    "types/**/*",
+    "hooks/**/*",
   ],
   "exclude": [
     "node_modules",
