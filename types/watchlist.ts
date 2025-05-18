@@ -5,5 +5,5 @@ export type WatchlistItem = {
   userId: string;
   showId: string;
   createdAt: string;
-  show?: Show;
+  show: Show;
 };

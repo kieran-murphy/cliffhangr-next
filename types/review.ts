@@ -8,6 +8,6 @@ export type Review = {
   createdAt: string;
   userId: string;
   showId: string;
-  user?: Pick<User, "id" | "username">;
-  show?: Pick<Show, "id" | "title">;
+  user: User;
+  show: Show;
 };
