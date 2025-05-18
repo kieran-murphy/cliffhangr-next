@@ -1,11 +1,17 @@
 import React from "react";
 import SmallReview from "@/components/SmallReview";
 
-const Watchlist = ({ watchlist }) => {
+import type { WatchlistItem } from "@/types/watchlist";
+
+type WatchlistProps = {
+  watchlist: WatchlistItem[]
+}
+
+const Watchlist = ({ watchlist }: WatchlistProps): React.JSX.Element => {
   return (
     <div className="m-6 w-full">
       {watchlist.length !== 0 ? (
-        watchlist.map((w) => {
+        watchlist.map((w: WatchlistItem) => {
           return (
             <SmallReview show={w.show} key={w.show.id} />
           );

@@ -1,6 +1,13 @@
+import React from "react";
 import SmallReview from "@/components/SmallReview";
 
-const ProfileReviews = ({ reviews }) => {
+import type { Review } from "@/types/review";
+
+type ProfileReviewsProps = {
+  reviews: Review[];
+};
+
+const ProfileReviews = ({ reviews }: ProfileReviewsProps): React.JSX.Element => {
   return (
     <div className="m-6 w-full">
       {reviews.length !== 0 ? (

@@ -4,30 +4,42 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaRegCheckSquare } from "react-icons/fa";
 import Image from "next/image";
-
 import Favourites from "./Favourites";
 import ProfileReviews from "./ProfileReviews";
 import Watchlist from "./Watchlist";
 import SmallUser from "@/components/SmallUser";
 import { useUser } from "@/context/UserProvider";
 
-export default function User({ params }) {
-  const [user, setUser] = useState(null);
-  const [avgScore, setAvgScore] = useState(0);
-  const [isFollower, setIsFollower] = useState(false);
-  const [isFollowerID, setIsFollowerID] = useState(false);
-  const [showFollowers, setShowFollowers] = useState(false);
-  const [showFollowing, setShowFollowing] = useState(false);
-  const [isUser, setIsUser] = useState(false);
-  const [tab, setTab] = useState("profile");
-  const [editMode, setEditMode] = useState(false);
-  const [newUsername, setNewUsername] = useState("");
-  const [newImageUrl, setNewImageUrl] = useState("");
+import type { User as UserType } from "@/types/user";
+
+type UserProps = {
+  params: {
+    userId: string;
+  };
+}
+
+type Tab = "profile" | "reviews" | "watchlist" | "favourites";
+
+
+const UserPage = ({ params }: UserProps): React.JSX.Element => {
+  const [user, setUser] = useState<UserType | null>(null);
+  const [avgScore, setAvgScore] = useState<Number>(0);
+  const [isFollower, setIsFollower] = useState<boolean>(false);
+  const [isFollowerID, setIsFollowerID] = useState<string | null>(null);
+  const [showFollowers, setShowFollowers] = useState<boolean>(false);
+  const [showFollowing, setShowFollowing] = useState<boolean>(false);
+  const [isUser, setIsUser] = useState<boolean>(false);
+  const [tab, setTab] = useState<Tab>("profile");
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [newUsername, setNewUsername] = useState<string>("");
+  const [newImageUrl, setNewImageUrl] = useState<string>("");
 
   const { userInfo, setUserInfo } = useUser();
   const { userId } = params;
   const { data: session } = useSession();
   const sessionUserID = session?.user?.id || null;
+
+  const tabs: Tab[] = ["profile", "reviews", "favourites", "watchlist"];
 
   const fetchUser = async () => {
     try {
@@ -124,12 +136,12 @@ export default function User({ params }) {
           </div>
         </div>
         <div className="self-center flex flex-col">
-          <h1 className="text-xl font-bold ">{isUser ? userInfo.username : user.username}</h1>
+          <h1 className="text-xl font-bold ">{isUser ? userInfo?.username : user.username}</h1>
         </div>
       </div>
 
       <div className="flex place-content-center tabs tabs-boxed"  id="user-tabs">
-        {["profile", "reviews", "favourites", "watchlist"].map((t) => (
+        {tabs.map((t: Tab) => (
           <a
             key={t}
             id={t}
@@ -247,3 +259,5 @@ export default function User({ params }) {
     </div>
   );
 }
+
+export default UserPage;

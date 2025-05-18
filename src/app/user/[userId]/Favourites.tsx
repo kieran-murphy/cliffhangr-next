@@ -1,6 +1,13 @@
+import React from "react";
 import SmallReview from "@/components/SmallReview";
 
-const Favourites = ({ favourites }) => {
+import type { Favorite } from "@/types/favorite";
+
+type FavouritesProps = {
+  favourites: Favorite[];
+};
+
+const Favourites = ({ favourites }: FavouritesProps): React.JSX.Element => {
   return (
     <div className="m-6 w-full">
       {favourites.length !== 0 ? (
