@@ -53,7 +53,7 @@
     ]
   },
   "include": [
-    "next-auth.d.ts",
+    "types/next-auth.d.ts",
     "next-env.d.ts",
     "src/**/*",
     ".next/types/**/*.ts",
