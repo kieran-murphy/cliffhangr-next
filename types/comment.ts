@@ -6,5 +6,5 @@ export type Comment = {
   reviewId: string;
   text: string;
   createdAt: string;
-  user?: Pick<User, "id" | "username">;
+  user: Pick<User, "id" | "username">;
 };
