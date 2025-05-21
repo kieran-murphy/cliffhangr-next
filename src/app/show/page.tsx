@@ -1,57 +1,65 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
 import ShowListItem from "@/components/ShowListItem";
 import ShowSearchBar from "@/components/ShowSearchBar";
+import { getErrorMessage } from "@/utils/error";
 
-export default function Home() {
-  const [shows, setShows] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+import type { Show as ShowType } from "@/types/show";
+
+type ShowApiResponse = {
+  shows: ShowType[];
+};
+
+const ShowList = (): React.JSX.Element => {
+  const [shows, setShows] = useState<ShowType[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const showsPerPage = 8;
 
-  useEffect(() => {
-    let isMounted = true;
-    const getShows = async () => {
-      const RequestOptions = {
+useEffect(() => {
+  let isMounted = true;
+
+  const getShows = async (): Promise<ShowType[]> => {
+    try {
+      const encoded = encodeURIComponent(searchTerm);
+      const response = await fetch(`/api/show?search=${encoded}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      };
-      // Encode the search term to handle special characters
-      const encoded = encodeURIComponent(searchTerm)
-      const response = await fetch(
-        `/api/show?search=${encoded}`,
-        RequestOptions
-      );
+      });
+
       if (!response.ok) {
-        console.log(response);
+        const errorText = await response.text();
+        console.error("Fetch failed:", response.status, response.statusText, errorText);
+        return [];
       }
-      const data = await response.text();
-      try {
-        const f = JSON.parse(data);
-        return f.shows;
-      } catch (error) {
-        return error.message;
-      }
-    };
-    const fetchShows = async () => {
-      const shows = await getShows();
-      if (isMounted) {
-        setShows(shows);
-      }
-    };
-    fetchShows();
-    return () => {
-      isMounted = false;
-    };
-  }, [searchTerm]);
+
+      const data: ShowApiResponse = await response.json();
+      return data.shows;
+    } catch (error) {
+      console.error("Unexpected error fetching shows:", getErrorMessage(error));
+      return [];
+    }
+  };
+
+  const fetchShows = async () => {
+    const shows: ShowType[] = await getShows();
+    if (isMounted) {
+      setShows(shows);
+    }
+  };
+
+  fetchShows();
+  return () => {
+    isMounted = false;
+  };
+}, [searchTerm]);
+
 
   const indexOfLastShow = currentPage * showsPerPage;
   const indexOfFirstShow = indexOfLastShow - showsPerPage;
   const currentShows = shows.slice(indexOfFirstShow, indexOfLastShow);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const nextPage = () => {
     if (currentPage < Math.ceil(shows.length / showsPerPage)) {
       setCurrentPage(currentPage + 1);
@@ -67,7 +75,7 @@ export default function Home() {
     <div className="w-full md:w-1/2 mx-auto flex flex-col place-content-center">
       <ShowSearchBar setSearchTerm={setSearchTerm} />
       <div className="m-4">
-        {currentShows.map((show) => (
+        {currentShows.map((show: ShowType) => (
           <ShowListItem key={show.id} show={show} />
         ))}
       </div>
@@ -90,3 +98,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default ShowList;
