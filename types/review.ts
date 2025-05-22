@@ -5,12 +5,12 @@ import type { Comment } from "./comment";
 
 export type Review = {
   id: string;
-  text?: string;
+  text: string | null;
   rating: number;
-  createdAt: string;
+  createdAt: Date;
   userId: string;
   showId: string;
-  user: User;
+  user: Pick<User, "id" | "username">;
   show: Show;
   reactOnReviews: ReactOnReview[];
   CommentOnReview: Comment[];

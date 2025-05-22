@@ -5,6 +5,6 @@ export type Comment = {
   userId: string;
   reviewId: string;
   text: string;
-  createdAt: string;
+  createdAt: Date;
   user: Pick<User, "id" | "username">;
 };

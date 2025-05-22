@@ -5,6 +5,6 @@ export type ReactOnReview = {
   userId: string;
   reviewId: string;
   react: "LIKE" | "LOVE" | "LAUGH" | "WOW" | "ANGRY";
-  createdAt: string;
-  user: User;
+  createdAt: Date;
+  user: Pick<User, "id" | "username">;
 };

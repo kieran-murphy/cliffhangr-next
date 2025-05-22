@@ -4,16 +4,25 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
-
 import DisplayRating from "@/components/DisplayRating";
+import { getErrorMessage } from "@/utils/error";
 import "./Review.css";
 
-export default function ReviewClient({ review }) {
+import type { ReactOnReview } from "@/types/reactOnReview";
+import type { Review as ReviewType } from "@/types/review";
+
+type ReviewClientProps = {
+  review: ReviewType
+}
+
+type Reacts = "LIKE" | "LOVE" | "LAUGH" | "ANGRY" | "WOW" | null;
+
+const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
   const [commentText, setCommentText] = useState("");
   const [commentInput, setCommentInput] = useState(false);
   const [reactionsExpanded, setReactionsExpanded] = useState(false);
-  const [userReact, setUserReact] = useState(null);
-  const [userReactID, setUserReactID] = useState(null);
+  const [userReact, setUserReact] = useState<Reacts>(null);
+  const [userReactID, setUserReactID] = useState<string | null>(null);
 
   const emojiMap = {
     LIKE: "👍",
@@ -32,16 +41,15 @@ export default function ReviewClient({ review }) {
   };
 
   const { data: session } = useSession(); // Also get status to check loading state
-  const user = session?.user || null; // Directly access user from session
+  const sessionUserID = session?.user?.id || null;
 
   const router = useRouter()
 
   useEffect(() => {
-    if (user) {
+    if (sessionUserID) {
       if (review) {
-        const userId = user.id;
         const matchingReact = review.reactOnReviews.find(
-          (element) => element.userId === userId
+          (element: ReactOnReview) => element.userId === sessionUserID
         );
         if (matchingReact) {
           setUserReact(matchingReact.react);
@@ -49,13 +57,13 @@ export default function ReviewClient({ review }) {
         }
       }
     }
-  }, [review, user]);
+  }, [review, sessionUserID]);
 
-  function handleChange(event) {
-    setCommentText(event.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentText(e.target.value);
   }
 
-  const addReact = async (react) => {
+  const addReact = async (react: string) => {
     if (userReact) {
       try {
         await fetch("/api/reactonreview", {
@@ -66,8 +74,8 @@ export default function ReviewClient({ review }) {
           body: JSON.stringify({ reactOnReviewID: userReactID }),
         });
       } catch (error) {
-        console.error("There was an error deleting the review", error);
-        alert("There was an error deleting the review");
+        console.error("There was an error deleting the reaction", getErrorMessage(error));
+        alert("There was an error deleting the reaction");
       }
     }
     try {
@@ -78,20 +86,20 @@ export default function ReviewClient({ review }) {
         },
         body: JSON.stringify({
           reactOnReview: {
-            userId: user.id,
+            userId: sessionUserID,
             reviewId: review.id,
             react: react,
           },
         }),
       });
     } catch (error) {
-      console.error("There was an error adding the review", error);
-      alert("There was an error adding the review");
+      console.error("There was an error adding the reaction", getErrorMessage(error));
+      alert("There was an error adding the reaction");
     }
     window.location.reload();
   };
 
-  const addReviewComment = async (comment) => {
+  const addReviewComment = async (commentText: string) => {
     try {
       await fetch("/api/commentonreview", {
         method: "POST",
@@ -100,14 +108,14 @@ export default function ReviewClient({ review }) {
         },
         body: JSON.stringify({
           commentOnReview: {
-            userId: user.id,
+            userId: sessionUserID,
             reviewId: review.id,
-            text: comment,
+            text: commentText,
           },
         }),
       });
     } catch (error) {
-      console.error("There was an error adding the comment", error);
+      console.error("There was an error adding the comment", getErrorMessage(error));
       alert("There was an error adding the comment");
     }
     window.location.reload();
@@ -123,7 +131,7 @@ export default function ReviewClient({ review }) {
         body: JSON.stringify({ reviewID: review.id }),
       });
     } catch (error) {
-      console.error("There was an error deleting the review", error);
+      console.error("There was an error deleting the review", getErrorMessage(error));
       alert("There was an error deleting the review");
     }
     router.push(`/show/${review.show.id}`);
@@ -139,7 +147,7 @@ export default function ReviewClient({ review }) {
         <h3 className="text-2xl font-bold mr-4">
           {review.show?.title || "Title not available"}
         </h3>
-        <DisplayRating rating={review.rating} />
+        <DisplayRating rating={review.rating} size={10} />
       </div>
       <div className="divider"></div>
       <div>
@@ -156,7 +164,7 @@ export default function ReviewClient({ review }) {
         <div className="mt-4">
           {review.reactOnReviews.map((react, index) => {
             return (
-              <div key={`${react.user}-${index}`}>
+              <div key={react.id}>
                 {emojiMap[react.react]} - {react.user.username}
               </div>
             );
@@ -185,16 +193,6 @@ export default function ReviewClient({ review }) {
         }}
       >
         {Object.entries(reactsDict).map(([key, [label, emoji]]) =>
-          label === userReact ? (
-            <button
-              key={key}
-              onClick={() => deleteReact(label)}
-              className="btn text-xl mx-1"
-              style={{ boxShadow: "0 0 10px rgba(255, 255, 255, 0.2)" }}
-            >
-              {emoji}
-            </button>
-          ) : (
             <button
               key={key}
               onClick={() => addReact(label)}
@@ -202,7 +200,6 @@ export default function ReviewClient({ review }) {
             >
               {emoji}
             </button>
-          )
         )}
       </div>
 
@@ -242,7 +239,7 @@ export default function ReviewClient({ review }) {
               </button>
             </div>
           )}
-          {user.id === review.userId && (
+          {sessionUserID === review.userId && (
             <button
               className="btn btn-outline btn-error w-full my-4"
               onClick={() => {
@@ -290,3 +287,5 @@ export default function ReviewClient({ review }) {
     </div>
   );
 }
+
+export default ReviewClient;
