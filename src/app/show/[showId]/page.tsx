@@ -1,7 +1,13 @@
 import prisma from "@/lib/prisma";
 import ShowClient from "./ShowClient";
 
-export default async function Page({ params }) {
+type ShowPageProps = {
+  params: {
+    showId: string;
+  };
+}
+
+const ShowPage = async ({ params }: ShowPageProps): Promise<React.JSX.Element> => {
   const show = await prisma.show.findUnique({
     where: { id: params.showId },
     include: {
@@ -16,5 +22,11 @@ export default async function Page({ params }) {
     },
   });
 
-  return <ShowClient show={show} showId={params.showId} />;
+  if (!show) {
+    throw new Error(`Show with id=${params.showId} not found`);
+  }
+
+  return <ShowClient show={show} />;
 }
+
+export default ShowPage;

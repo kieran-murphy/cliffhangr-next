@@ -1,57 +1,56 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-
+import { ImClock, ImPencil, ImPlay, ImHeart, ImHeartBroken } from "react-icons/im";
 import Rating from "@/components/Rating";
 import ReviewConfirmation from "@/components/ReviewConfirmation";
-import ShowReviewList from "./ShowReviewList";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ShowReviewList from "./ShowReviewList";
 
-import {
-  ImClock,
-  ImPencil,
-  ImPlay,
-  ImHeart,
-  ImHeartBroken,
-} from "react-icons/im";
+import type { Show as ShowType } from "@/types/show";
 
-export default function ShowClient({ show, showId }) {
-  const [loading, setLoading] = useState(true);
-  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
-  const [confirm, setConfirm] = useState(false);
-  const [avgScore, setAvgScore] = useState(0.0);
-  const [alreadyFavorited, setAlreadyFavorited] = useState(false);
-  const [alreadyInWatchlist, setAlreadyInWatchlist] = useState(false);
-  const [userFavID, setUserFavID] = useState(null);
-  const [userWatchlistID, setUserWatchlistID] = useState(null);
-  const [reviewScore, setReviewScore] = useState(0);
-  const [reviewComment, setReviewComment] = useState("");
+type ShowClientProps = {
+  show: ShowType;
+}
 
-  const { data: session } = useSession(); // Also get status to check loading state
+const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [alreadyReviewed, setAlreadyReviewed] = useState<boolean>(false);
+  const [confirm, setConfirm] = useState<boolean>(false);
+  const [avgScore, setAvgScore] = useState<string>("0.0");
+  const [alreadyFavorited, setAlreadyFavorited] = useState<boolean>(false);
+  const [alreadyInWatchlist, setAlreadyInWatchlist] = useState<boolean>(false);
+  const [userFavID, setUserFavID] = useState<string | null>(null);
+  const [userWatchlistID, setUserWatchlistID] = useState<string | null>(null);
+  const [reviewScore, setReviewScore] = useState<number>(0);
+  const [reviewComment, setReviewComment] = useState<string>("");
 
-  const user = session?.user || null; // Directly access user from session
-  const userID = session?.user?.id || null; // Directly access ID from session
+  const { data: session } = useSession();
+  const user = session?.user || null;
+  const sessionUserID = session?.user?.id || null;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     checkReviewStatus();
     checkFavStatus();
     checkWatchlistStatus();
-  }, [show, userID]);
+  }, [show, sessionUserID]);
 
   useEffect(() => {
-    if (show) {
-      getAvgScore(show.reviews, setAvgScore);
-    }
+    if (show?.reviews?.length) {
+      const avg = (
+        show.reviews.reduce((sum, review) => sum + review.rating, 0) / show.reviews.length
+      ).toFixed(2);
+      setAvgScore(avg);
+    } 
   }, [show]);
 
   const checkReviewStatus = () => {
     if (show) {
-      if (userID) {
+      if (sessionUserID) {
         const matchingReview = show.reviews.find(
-          (element) => element.userId === userID
+          (element) => element.userId === sessionUserID
         );
         if (matchingReview) {
           setAlreadyReviewed(true);
@@ -64,9 +63,9 @@ export default function ShowClient({ show, showId }) {
 
   const checkFavStatus = () => {
     if (show) {
-      if (userID) {
+      if (sessionUserID) {
         const matchingFav = show.favoritedBy.find(
-          (element) => element.userId === userID
+          (element) => element.userId === sessionUserID
         );
         if (matchingFav) {
           setUserFavID(matchingFav.id);
@@ -80,9 +79,9 @@ export default function ShowClient({ show, showId }) {
 
   const checkWatchlistStatus = () => {
     if (show) {
-      if (userID) {
+      if (sessionUserID) {
         const matchingWatchlist = show.watchListedBy.find(
-          (element) => element.userId === userID
+          (element) => element.userId === sessionUserID
         );
         if (matchingWatchlist) {
           setUserWatchlistID(matchingWatchlist.id); // This will print the matching review object
@@ -120,8 +119,8 @@ export default function ShowClient({ show, showId }) {
           },
           body: JSON.stringify({
             favoriteShow: {
-              showId: showId,
-              userId: userID,
+              showId: show.id,
+              userId: sessionUserID,
             },
           }),
         });
@@ -162,8 +161,8 @@ export default function ShowClient({ show, showId }) {
           },
           body: JSON.stringify({
             watchlistShow: {
-              showId: showId,
-              userId: userID,
+              showId: show.id,
+              userId: sessionUserID,
             },
           }),
         });
@@ -178,15 +177,9 @@ export default function ShowClient({ show, showId }) {
     window.location.reload();
   };
 
-  const getAvgScore = (reviews) => {
-    let avg = reviews.reduce((r, c) => r + c.rating, 0) / reviews.length;
-    avg = avg.toFixed(2);
-    setAvgScore(avg);
-  };
-
-  const addReview = async (text, reviewScore, show, user) => {
+  const addReview = async (text: string, reviewScore: number, show: ShowType) => {
     const review = {
-      userId: user.id,
+      userId: sessionUserID,
       showId: show.id,
       title: show.title,
       rating: reviewScore,
@@ -215,12 +208,19 @@ export default function ShowClient({ show, showId }) {
       });
   };
 
-  const handleReviewChange = (event) => {
+  const handleReviewChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     setReviewComment(event.target.value);
   };
 
-
   if (!show) return <p>No show found!</p>;
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -257,7 +257,7 @@ export default function ShowClient({ show, showId }) {
               </a>
             </div>
           </div>
-          <p className=" my-8 italic font-light">{show.desc}</p>
+          {/* <p className=" my-8 italic font-light">{show.desc}</p> */}
           <div className="flex w-full place-content-center ">
             <div className="flex flex-col w-full place-content-between">
               {show.reviews.length > 0 ? (
@@ -360,7 +360,7 @@ export default function ShowClient({ show, showId }) {
                 className="btn btn-success mt-4"
                 htmlFor="my-modal"
                 onClick={async () => {
-                  await addReview(reviewComment, reviewScore, show, user);
+                  await addReview(reviewComment, reviewScore, show);
                   setReviewComment("");
                   setReviewScore(0);
                   window.location.reload();
@@ -375,3 +375,5 @@ export default function ShowClient({ show, showId }) {
     </div>
   );
 }
+
+export default ShowClient;

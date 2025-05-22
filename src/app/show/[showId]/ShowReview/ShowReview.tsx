@@ -1,9 +1,14 @@
 import Link from "next/link";
 import "./ShowReview.css";
 
-const ShowReview = ({ review }) => {
+import type { Review as ReviewType } from "@/types/review";
+
+type ShowReviewProps = {
+  review: ReviewType;
+}
+
+const ShowReview = ({ review }: ShowReviewProps): React.JSX.Element => {
   return (
-    review !== null && (
       <Link href={`/review/${review.id}`}>
         <div className="my-4 pt-1 h-10 button" id="review">
           <div className="btn modal-button flex flex-row place-content-between p-4">
@@ -12,8 +17,7 @@ const ShowReview = ({ review }) => {
           </div>
         </div>
       </Link>
-    )
-  );
+    );
 };
 
 export default ShowReview;

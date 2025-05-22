@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import ShowReview from "./ShowReview/ShowReview";
 
-const ShowReviewList = ({ user, show }) => {
-  const [sortedReviews, setSortedReviews] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+import { User as UserType } from "@/types/user";
+import { Show as ShowType } from "@/types/show";
+import { Review as ReviewType } from "@/types/review";
+
+type ShowReviewListProps = {
+  user: UserType;
+  show: ShowType;
+}
+
+const ShowReviewList = ({ user, show }: ShowReviewListProps): React.JSX.Element => {
+  const [sortedReviews, setSortedReviews] = useState<ReviewType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const reviewsPerPage = 8;
 
   useEffect(() => {
-    const sortingReviews = [...show.reviews].sort((a, b) => {
+    const sortingReviews: ReviewType[] = [...show.reviews].sort((a, b) => {
       if (a.userId === user.id) return -1;
       if (b.userId === user.id) return 1;
       return 0;
