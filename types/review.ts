@@ -1,6 +1,6 @@
 import type { User } from "./user";
 import type { Show } from "./show";
-import type { ReactOnReview } from "./react";
+import type { ReactOnReview } from "./reactOnReview";
 import type { Comment } from "./comment";
 
 export type Review = {
