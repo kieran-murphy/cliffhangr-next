@@ -2,18 +2,14 @@ import Providers from "./providers";
 import "./globals.css";
 
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import type { LayoutProps } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "cliffhangr",
   description: "The best place for your favourite TV shows",
 };
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
-
-const RootLayout = ({ children }: RootLayoutProps): React.JSX.Element => {
+const RootLayout = ({ children }: LayoutProps): React.JSX.Element => {
   return (
     <html lang="en">
       <head>

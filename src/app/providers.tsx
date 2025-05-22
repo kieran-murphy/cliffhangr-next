@@ -4,7 +4,9 @@ import { SessionProvider } from "next-auth/react";
 import MainLayout from "./layout/main-layout";
 import { UserProvider } from "@/context/UserProvider";
 
-export const Providers = ({ children }) => {
+import type { LayoutProps } from "@/types/common";
+
+const Providers = ({ children }: LayoutProps): React.JSX.Element => {
   return (
     <SessionProvider>
       <UserProvider>
@@ -13,3 +15,5 @@ export const Providers = ({ children }) => {
     </SessionProvider>
   );
 };
+
+export default Providers;
