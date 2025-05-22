@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-export default function Home() {
+const Home = (): React.JSX.Element => {
   const { data: session } = useSession();
-  const user = session?.user || null;
+  const user = session?.user;
 
-  if (user) {
+  if (!user) {
+    return <div>Please log in to see the content.</div>;
+  }
+
     return (
       <div className="flex flex-col p-4 sm:p-8">
         <h1 className="text-lg m-8 text-center">Welcome to cliffhangr!</h1>
@@ -39,7 +42,6 @@ export default function Home() {
         </div>
       </div>
     );
-  }
-
-  return <div>Please log in to see the content.</div>;
 }
+
+export default Home;
