@@ -1,10 +1,5 @@
-import type { User } from "./user";
+import { Prisma } from "@prisma/client";
 
-export type Comment = {
-  id: string;
-  userId: string;
-  reviewId: string;
-  text: string;
-  createdAt: Date;
-  user: Pick<User, "id" | "username">;
-};
+export type CommentType = Prisma.CommentOnReviewGetPayload<{
+  include: { user: true };
+}>;

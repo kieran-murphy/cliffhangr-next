@@ -1,9 +1,5 @@
-import type { Show } from "./show"
+import { Prisma } from "@prisma/client";
 
-export type Favorite = {
-  id: string;
-  userId: string;
-  showId: string;
-  createdAt: string;
-  show: Show;
-};
+export type FavoriteType = Prisma.FavoriteShowGetPayload<{
+  include: { show: true };
+}>;

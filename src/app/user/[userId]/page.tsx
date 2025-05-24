@@ -10,7 +10,7 @@ import Watchlist from "./Watchlist";
 import SmallUser from "@/components/SmallUser";
 import { useUser } from "@/context/UserProvider";
 
-import type { User as UserType } from "@/types/user";
+import type { UserType } from "@/types/user";
 
 type UserProps = {
   params: {

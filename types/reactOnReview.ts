@@ -1,10 +1,8 @@
-import type { User } from "./user";
+import { Prisma } from "@prisma/client"
 
-export type ReactOnReview = {
-  id: string;
-  userId: string;
-  reviewId: string;
-  react: "LIKE" | "LOVE" | "LAUGH" | "WOW" | "ANGRY";
-  createdAt: Date;
-  user: Pick<User, "id" | "username">;
-};
+export type ReactType = Prisma.ReactOnReviewGetPayload<{
+  include: {
+    user: true;
+  }; 
+}>;
+

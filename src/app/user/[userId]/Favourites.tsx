@@ -1,17 +1,17 @@
 import React from "react";
 import SmallReview from "@/components/SmallReview";
 
-import type { Favorite } from "@/types/favorite";
+import type { FavoriteType } from "@/types/favorite";
 
 type FavouritesProps = {
-  favourites: Favorite[];
+  favourites: FavoriteType[];
 };
 
 const Favourites = ({ favourites }: FavouritesProps): React.JSX.Element => {
   return (
     <div className="m-6 w-full">
       {favourites.length !== 0 ? (
-        favourites.map((fav) => (
+        favourites.map((fav: FavoriteType) => (
           <SmallReview show={fav.show} key={fav.show.id} />
         ))
       ) : (

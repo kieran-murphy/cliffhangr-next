@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-import type { Show } from "@/types/show";
+import type { ShowType } from "@/types/show";
 
 type SmallReviewProps = {
-  show: Show;
-}
+  show: Pick<ShowType, "id" | "title">;
+};
 
 const SmallReview = ({ show }: SmallReviewProps): React.JSX.Element => {
   return (

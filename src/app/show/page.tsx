@@ -5,7 +5,7 @@ import ShowListItem from "@/components/ShowListItem";
 import ShowSearchBar from "@/components/ShowSearchBar";
 import { getErrorMessage } from "@/utils/error";
 
-import type { Show as ShowType } from "@/types/show";
+import type { ShowType } from "@/types/show";
 
 type ShowApiResponse = {
   shows: ShowType[];

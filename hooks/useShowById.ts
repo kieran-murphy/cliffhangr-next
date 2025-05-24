@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import type { Show } from "@/types/show";
+import type { ShowType } from "@/types/show";
 
 export const useShowById = (showId: string) => {
-  const [show, setShow] = useState<Show | null>(null);
+  const [show, setShow] = useState<ShowType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

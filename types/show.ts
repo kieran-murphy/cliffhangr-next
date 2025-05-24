@@ -1,15 +1,20 @@
-import { Review } from './review';
-import { Favorite } from './favorite';
-import { WatchlistItem } from './watchlist';
+import { Prisma } from "@prisma/client";
 
-export type Show = {
-  id: string;
-  title: string;
-  image: string;
-  year: number;
-  seasons: number;
-  averageRating: number;
-  reviews: Review[];
-  favoritedBy: Favorite[];
-  watchListedBy: WatchlistItem[];
-};
+export type ShowType = Prisma.ShowGetPayload<{
+  include: {
+    reviews: {
+      include: {
+        user: true;
+        show: true;
+        reactOnReviews: {
+          include: { user: true };
+        };
+        CommentOnReview: {
+          include: { user: true };
+        };
+      };
+    };
+    favoritedBy: true;
+    watchListedBy: true;
+  };
+}>;

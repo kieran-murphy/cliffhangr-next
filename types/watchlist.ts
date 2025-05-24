@@ -1,9 +1,7 @@
-import type { Show } from "./show";
+import { Prisma } from "@prisma/client";
 
-export type WatchlistItem = {
-  id: string;
-  userId: string;
-  showId: string;
-  createdAt: string;
-  show: Show;
-};
+export type WatchlistItem = Prisma.WatchlistShowGetPayload<{
+  include: {
+    show: true;
+  };
+}>;

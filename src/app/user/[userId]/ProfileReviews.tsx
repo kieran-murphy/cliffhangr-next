@@ -1,10 +1,10 @@
 import React from "react";
 import SmallReview from "@/components/SmallReview";
 
-import type { Review } from "@/types/review";
+import type { ReviewType } from "@/types/review";
 
 type ProfileReviewsProps = {
-  reviews: Review[];
+  reviews: ReviewType[];
 };
 
 const ProfileReviews = ({ reviews }: ProfileReviewsProps): React.JSX.Element => {

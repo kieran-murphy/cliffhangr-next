@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import type { User } from "@/types/user";
+import type { UserType } from "@/types/user";
 
 export const useUserById = (userId: string) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

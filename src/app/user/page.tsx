@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import UserListItem from "@/components/UserListItem";
 import UserSearchBar from "@/components/UserSearchBar";
 
-import type { User as UserType } from "@/types/user";
+import type { UserType } from "@/types/user";
 
 const UserList = (): React.JSX.Element => {
   const [users, setUsers] = useState([]);

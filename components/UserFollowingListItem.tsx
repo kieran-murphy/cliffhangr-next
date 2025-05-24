@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useUserById } from "@/hooks/useUserById";
 
-import type { Follow } from "@/types/follow";
+import type { FollowType } from "@/types/follow";
 
 type UserFollowingListItemProps = {
-  follow: Follow;
+  follow: FollowType;
 };
 
 const UserFollowingListItem = ({ follow }: UserFollowingListItemProps): React.JSX.Element => {

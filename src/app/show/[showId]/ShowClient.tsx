@@ -9,7 +9,7 @@ import ReviewConfirmation from "@/components/ReviewConfirmation";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ShowReviewList from "./ShowReviewList";
 
-import type { Show as ShowType } from "@/types/show";
+import type { ShowType } from "@/types/show";
 
 type ShowClientProps = {
   show: ShowType;
@@ -27,9 +27,15 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
   const [reviewScore, setReviewScore] = useState<number>(0);
   const [reviewComment, setReviewComment] = useState<string>("");
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user = session?.user || null;
   const sessionUserID = session?.user?.id || null;
+
+  useEffect(() => {
+  if (status !== "loading" && show) {
+    setLoading(false);
+  }
+  }, [status, show]);
 
   useEffect(() => {
     checkReviewStatus();
@@ -326,7 +332,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
               </button>
             </div>
           </div>
-          {show.reviews ? <ShowReviewList user={user} show={show} /> : null}
+          {show.reviews ? <ShowReviewList sessionUserID={sessionUserID} show={show} /> : null}
         </div>
 
         {confirm ? <ReviewConfirmation setConfirm={setConfirm} /> : null}

@@ -9,18 +9,25 @@ type ShowPageProps = {
 
 const ShowPage = async ({ params }: ShowPageProps): Promise<React.JSX.Element> => {
   const show = await prisma.show.findUnique({
-    where: { id: params.showId },
-    include: {
-      reviews: {
-        include: {
-          reactOnReviews: true,
-          user: true,
-        }
+  where: { id: params.showId },
+  include: {
+    reviews: {
+      include: {
+        user: true,
+        show: true,
+        reactOnReviews: {
+          include: { user: true },
+        },
+        CommentOnReview: {
+          include: { user: true },
+        },
       },
-      favoritedBy: true,
-      watchListedBy: true,
     },
-  });
+    favoritedBy: true,
+    watchListedBy: true,
+  },
+});
+
 
   if (!show) {
     throw new Error(`Show with id=${params.showId} not found`);

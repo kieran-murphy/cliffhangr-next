@@ -1,9 +1,8 @@
-import type { User } from "./user";
+import { Prisma } from "@prisma/client";
 
-export type Follow = {
-  id: string;
-  followingId: string;
-  followerId: string;
-  followed: User;
-  followedBy: User;
-};
+export type FollowType = Prisma.FollowGetPayload<{
+  include: {
+    followed: true;
+    followedBy: true;
+  };
+}>;

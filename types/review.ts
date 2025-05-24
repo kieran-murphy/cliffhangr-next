@@ -1,17 +1,14 @@
-import type { User } from "./user";
-import type { Show } from "./show";
-import type { ReactOnReview } from "./reactOnReview";
-import type { Comment } from "./comment";
+import { Prisma } from "@prisma/client";
 
-export type Review = {
-  id: string;
-  text: string | null;
-  rating: number;
-  createdAt: Date;
-  userId: string;
-  showId: string;
-  user: Pick<User, "id" | "username">;
-  show: Show;
-  reactOnReviews: ReactOnReview[];
-  CommentOnReview: Comment[];
-};
+export type ReviewType = Prisma.ReviewGetPayload<{
+  include: {
+    user: true;
+    show: true;
+    reactOnReviews: {
+      include: { user: true };
+    };
+    CommentOnReview: {
+      include: { user: true };
+    };
+  }
+}>

@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
-import type { User } from "@/types/user";
+import type { UserType } from "@/types/user";
 
 type SmallUserProps = {
-  user: User;
+  user: Pick<UserType, "id" | "username">;
 }
 
 const SmallUser = ({ user }: SmallUserProps): React.JSX.Element => {

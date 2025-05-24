@@ -1,7 +1,7 @@
 import Link from "next/link";
 import "./ShowReview.css";
 
-import type { Review as ReviewType } from "@/types/review";
+import type { ReviewType } from "@/types/review";
 
 type ShowReviewProps = {
   review: ReviewType;

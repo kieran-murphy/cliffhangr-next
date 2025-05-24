@@ -4,10 +4,10 @@ import React from "react";
 import Link from "next/link";
 import { useUserById } from "@/hooks/useUserById";
 
-import type { Follow } from "@/types/follow";
+import type { FollowType } from "@/types/follow";
 
 type UserFollowerListItemProps = {
-  follow: Follow;
+  follow: FollowType;
 }
 
 const UserFollowerListItem = ({ follow }: UserFollowerListItemProps): React.JSX.Element => {

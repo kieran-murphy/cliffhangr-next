@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
-import type { User } from "@/types/user";
+import type { UserType } from "@/types/user";
 
 export interface UserListItemProps {
-  user: User
+  user: UserType
 }
 
 const UserListItem = ({ user }: UserListItemProps): React.JSX.Element => {

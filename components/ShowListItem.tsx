@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
-import type { Show } from "@/types/show";
+import type { ShowType } from "@/types/show";
 
 type ShowListItemProps = {
-  show: Show;
+  show: ShowType;
 }
 
 const ShowListItem = ({ show }: ShowListItemProps): React.JSX.Element => {

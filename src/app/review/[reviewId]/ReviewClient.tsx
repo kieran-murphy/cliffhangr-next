@@ -8,8 +8,8 @@ import DisplayRating from "@/components/DisplayRating";
 import { getErrorMessage } from "@/utils/error";
 import "./Review.css";
 
-import type { ReactOnReview } from "@/types/reactOnReview";
-import type { Review as ReviewType } from "@/types/review";
+import type { ReactType } from "@/types/reactOnReview";
+import type { ReviewType } from "@/types/review";
 
 type ReviewClientProps = {
   review: ReviewType
@@ -40,7 +40,7 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
     WOW: ["WOW", "😮"],
   };
 
-  const { data: session } = useSession(); // Also get status to check loading state
+  const { data: session } = useSession();
   const sessionUserID = session?.user?.id || null;
 
   const router = useRouter()
@@ -49,7 +49,7 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
     if (sessionUserID) {
       if (review) {
         const matchingReact = review.reactOnReviews.find(
-          (element: ReactOnReview) => element.userId === sessionUserID
+          (element) => element.userId === sessionUserID
         );
         if (matchingReact) {
           setUserReact(matchingReact.react);
@@ -162,7 +162,7 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
       <h3 className="text-md font-bold">Reacts</h3>
       {reactionsExpanded ? (
         <div className="mt-4">
-          {review.reactOnReviews.map((react, index) => {
+          {review.reactOnReviews.map((react) => {
             return (
               <div key={react.id}>
                 {emojiMap[react.react]} - {react.user.username}

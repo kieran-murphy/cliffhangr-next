@@ -4,9 +4,9 @@ import React from "react";
 import Link from "next/link";
 import { useShowById } from "@/hooks/useShowById";
 
-import type { Favorite } from "@/types/favorite";
+import type { FavoriteType } from "@/types/favorite";
 
-type UserFavoriteListItemProps = {favorite: Favorite};
+type UserFavoriteListItemProps = {favorite: FavoriteType};
 
 const UserFavoriteListItem = ({ favorite }: UserFavoriteListItemProps): React.JSX.Element => {
   const { show, loading, error } = useShowById(favorite.showId);

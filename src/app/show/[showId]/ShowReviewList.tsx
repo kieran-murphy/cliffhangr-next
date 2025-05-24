@@ -1,28 +1,27 @@
 import { useEffect, useState } from "react";
 import ShowReview from "./ShowReview/ShowReview";
 
-import { User as UserType } from "@/types/user";
-import { Show as ShowType } from "@/types/show";
-import { Review as ReviewType } from "@/types/review";
+import type { ShowType } from "@/types/show";
+import type { ReviewType } from "@/types/review";
 
 type ShowReviewListProps = {
-  user: UserType;
+  sessionUserID: string | null;
   show: ShowType;
 }
 
-const ShowReviewList = ({ user, show }: ShowReviewListProps): React.JSX.Element => {
+const ShowReviewList = ({ sessionUserID, show }: ShowReviewListProps): React.JSX.Element => {
   const [sortedReviews, setSortedReviews] = useState<ReviewType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const reviewsPerPage = 8;
 
   useEffect(() => {
     const sortingReviews: ReviewType[] = [...show.reviews].sort((a, b) => {
-      if (a.userId === user.id) return -1;
-      if (b.userId === user.id) return 1;
+      if (a.userId === sessionUserID) return -1;
+      if (b.userId === sessionUserID) return 1;
       return 0;
     });
     setSortedReviews(sortingReviews);
-  }, [user, show]);
+  }, [sessionUserID, show]);
 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
