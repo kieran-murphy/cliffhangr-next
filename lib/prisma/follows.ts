@@ -29,7 +29,7 @@ export async function getFollow(
       return { error: "Follow not found." };
     }
     return { follow };
-  } catch (error: any) {
+  } catch (error) {
     return { error: error.message ?? "Failed to get follow" };
   } finally {
     await prisma.$disconnect();
@@ -57,9 +57,7 @@ export async function deleteFollow(
   try {
     const follow = await prisma.follow.delete({ where: { id: followID } });
     return { follow };
-  } catch (error: any) {
-    return {
-      error: `Failed to delete follow with ID ${followID}: ${error.message ?? "Unknown error"}`,
-    };
+  } catch (error) {
+    return { error: error.message ?? "Failed to delete follow" };
   }
 }
