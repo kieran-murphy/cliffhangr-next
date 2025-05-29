@@ -3,7 +3,7 @@ import prisma from "./index";
 import type { CommentOnReview } from "@prisma/client";
 
 // Get all comments
-export async function getCommentOnReviews(): Promise<| { count?: number; commentOnReviews?: CommentOnReview[]; error?: string }> {
+export async function getCommentOnReviews(): Promise<{ count?: number; commentOnReviews?: CommentOnReview[]; error?: string }> {
   try {
     const commentOnReviewCount = await prisma.commentOnReview.count();
     const commentOnReviews = await prisma.commentOnReview.findMany();

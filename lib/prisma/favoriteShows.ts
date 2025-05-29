@@ -2,7 +2,7 @@ import prisma from "./index";
 import type { FavoriteShow } from "@prisma/client";
 
 // Get all favorites
-export async function getFavoriteShows(): Promise<| { count?: number; favoriteShows?: FavoriteShow[]; error?: string }> {
+export async function getFavoriteShows(): Promise<{ count?: number; favoriteShows?: FavoriteShow[]; error?: string }> {
   try {
     const favoriteShowCount = await prisma.favoriteShow.count();
     const favoriteShows = await prisma.favoriteShow.findMany();
