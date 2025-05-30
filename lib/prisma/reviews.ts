@@ -1,6 +1,9 @@
 import prisma from "./index";
 
-export async function getReviews() {
+import type { Review } from "@prisma/client";
+
+// Get all reviews
+export async function getReviews(): Promise<{ count?: number; reviews?: Review[]; error?: string }> {
   try {
     const reviewCount = await prisma.review.count();
     const reviews = await prisma.review.findMany({
@@ -14,13 +17,16 @@ export async function getReviews() {
       reviews: reviews,
     };
   } catch (error) {
-    return { error };
+    return { 
+      error: `Failed to get all reviews: ${error.message}`
+    };
   } finally {
     await prisma.$disconnect();
   }
 }
 
-export const getReview = async (reviewID) => {
+// Get a single review by ID
+export const getReview = async (reviewID: string): Promise<{ review?: Review; error?: string }> => {
   try {
     const review = await prisma.review.findUnique({
       where: {
@@ -36,59 +42,48 @@ export const getReview = async (reviewID) => {
     }
     return { review };
   } catch (error) {
-    return { error: error.message };
+    return {
+      error: `Failed to get review with ID ${reviewID}: ${error.message}`,
+    };  
   } finally {
     await prisma.$disconnect();
   }
 };
 
-export async function createReview(review) {
+// Create a review
+export async function createReview(review: Omit<Review, "id">): Promise<{ review?: Review; error?: string }> {
   try {
     const reviewFromDB = await prisma.review.create({
       data: review,
     });
     return { review: reviewFromDB };
   } catch (error) {
-    return { error };
+    return {
+      error: `Failed to create react: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
   }
 }
 
-export async function deleteReview(reviewID) {
+// Delete a review
+export async function deleteReview(reviewID: string): Promise<{ review?: Review; error?: string }> {
   try {
-    await prisma.$transaction(async (prisma) => {
-      // First, find all comments associated with the review
-      // const comments = await prisma.commentOnReview.findMany({
-      //   where: { reviewId: reviewID },
-      // });
-      // const commentIds = comments.map((comment) => comment.id);
-
-      // Delete ReactOnComment records associated with the found comments
-      // if (commentIds.length > 0) {
-      //   await prisma.reactOnComment.deleteMany({
-      //     where: { commentId: { in: commentIds } },
-      //   });
-      // }
-
-      // Delete the comments associated with the review
+    const review = await prisma.$transaction(async (prisma) => {
+      // Delete associated comments first
       await prisma.commentOnReview.deleteMany({
         where: { reviewId: reviewID },
       });
-
-      // Finally, delete the review itself
-      await prisma.review.delete({
+      // Delete and return the review itself
+      const deleted = await prisma.review.delete({
         where: { id: reviewID },
       });
+      return deleted;
     });
 
-    return {
-      review: `Review with ID ${reviewID} and all its related components were successfully deleted.`,
-      error: null,
-    };
+    return { review };
   } catch (error) {
     return {
-      review: null,
       error: `Failed to delete review with ID ${reviewID}: ${error.message}`,
     };
   }
