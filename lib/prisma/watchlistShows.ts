@@ -1,6 +1,9 @@
 import prisma from "./index";
 
-export async function getWatchlistShows() {
+import type { WatchlistShow } from "@prisma/client";
+
+// Get all watchlistShows
+export async function getWatchlistShows(): Promise<{ count?: number; watchlistShows?: WatchlistShow[]; error?: string; }> {
   try {
     const watchlistShowCount = await prisma.watchlistShow.count();
     const watchlistShows = await prisma.watchlistShow.findMany();
@@ -9,13 +12,16 @@ export async function getWatchlistShows() {
       watchlistShows: watchlistShows,
     };
   } catch (error) {
-    return { error };
+    return {
+      error: `Failed to get all watchlistShows: ${error.message}`
+    };
   } finally {
     await prisma.$disconnect();
   }
 }
 
-export const getWatchlistShow = async (watchlistShowID) => {
+// Get a single watchlistShow by ID
+export const getWatchlistShow = async (watchlistShowID: string): Promise<{ watchlistShow?: WatchlistShow; error?: string; }> => {
   try {
     const watchlistShow = await prisma.watchlistShow.findUnique({
       where: {
@@ -27,31 +33,37 @@ export const getWatchlistShow = async (watchlistShowID) => {
     }
     return { watchlistShow };
   } catch (error) {
-    return { error: error.message };
+    return {
+      error: `Failed to get watchlistShow with ID ${watchlistShowID}: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
   }
 };
 
-export async function createWatchlistShow(watchlistShow) {
+// Create a new watchlistShow
+export async function createWatchlistShow(watchlistShow: Omit<WatchlistShow, "id">): Promise<{ watchlistShow?: WatchlistShow; error?: string; }> {
   try {
     const watchlistShowFromDB = await prisma.watchlistShow.create({
       data: watchlistShow,
     });
-    return { watchlistShows: watchlistShowFromDB };
+    return { watchlistShow: watchlistShowFromDB };
   } catch (error) {
-    return { error };
+    return {
+      error: `Failed to create watchlistShow: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
   }
 }
 
-export async function deleteWatchlistShow(watchlistShowID) {
+// Delete a watchlistShow
+export async function deleteWatchlistShow(watchlistShowID: string): Promise<{ watchlistShow?: WatchlistShow; error?: string; }> {
   try {
     const watchlistShow = await prisma.watchlistShow.delete({
       where: { id: watchlistShowID },
     });
-    return watchlistShow;
+    return { watchlistShow } ;
   } catch (error) {
     return {
       error: `Failed to delete watchlistShow with ID ${watchlistShowID}: ${error.message}`,
