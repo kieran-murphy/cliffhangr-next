@@ -1,7 +1,10 @@
 import prisma from "./index";
 import bcrypt from "bcrypt";
 
-export async function getUsers() {
+import type { User } from "@prisma/client";
+
+// Get all users
+export async function getUsers(): Promise<{ count?: number; users?: User[]; error?: string }> {
   try {
     const userCount = await prisma.user.count();
     const users = await prisma.user.findMany({
@@ -20,13 +23,16 @@ export async function getUsers() {
       users: users,
     };
   } catch (error) {
-    return { error };
+    return {
+      error: `Failed to get all users: ${error.message}`
+    };
   } finally {
     await prisma.$disconnect();
-  }
-}
+  };
+};
 
-export const getUser = async (userID) => {
+// Get a single user by ID
+export const getUser = async (userID: string): Promise<{ user?: User; error?: string; }> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -45,8 +51,8 @@ export const getUser = async (userID) => {
         followers: {
           select: {
             id: true,
-            followingId: true,
             followerId: true,
+            followingId: true,
             followed: {
               select: {
                 id: true,
@@ -57,6 +63,9 @@ export const getUser = async (userID) => {
         },
         following: {
           select: {
+            id: true,
+            followerId: true,
+            followingId: true,
             followedBy: {
               select: {
                 id: true,
@@ -65,7 +74,6 @@ export const getUser = async (userID) => {
             },
           },
         },
-        
       },
     });
     if (!user) {
@@ -73,37 +81,22 @@ export const getUser = async (userID) => {
     }
     return { user };
   } catch (error) {
-    return { error: error.message };
+    return {
+      error: `Failed to get user with ID ${userID}: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
-  }
+  };
 };
 
-export const getUserForLogin = async (nameQuery) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        name: nameQuery,
-      },
-    });
-    if (!user) {
-      return { error: "User not found." };
-    }
-    return { user };
-  } catch (error) {
-    return { error: error.message };
-  } finally {
-    await prisma.$disconnect();
-  }
-};
-
-export const searchUsersByName = async (nameQuery) => {
+// Search users by name
+export const searchUsersByName = async (nameQuery: string): Promise<{ count?: Number; users?: User[]; error?: string; }> => {
   try {
     const users = await prisma.user.findMany({
       where: {
         username: {
           contains: nameQuery,
-          mode: "insensitive", // Case insensitive search
+          mode: "insensitive",
         },
       },
     });
@@ -117,13 +110,16 @@ export const searchUsersByName = async (nameQuery) => {
       users: users,
     };
   } catch (error) {
-    return { error: error.message };
+    return {
+      error: `Failed to search for ${nameQuery}: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
-  }
+  };
 };
 
-export async function createUser(user) {
+// Create a new user
+export async function createUser(user: Omit<User, "id" | "createdAt" | "updatedAt">): Promise<{ user?: User; error?: string; }> {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   user.password = hashedPassword;
 
@@ -133,42 +129,43 @@ export async function createUser(user) {
     });
     return { user: userFromDB };
   } catch (error) {
-    return { error };
+    return {
+      error: `Failed to create user: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
-  }
-}
+  };
+};
 
-export const updateUser = async (userID, data) => {
+// Update a user
+export const updateUser = async (userID: string, updateData: Partial<User>): Promise<{ user?: User; error?: string; }> => {
   try {
     const updatedUser = await prisma.user.update({
       where: { id: userID },
-      data: data,
+      data: updateData,
     });
-
-    if (!updatedUser) {
-      return { error: "User update failed." };
-    }
-
     return { user: updatedUser };
   } catch (error) {
-    return { error: error.message };
+    return {
+      error: `Failed to update user with ID ${userID}: ${error.message}`,
+    };
   } finally {
     await prisma.$disconnect();
-  }
+  };
 };
 
-export async function deleteUser(userID) {
+// Delete a user
+export async function deleteUser(userID: string): Promise<{ user?: User; error?: string; }> {
   try {
     const user = await prisma.user.delete({ where: { id: userID } });
     return {
       user: user,
-      error: null,
     };
   } catch (error) {
     return {
-      user: null,
       error: `Failed to delete user with ID ${userID}: ${error.message}`,
-    };
-  }
-}
+    } 
+  } finally {
+    await prisma.$disconnect();
+  };
+};

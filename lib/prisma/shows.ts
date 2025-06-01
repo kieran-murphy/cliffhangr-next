@@ -88,7 +88,7 @@ export async function createShow(show: Omit<Show, "id">): Promise<{ show?: Show;
     return { show: showFromDB };
   } catch (error) {
     return {
-      error: `Failed to create react: ${error.message}`,
+      error: `Failed to create show: ${error.message}`,
     };
   } finally {
     await prisma.$disconnect();
