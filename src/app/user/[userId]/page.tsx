@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaRegCheckSquare } from "react-icons/fa";
 import Image from "next/image";
+import { useUser } from "@/context/UserProvider";
 import Favourites from "./Favourites";
 import ProfileReviews from "./ProfileReviews";
 import Watchlist from "./Watchlist";
 import SmallUser from "@/components/SmallUser";
-import { useUser } from "@/context/UserProvider";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 import type { UserType } from "@/types/user";
 
@@ -120,7 +121,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
     setEditMode(false);
   };
 
-  if (!user) return <p>Loading...</p>;
+  if (!user) return <LoadingSpinner />;
 
   return (
     <div>
