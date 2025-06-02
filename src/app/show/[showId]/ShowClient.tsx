@@ -237,6 +237,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
           alt={show.title}
           width={500}
           height={200}
+          priority
         />
       </div>
       <div className="w-full md:w-1/2 mx-auto">

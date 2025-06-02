@@ -133,6 +133,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
               alt="profile"
               width={80}
               height={80}
+              priority
             />
           </div>
         </div>
