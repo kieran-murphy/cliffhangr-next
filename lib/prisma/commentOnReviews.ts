@@ -1,9 +1,13 @@
-import prisma from "./index";
+import prisma from './index';
 
-import type { CommentOnReview } from "@prisma/client";
+import type { CommentOnReview } from '@prisma/client';
 
 // Get all comments
-export async function getCommentOnReviews(): Promise<{ count?: number; commentOnReviews?: CommentOnReview[]; error?: string }> {
+export async function getCommentOnReviews(): Promise<{
+  count?: number;
+  commentOnReviews?: CommentOnReview[];
+  error?: string;
+}> {
   try {
     const commentOnReviewCount = await prisma.commentOnReview.count();
     const commentOnReviews = await prisma.commentOnReview.findMany();
@@ -21,7 +25,9 @@ export async function getCommentOnReviews(): Promise<{ count?: number; commentOn
 }
 
 // Get a single comment by ID
-export async function getCommentOnReview(commentOnReviewID: string): Promise<{ commentOnReview?: CommentOnReview; error?: string; }> {
+export async function getCommentOnReview(
+  commentOnReviewID: string
+): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
   try {
     const commentOnReview = await prisma.commentOnReview.findUnique({
       where: {
@@ -29,7 +35,7 @@ export async function getCommentOnReview(commentOnReviewID: string): Promise<{ c
       },
     });
     if (!commentOnReview) {
-      return { error: "CommentOnReview not found." };
+      return { error: 'CommentOnReview not found.' };
     }
     return { commentOnReview };
   } catch (error) {
@@ -39,10 +45,12 @@ export async function getCommentOnReview(commentOnReviewID: string): Promise<{ c
   } finally {
     await prisma.$disconnect();
   }
-};
+}
 
 // Create a comment
-export async function createCommentOnReview(commentOnReview: Omit<CommentOnReview, "id">): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
+export async function createCommentOnReview(
+  commentOnReview: Omit<CommentOnReview, 'id'>
+): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
   try {
     const commentOnReviewFromDB = await prisma.commentOnReview.create({
       data: commentOnReview,
@@ -58,7 +66,10 @@ export async function createCommentOnReview(commentOnReview: Omit<CommentOnRevie
 }
 
 // Update a comment
-export async function updateCommentOnReview(commentOnReviewID: string, updateData: Partial<CommentOnReview>): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
+export async function updateCommentOnReview(
+  commentOnReviewID: string,
+  updateData: Partial<CommentOnReview>
+): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
   try {
     const updatedCommentOnReview = await prisma.commentOnReview.update({
       where: {
@@ -77,7 +88,9 @@ export async function updateCommentOnReview(commentOnReviewID: string, updateDat
 }
 
 // Delete a comment by ID
-export async function deleteCommentOnReview(commentOnReviewID: string): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
+export async function deleteCommentOnReview(
+  commentOnReviewID: string
+): Promise<{ commentOnReview?: CommentOnReview; error?: string }> {
   try {
     const commentOnReview = await prisma.commentOnReview.delete({
       where: { id: commentOnReviewID },

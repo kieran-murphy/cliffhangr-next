@@ -3,10 +3,10 @@ import {
   getFavoriteShow,
   createFavoriteShow,
   deleteFavoriteShow,
-} from "@/lib/prisma/favoriteShows";
+} from '@/lib/prisma/favoriteShows';
 
 const handler = async (req, res) => {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const favoriteShowID = req.query.id;
     if (favoriteShowID) {
       try {
@@ -27,7 +27,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     try {
       const data = req.body.favoriteShow;
       const { favoriteShow, error } = await createFavoriteShow(data);
@@ -39,7 +39,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     try {
       const data = req.body.favoriteShowID;
       const { favoriteShow, error } = await deleteFavoriteShow(data);
@@ -51,7 +51,7 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+  res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 

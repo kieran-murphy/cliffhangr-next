@@ -1,9 +1,13 @@
-import prisma from "./index";
+import prisma from './index';
 
-import type { Review } from "@prisma/client";
+import type { Review } from '@prisma/client';
 
 // Get all reviews
-export async function getReviews(): Promise<{ count?: number; reviews?: Review[]; error?: string }> {
+export async function getReviews(): Promise<{
+  count?: number;
+  reviews?: Review[];
+  error?: string;
+}> {
   try {
     const reviewCount = await prisma.review.count();
     const reviews = await prisma.review.findMany({
@@ -17,8 +21,8 @@ export async function getReviews(): Promise<{ count?: number; reviews?: Review[]
       reviews: reviews,
     };
   } catch (error) {
-    return { 
-      error: `Failed to get all reviews: ${error.message}`
+    return {
+      error: `Failed to get all reviews: ${error.message}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -38,20 +42,22 @@ export const getReview = async (reviewID: string): Promise<{ review?: Review; er
       },
     });
     if (!review) {
-      return { error: "Review not found." };
+      return { error: 'Review not found.' };
     }
     return { review };
   } catch (error) {
     return {
       error: `Failed to get review with ID ${reviewID}: ${error.message}`,
-    };  
+    };
   } finally {
     await prisma.$disconnect();
   }
 };
 
 // Create a review
-export async function createReview(review: Omit<Review, "id">): Promise<{ review?: Review; error?: string }> {
+export async function createReview(
+  review: Omit<Review, 'id'>
+): Promise<{ review?: Review; error?: string }> {
   try {
     const reviewFromDB = await prisma.review.create({
       data: review,

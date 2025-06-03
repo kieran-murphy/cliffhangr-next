@@ -1,49 +1,48 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from 'next/navigation'
-import Link from "next/link";
-import DisplayRating from "@/components/DisplayRating";
-import { getErrorMessage } from "@/utils/error";
-import "./Review.css";
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import DisplayRating from '@/components/DisplayRating';
+import { getErrorMessage } from '@/utils/error';
+import './Review.css';
 
-import type { ReactType } from "@/types/reactOnReview";
-import type { ReviewType } from "@/types/review";
+import type { ReviewType } from '@/types/review';
 
 type ReviewClientProps = {
-  review: ReviewType
-}
+  review: ReviewType;
+};
 
-type Reacts = "LIKE" | "LOVE" | "LAUGH" | "ANGRY" | "WOW" | null;
+type Reacts = 'LIKE' | 'LOVE' | 'LAUGH' | 'ANGRY' | 'WOW' | null;
 
 const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
-  const [commentText, setCommentText] = useState("");
+  const [commentText, setCommentText] = useState('');
   const [commentInput, setCommentInput] = useState(false);
   const [reactionsExpanded, setReactionsExpanded] = useState(false);
   const [userReact, setUserReact] = useState<Reacts>(null);
   const [userReactID, setUserReactID] = useState<string | null>(null);
 
   const emojiMap = {
-    LIKE: "👍",
-    LOVE: "😍",
-    LAUGH: "😂",
-    WOW: "😮",
-    ANGRY: "😡",
+    LIKE: '👍',
+    LOVE: '😍',
+    LAUGH: '😂',
+    WOW: '😮',
+    ANGRY: '😡',
   };
 
   const reactsDict = {
-    LIKE: ["LIKE", "👍"],
-    LOVE: ["LOVE", "😍"],
-    LAUGH: ["LAUGH", "😂"],
-    ANGRY: ["ANGRY", "😡"],
-    WOW: ["WOW", "😮"],
+    LIKE: ['LIKE', '👍'],
+    LOVE: ['LOVE', '😍'],
+    LAUGH: ['LAUGH', '😂'],
+    ANGRY: ['ANGRY', '😡'],
+    WOW: ['WOW', '😮'],
   };
 
   const { data: session } = useSession();
   const sessionUserID = session?.user?.id || null;
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (sessionUserID) {
@@ -61,28 +60,28 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentText(e.target.value);
-  }
+  };
 
   const addReact = async (react: string) => {
     if (userReact) {
       try {
-        await fetch("/api/reactonreview", {
-          method: "DELETE",
+        await fetch('/api/reactonreview', {
+          method: 'DELETE',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ reactOnReviewID: userReactID }),
         });
       } catch (error) {
-        console.error("There was an error deleting the reaction", getErrorMessage(error));
-        alert("There was an error deleting the reaction");
+        console.error('There was an error deleting the reaction', getErrorMessage(error));
+        alert('There was an error deleting the reaction');
       }
     }
     try {
-      await fetch("/api/reactonreview", {
-        method: "POST",
+      await fetch('/api/reactonreview', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           reactOnReview: {
@@ -93,18 +92,18 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
         }),
       });
     } catch (error) {
-      console.error("There was an error adding the reaction", getErrorMessage(error));
-      alert("There was an error adding the reaction");
+      console.error('There was an error adding the reaction', getErrorMessage(error));
+      alert('There was an error adding the reaction');
     }
     window.location.reload();
   };
 
   const addReviewComment = async (commentText: string) => {
     try {
-      await fetch("/api/commentonreview", {
-        method: "POST",
+      await fetch('/api/commentonreview', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           commentOnReview: {
@@ -115,24 +114,24 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
         }),
       });
     } catch (error) {
-      console.error("There was an error adding the comment", getErrorMessage(error));
-      alert("There was an error adding the comment");
+      console.error('There was an error adding the comment', getErrorMessage(error));
+      alert('There was an error adding the comment');
     }
     window.location.reload();
   };
 
   const deleteReview = async () => {
     try {
-      await fetch("/api/review", {
-        method: "DELETE",
+      await fetch('/api/review', {
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ reviewID: review.id }),
       });
     } catch (error) {
-      console.error("There was an error deleting the review", getErrorMessage(error));
-      alert("There was an error deleting the review");
+      console.error('There was an error deleting the review', getErrorMessage(error));
+      alert('There was an error deleting the review');
     }
     router.push(`/show/${review.show.id}`);
   };
@@ -144,17 +143,13 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
   return (
     <div className="flex flex-col items-center m-4">
       <div className="flex flex-col items-center text-center">
-        <h3 className="text-2xl font-bold mr-4">
-          {review.show?.title || "Title not available"}
-        </h3>
+        <h3 className="text-2xl font-bold mr-4">{review.show?.title || 'Title not available'}</h3>
         <DisplayRating rating={review.rating} size={10} />
       </div>
       <div className="divider"></div>
       <div>
         <h3 className="text-left opacity-70 mb-2 italic">{review.user.username}:</h3>
-        <div className="text-left p-2 h-20 mx-auto card bg-base-200 rounded-lg">
-          {review.text}
-        </div>
+        <div className="text-left p-2 h-20 mx-auto card bg-base-200 rounded-lg">{review.text}</div>
       </div>
 
       <div className="divider"></div>
@@ -188,26 +183,20 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
       <div
         className="flex flex-row items-center"
         style={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: 'flex',
+          justifyContent: 'space-between',
         }}
       >
-        {Object.entries(reactsDict).map(([key, [label, emoji]]) =>
-            <button
-              key={key}
-              onClick={() => addReact(label)}
-              className="btn text-xl mx-1"
-            >
-              {emoji}
-            </button>
-        )}
+        {Object.entries(reactsDict).map(([key, [label, emoji]]) => (
+          <button key={key} onClick={() => addReact(label)} className="btn text-xl mx-1">
+            {emoji}
+          </button>
+        ))}
       </div>
 
       <div className="divider"></div>
       <br />
-      <h3 className="text-md font-bold">
-        {review.CommentOnReview.length} Comments
-      </h3>
+      <h3 className="text-md font-bold">{review.CommentOnReview.length} Comments</h3>
       {review.CommentOnReview.length === 0 ? (
         <div className="flex flex-col place-items-center">
           {commentInput ? (
@@ -231,10 +220,7 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
           ) : (
             <div>
               <h3 className="m-4 italic">No comments yet. Add one!</h3>
-              <button
-                className="btn w-full"
-                onClick={() => setCommentInput(true)}
-              >
+              <button className="btn w-full" onClick={() => setCommentInput(true)}>
                 +
               </button>
             </div>
@@ -286,6 +272,6 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
       )}
     </div>
   );
-}
+};
 
 export default ReviewClient;

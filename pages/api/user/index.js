@@ -5,10 +5,10 @@ import {
   createUser,
   updateUser,
   deleteUser,
-} from "@/lib/prisma/users";
+} from '@/lib/prisma/users';
 
 const handler = async (req, res) => {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const userID = req.query.id;
     const search = req.query.search;
     if (userID) {
@@ -39,7 +39,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     try {
       const data = req.body.user;
       const { user, error } = await createUser(data);
@@ -51,11 +51,11 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "PATCH") {
+  if (req.method === 'PATCH') {
     const { userID, data } = req.body;
 
     if (!userID) {
-      return res.status(400).json({ error: "userID is required." });
+      return res.status(400).json({ error: 'userID is required.' });
     }
 
     try {
@@ -68,7 +68,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     try {
       const data = req.body.userID;
       const { user, error } = await deleteUser(data);
@@ -80,7 +80,7 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+  res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 

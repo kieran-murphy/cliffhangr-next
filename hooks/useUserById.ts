@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import type { UserType } from "@/types/user";
+import type { UserType } from '@/types/user';
 
 export const useUserById = (userId: string) => {
   const [user, setUser] = useState<UserType | null>(null);
@@ -11,11 +11,11 @@ export const useUserById = (userId: string) => {
     const fetchUser = async () => {
       try {
         const response = await fetch(`/api/user?id=${userId}`);
-        if (!response.ok) throw new Error("Failed to fetch user");
+        if (!response.ok) throw new Error('Failed to fetch user');
         const data = await response.json();
         setUser(data.user);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error("Unknown error"));
+        setError(err instanceof Error ? err : new Error('Unknown error'));
       } finally {
         setLoading(false);
       }

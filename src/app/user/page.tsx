@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import UserListItem from "@/components/UserListItem";
-import UserSearchBar from "@/components/UserSearchBar";
+import React, { useEffect, useState } from 'react';
+import UserListItem from '@/components/UserListItem';
+import UserSearchBar from '@/components/UserSearchBar';
 
-import type { UserType } from "@/types/user";
+import type { UserType } from '@/types/user';
 
 const UserList = (): React.JSX.Element => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState<Error | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 8;
 
@@ -18,16 +18,16 @@ const UserList = (): React.JSX.Element => {
 
     const getUsers = async () => {
       // Encode the search term to handle special characters
-      const encoded = encodeURIComponent(searchTerm)
+      const encoded = encodeURIComponent(searchTerm);
       try {
         const response = await fetch(`/api/user?search=${encoded}`);
-        if (!response.ok) throw new Error("Failed to fetch search results");
+        if (!response.ok) throw new Error('Failed to fetch search results');
         const data = await response.text();
         const f = JSON.parse(data);
         return f.users;
       } catch (err) {
-        setError(err instanceof Error ? err : new Error("Unknown error"));
-      } 
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+      }
     };
 
     const fetchUsers = async () => {
@@ -60,7 +60,7 @@ const UserList = (): React.JSX.Element => {
     }
   };
 
-  if (error) return <p>Error: {error?.message ?? "User not found"}</p>;
+  if (error) return <p>Error: {error?.message ?? 'User not found'}</p>;
 
   return (
     <div className="w-full md:w-1/2 mx-auto flex flex-col place-content-center">
@@ -71,23 +71,19 @@ const UserList = (): React.JSX.Element => {
         ))}
       </div>
       <div className="flex flex-row place-content-between m-4">
-        <button
-          onClick={prevPage}
-          disabled={currentPage === 1}
-          className="btn mx-1"
-        >
-          {"< Prev"}
+        <button onClick={prevPage} disabled={currentPage === 1} className="btn mx-1">
+          {'< Prev'}
         </button>
         <button
           onClick={nextPage}
           disabled={currentPage === Math.ceil(users.length / usersPerPage)}
           className="btn mx-1"
         >
-          {"Next >"}
+          {'Next >'}
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default UserList;

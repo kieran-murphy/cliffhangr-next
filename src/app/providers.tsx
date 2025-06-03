@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { SessionProvider } from "next-auth/react";
-import Navbar from "./layout/navbar";
-import { UserProvider } from "@/context/UserProvider";
+import { SessionProvider } from 'next-auth/react';
+import Navbar from './layout/navbar';
+import { UserProvider } from '@/context/UserProvider';
 
-import type { LayoutProps } from "@/types/common";
+import type { LayoutProps } from '@/types/common';
 
 const Providers = ({ children }: LayoutProps): React.JSX.Element => {
   return (

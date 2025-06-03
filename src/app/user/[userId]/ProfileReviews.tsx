@@ -1,7 +1,7 @@
-import React from "react";
-import SmallReview from "@/components/SmallReview";
+import React from 'react';
+import SmallReview from '@/components/SmallReview';
 
-import type { ReviewType } from "@/types/review";
+import type { ReviewType } from '@/types/review';
 
 type ProfileReviewsProps = {
   reviews: ReviewType[];
@@ -12,12 +12,7 @@ const ProfileReviews = ({ reviews }: ProfileReviewsProps): React.JSX.Element => 
     <div className="m-6 w-full">
       {reviews.length !== 0 ? (
         reviews.map((review) => {
-          return (
-            <SmallReview
-              show={review.show}
-              key={review.show.id}
-            />
-          );
+          return <SmallReview show={review.show} key={review.show.id} />;
         })
       ) : (
         <h1 className="w-full text-center">No reviews yet</h1>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import type { ShowType } from "@/types/show";
+import type { ShowType } from '@/types/show';
 
 export const useShowById = (showId: string) => {
   const [show, setShow] = useState<ShowType | null>(null);
@@ -11,11 +11,11 @@ export const useShowById = (showId: string) => {
     const fetchShow = async () => {
       try {
         const response = await fetch(`/api/show?id=${showId}`);
-        if (!response.ok) throw new Error("Failed to fetch show");
+        if (!response.ok) throw new Error('Failed to fetch show');
         const data = await response.json();
         setShow(data.show);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error("Unknown error"));
+        setError(err instanceof Error ? err : new Error('Unknown error'));
       } finally {
         setLoading(false);
       }

@@ -16,8 +16,9 @@ npm run dev
 
 To connect the PostgreSQL server:
 
-Add the PostgreSQL url in the .env file as DATABASE_URL 
+Add the PostgreSQL url in the .env file as DATABASE_URL
 For example:
+
 ```bash
 DATABASE_URL="postgresql://testuser:password@localhost:5432/testdb?schema=public"
 ```
@@ -54,6 +55,7 @@ Before running any tests make sure the server is running.
 
 Before running any tests make sure to add the PLAYWRIGHT_HEADLESS variable in the .env file:
 For example:
+
 ```bash
 PLAYWRIGHT_HEADLESS=false
 ```

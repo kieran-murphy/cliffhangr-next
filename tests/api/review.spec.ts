@@ -1,26 +1,26 @@
 import { test, expect } from '../fixtures';
 
-test.describe("Review Related Tests", () => {
-  test("GET /api/review", async ({ authRequest }) => {
-    const response = await authRequest.get("/api/review");
+test.describe('Review Related Tests', () => {
+  test('GET /api/review', async ({ authRequest }) => {
+    const response = await authRequest.get('/api/review');
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
 
     // Basic checks
-    expect(body).toHaveProperty("count");
-    expect(body).toHaveProperty("reviews");
+    expect(body).toHaveProperty('count');
+    expect(body).toHaveProperty('reviews');
     expect(Array.isArray(body.reviews)).toBe(true);
 
     // Check count matches length of array
     expect(body.count).toBe(body.reviews.length);
   });
 
-  test("GET /api/review/:id", async ({ authRequest }) => {
+  test('GET /api/review/:id', async ({ authRequest }) => {
     // 1. Grab a random review
-    const res = await authRequest.get('/api/review')
-    const { reviews } = await res.json()
-    const randomReview = reviews[Math.floor(Math.random() * reviews.length)]
+    const res = await authRequest.get('/api/review');
+    const { reviews } = await res.json();
+    const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
 
     // 2. Request that single review by id
     const reviewRequest = await authRequest.get(`/api/review?id=${randomReview.id}`);
@@ -32,6 +32,6 @@ test.describe("Review Related Tests", () => {
       id: randomReview.id,
       text: randomReview.text,
       rating: randomReview.rating,
-    })
+    });
   });
 });

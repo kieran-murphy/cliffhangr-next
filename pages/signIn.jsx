@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signIn("credentials", {
-        callbackUrl: "/",
+      await signIn('credentials', {
+        callbackUrl: '/',
         email,
         password,
       });
     } catch (error) {
-      alert("signIn error = ", error);
+      alert('signIn error = ', error);
     }
   };
 
@@ -55,9 +55,7 @@ export default function Login() {
         <br />
         <span>Don&#39;t have an account? </span>
         <Link href="/register">
-          <span style={{ color: "teal", textDecoration: "underline" }}>
-            Register
-          </span>
+          <span style={{ color: 'teal', textDecoration: 'underline' }}>Register</span>
         </Link>
       </form>
     </div>

@@ -1,7 +1,7 @@
-import prisma from "./index";
-import bcrypt from "bcrypt";
+import prisma from './index';
+import bcrypt from 'bcrypt';
 
-import type { User } from "@prisma/client";
+import type { User } from '@prisma/client';
 
 // Get all users
 export async function getUsers(): Promise<{ count?: number; users?: User[]; error?: string }> {
@@ -24,15 +24,15 @@ export async function getUsers(): Promise<{ count?: number; users?: User[]; erro
     };
   } catch (error) {
     return {
-      error: `Failed to get all users: ${error.message}`
+      error: `Failed to get all users: ${error.message}`,
     };
   } finally {
     await prisma.$disconnect();
-  };
-};
+  }
+}
 
 // Get a single user by ID
-export const getUser = async (userID: string): Promise<{ user?: User; error?: string; }> => {
+export const getUser = async (userID: string): Promise<{ user?: User; error?: string }> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -77,7 +77,7 @@ export const getUser = async (userID: string): Promise<{ user?: User; error?: st
       },
     });
     if (!user) {
-      return { error: "User not found." };
+      return { error: 'User not found.' };
     }
     return { user };
   } catch (error) {
@@ -86,23 +86,25 @@ export const getUser = async (userID: string): Promise<{ user?: User; error?: st
     };
   } finally {
     await prisma.$disconnect();
-  };
+  }
 };
 
 // Search users by name
-export const searchUsersByName = async (nameQuery: string): Promise<{ count?: Number; users?: User[]; error?: string; }> => {
+export const searchUsersByName = async (
+  nameQuery: string
+): Promise<{ count?: number; users?: User[]; error?: string }> => {
   try {
     const users = await prisma.user.findMany({
       where: {
         username: {
           contains: nameQuery,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
     });
 
     if (!users) {
-      return { error: "No users found." };
+      return { error: 'No users found.' };
     }
 
     return {
@@ -115,11 +117,13 @@ export const searchUsersByName = async (nameQuery: string): Promise<{ count?: Nu
     };
   } finally {
     await prisma.$disconnect();
-  };
+  }
 };
 
 // Create a new user
-export async function createUser(user: Omit<User, "id" | "createdAt" | "updatedAt">): Promise<{ user?: User; error?: string; }> {
+export async function createUser(
+  user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<{ user?: User; error?: string }> {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   user.password = hashedPassword;
 
@@ -134,11 +138,14 @@ export async function createUser(user: Omit<User, "id" | "createdAt" | "updatedA
     };
   } finally {
     await prisma.$disconnect();
-  };
-};
+  }
+}
 
 // Update a user
-export const updateUser = async (userID: string, updateData: Partial<User>): Promise<{ user?: User; error?: string; }> => {
+export const updateUser = async (
+  userID: string,
+  updateData: Partial<User>
+): Promise<{ user?: User; error?: string }> => {
   try {
     const updatedUser = await prisma.user.update({
       where: { id: userID },
@@ -151,11 +158,11 @@ export const updateUser = async (userID: string, updateData: Partial<User>): Pro
     };
   } finally {
     await prisma.$disconnect();
-  };
+  }
 };
 
 // Delete a user
-export async function deleteUser(userID: string): Promise<{ user?: User; error?: string; }> {
+export async function deleteUser(userID: string): Promise<{ user?: User; error?: string }> {
   try {
     const user = await prisma.user.delete({ where: { id: userID } });
     return {
@@ -164,8 +171,8 @@ export async function deleteUser(userID: string): Promise<{ user?: User; error?:
   } catch (error) {
     return {
       error: `Failed to delete user with ID ${userID}: ${error.message}`,
-    } 
+    };
   } finally {
     await prisma.$disconnect();
-  };
-};
+  }
+}

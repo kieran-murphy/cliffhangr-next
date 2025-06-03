@@ -3,10 +3,10 @@ import {
   getWatchlistShow,
   createWatchlistShow,
   deleteWatchlistShow,
-} from "@/lib/prisma/watchlistShows";
+} from '@/lib/prisma/watchlistShows';
 
 const handler = async (req, res) => {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const WatchlistShowID = req.query.id;
     if (WatchlistShowID) {
       try {
@@ -27,7 +27,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     try {
       const data = req.body.watchlistShow;
       const { watchlistShow, error } = await createWatchlistShow(data);
@@ -39,7 +39,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     try {
       const data = req.body.WatchlistShowID;
       const { watchlistShow, error } = await deleteWatchlistShow(data);
@@ -51,7 +51,7 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+  res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 

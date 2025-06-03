@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { useUserById } from "@/hooks/useUserById";
+import React from 'react';
+import Link from 'next/link';
+import { useUserById } from '@/hooks/useUserById';
 
-import type { FollowType } from "@/types/follow";
+import type { FollowType } from '@/types/follow';
 
 type UserFollowingListItemProps = {
   follow: FollowType;
@@ -14,7 +14,7 @@ const UserFollowingListItem = ({ follow }: UserFollowingListItemProps): React.JS
   const { user, loading, error } = useUserById(follow.followerId);
 
   if (loading) return <p></p>;
-  if (error || !user) return <p>Error: {error?.message ?? "User not found"}</p>;
+  if (error || !user) return <p>Error: {error?.message ?? 'User not found'}</p>;
 
   return (
     <Link href={`/user/${user.id}`}>

@@ -1,9 +1,74 @@
 {
-    "users": [
-        {"name": "Steve", "age": 36, "following": [], "followers": [], "reviews": [], "favoriteReviews": [], "favoriteShows": [], "watchList": [], "profilePicture": "https://staticg.sportskeeda.com/editor/2022/03/8a925-16473693898539-1920.jpg", "bio": "this is a bio", "isAdmin": true, "password": ""},
-        {"name": "Bob", "age": 36, "following": [], "followers": [], "reviews": [], "favoriteReviews": [], "favoriteShows": [], "watchList": [], "profilePicture": "https://images.genius.com/2f7a910abff8cfdfdd91751a4edd6f2a.1000x1000x1.jpg", "bio": "this is a bio", "isAdmin": false, "password": ""},
-        {"name": "Jimmy", "age": 36, "following": [], "followers": [], "reviews": [], "favoriteReviews": [], "favoriteShows": [], "watchList": [], "profilePicture": "https://m.media-amazon.com/images/M/MV5BYzUzYmIyMzctZmI0Mi00MTMwLWIxYTQtOWVhMzhhZWMxOWRlXkEyXkFqcGdeQXVyNzU1NzE3NTg@._V1_QL75_UX500_CR0,47,500,281_.jpg", "bio": "this is a bio", "isAdmin": false, "password": ""},
-        {"name": "Tom", "age": 36, "following": [], "followers": [], "reviews": [], "favoriteReviews": [], "favoriteShows": [], "watchList": [], "profilePicture": "https://qph.cf2.quoracdn.net/main-qimg-35e00750379b74408850bc932c0e2d0b-pjlq", "bio": "this is a bio", "isAdmin": false, "password": ""},
-        {"name": "Igor", "age": 36, "following": [], "followers": [], "reviews": [], "favoriteReviews": [], "favoriteShows": [], "watchList": [], "profilePicture": "https://m.media-amazon.com/images/M/MV5BMTg5NzE2MzYzM15BMl5BanBnXkFtZTcwMDAzMjc3MQ@@._V1_.jpg", "bio": "this is a bio", "isAdmin": false, "password": ""}
-    ]
+  "users": [
+    {
+      "name": "Steve",
+      "age": 36,
+      "following": [],
+      "followers": [],
+      "reviews": [],
+      "favoriteReviews": [],
+      "favoriteShows": [],
+      "watchList": [],
+      "profilePicture": "https://staticg.sportskeeda.com/editor/2022/03/8a925-16473693898539-1920.jpg",
+      "bio": "this is a bio",
+      "isAdmin": true,
+      "password": ""
+    },
+    {
+      "name": "Bob",
+      "age": 36,
+      "following": [],
+      "followers": [],
+      "reviews": [],
+      "favoriteReviews": [],
+      "favoriteShows": [],
+      "watchList": [],
+      "profilePicture": "https://images.genius.com/2f7a910abff8cfdfdd91751a4edd6f2a.1000x1000x1.jpg",
+      "bio": "this is a bio",
+      "isAdmin": false,
+      "password": ""
+    },
+    {
+      "name": "Jimmy",
+      "age": 36,
+      "following": [],
+      "followers": [],
+      "reviews": [],
+      "favoriteReviews": [],
+      "favoriteShows": [],
+      "watchList": [],
+      "profilePicture": "https://m.media-amazon.com/images/M/MV5BYzUzYmIyMzctZmI0Mi00MTMwLWIxYTQtOWVhMzhhZWMxOWRlXkEyXkFqcGdeQXVyNzU1NzE3NTg@._V1_QL75_UX500_CR0,47,500,281_.jpg",
+      "bio": "this is a bio",
+      "isAdmin": false,
+      "password": ""
+    },
+    {
+      "name": "Tom",
+      "age": 36,
+      "following": [],
+      "followers": [],
+      "reviews": [],
+      "favoriteReviews": [],
+      "favoriteShows": [],
+      "watchList": [],
+      "profilePicture": "https://qph.cf2.quoracdn.net/main-qimg-35e00750379b74408850bc932c0e2d0b-pjlq",
+      "bio": "this is a bio",
+      "isAdmin": false,
+      "password": ""
+    },
+    {
+      "name": "Igor",
+      "age": 36,
+      "following": [],
+      "followers": [],
+      "reviews": [],
+      "favoriteReviews": [],
+      "favoriteShows": [],
+      "watchList": [],
+      "profilePicture": "https://m.media-amazon.com/images/M/MV5BMTg5NzE2MzYzM15BMl5BanBnXkFtZTcwMDAzMjc3MQ@@._V1_.jpg",
+      "bio": "this is a bio",
+      "isAdmin": false,
+      "password": ""
+    }
+  ]
 }

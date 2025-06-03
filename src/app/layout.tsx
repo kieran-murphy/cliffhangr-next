@@ -1,12 +1,12 @@
-import Providers from "./providers";
-import "./globals.css";
+import Providers from './providers';
+import './globals.css';
 
-import type { Metadata } from "next";
-import type { LayoutProps } from "@/types/common";
+import type { Metadata } from 'next';
+import type { LayoutProps } from '@/types/common';
 
 export const metadata: Metadata = {
-  title: "cliffhangr",
-  description: "The best place for your favourite TV shows",
+  title: 'cliffhangr',
+  description: 'The best place for your favourite TV shows',
 };
 
 const RootLayout = ({ children }: LayoutProps): React.JSX.Element => {
@@ -20,6 +20,6 @@ const RootLayout = ({ children }: LayoutProps): React.JSX.Element => {
       </body>
     </html>
   );
-}
+};
 
 export default RootLayout;

@@ -2,30 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/types/*": [
-        "types/*"
-      ],
-      "@/context/*": [
-        "src/context/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/public/*": [
-        "public/*"
-      ],
-      "@/utils/*": [
-        "utils/*"
-      ],
-      "@/hooks/*": [
-        "hooks/*"
-      ],
-      "@/data/*": [
-        "data/*"
-      ]
+      "@/components/*": ["components/*"],
+      "@/types/*": ["types/*"],
+      "@/context/*": ["src/context/*"],
+      "@/lib/*": ["lib/*"],
+      "@/public/*": ["public/*"],
+      "@/utils/*": ["utils/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/data/*": ["data/*"]
     },
     "target": "ES6",
     "module": "ESNext",
@@ -36,11 +20,7 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "checkJs": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "incremental": true,
     "moduleResolution": "bundler",
@@ -59,10 +39,7 @@
     ".next/types/**/*.ts",
     "components/**/*",
     "types/**/*",
-    "hooks/**/*",
+    "hooks/**/*"
   ],
-  "exclude": [
-    "node_modules",
-    ".next"
-  ]
+  "exclude": ["node_modules", ".next"]
 }

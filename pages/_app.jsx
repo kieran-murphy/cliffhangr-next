@@ -1,8 +1,8 @@
-import React from "react";
-import "../src/app/globals.css";
-import { SessionProvider } from "next-auth/react";
+import React from 'react';
+import '../src/app/globals.css';
+import { SessionProvider } from 'next-auth/react';
 
-import PagesLayout from "../components/PagesLayout"; // Adjust the path to your PagesLayout component
+import PagesLayout from '../components/PagesLayout'; // Adjust the path to your PagesLayout component
 
 function MyApp({ Component, pageProps }) {
   return (

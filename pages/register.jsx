@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,10 +20,10 @@ export default function Home() {
 
     if (password === confirmPassword) {
       try {
-        const response = await fetch("/api/user", {
-          method: "POST",
+        const response = await fetch('/api/user', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ user: formData }),
         });
@@ -32,20 +32,20 @@ export default function Home() {
         console.log(data);
 
         if (response.ok) {
-          alert("Successful registered");
-          setUsername("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
+          alert('Successful registered');
+          setUsername('');
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('');
         } else {
-          alert("Submission failed");
+          alert('Submission failed');
         }
       } catch (error) {
-        console.error("There was an error submitting the form data", error);
-        alert("There was an error submitting the form data");
+        console.error('There was an error submitting the form data', error);
+        alert('There was an error submitting the form data');
       }
     } else {
-      alert("Passwords dont match");
+      alert('Passwords dont match');
     }
   };
 
@@ -108,9 +108,7 @@ export default function Home() {
           <br />
           <span>Already have an account? </span>
           <Link href="/signIn">
-            <span style={{ color: "teal", textDecoration: "underline" }}>
-              Login
-            </span>
+            <span style={{ color: 'teal', textDecoration: 'underline' }}>Login</span>
           </Link>
         </div>
       </form>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type ReviewConfirmationProps = {
   setConfirm: (value: boolean) => void;

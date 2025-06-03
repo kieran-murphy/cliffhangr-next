@@ -1,7 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
-const { faker } = require("@faker-js/faker");
+const { PrismaClient } = require('@prisma/client');
+const { faker } = require('@faker-js/faker');
 
-const showsData = require("../data/shows.json");
+const showsData = require('../data/shows.json');
 
 const prisma = new PrismaClient();
 
@@ -23,7 +23,7 @@ const populateUsers = async () => {
   for (let i = 0; i < userCount; i++) {
     const username = generateUniqueUsername();
     const email = `${username}@cliffhangr.com`;
-    const password = "password";
+    const password = 'password';
 
     users.push({
       username: username,
@@ -34,27 +34,27 @@ const populateUsers = async () => {
 
   // Add test user for development purposes
   users.push({
-    username: "testuser",
-    email: "testuser@cliffhangr.com",
-    password: "password",
+    username: 'testuser',
+    email: 'testuser@cliffhangr.com',
+    password: 'password',
   });
 
   try {
     for (let user of users) {
       try {
-        await fetch("http://localhost:3000/api/user", {
-          method: "POST",
+        await fetch('http://localhost:3000/api/user', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ user: user }),
         });
       } catch (error) {
-        console.error("Fetch error:", error);
+        console.error('Fetch error:', error);
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
@@ -80,7 +80,7 @@ const populateFollows = async () => {
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
@@ -90,14 +90,14 @@ const populateShows = async () => {
       await prisma.show.create({
         data: {
           title: show.title,
-          image: "/images/" + show.img,
+          image: '/images/' + show.img,
           year: show.year,
           seasons: show.seasons,
         },
       });
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
@@ -126,7 +126,7 @@ const populateFavorites = async () => {
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
@@ -155,7 +155,7 @@ const populateWatchlists = async () => {
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
@@ -193,7 +193,7 @@ const populateReviews = async () => {
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
@@ -221,13 +221,13 @@ const populateComments = async () => {
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 
 const populateReactOnReviews = async () => {
   const reviewIds = [];
-  const reacts = ["LIKE", "LOVE", "LAUGH", "WOW", "ANGRY"];
+  const reacts = ['LIKE', 'LOVE', 'LAUGH', 'WOW', 'ANGRY'];
 
   const users = await prisma.user.findMany();
   const reviews = await prisma.review.findMany();
@@ -255,7 +255,7 @@ const populateReactOnReviews = async () => {
       }
     }
   } catch (error) {
-    console.error("Error seeding the database:", error);
+    console.error('Error seeding the database:', error);
   }
 };
 

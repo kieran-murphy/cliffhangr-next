@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { useShowById } from "@/hooks/useShowById";
+import React from 'react';
+import Link from 'next/link';
+import { useShowById } from '@/hooks/useShowById';
 
-import type { FavoriteType } from "@/types/favorite";
+import type { FavoriteType } from '@/types/favorite';
 
-type UserFavoriteListItemProps = {favorite: FavoriteType};
+type UserFavoriteListItemProps = { favorite: FavoriteType };
 
 const UserFavoriteListItem = ({ favorite }: UserFavoriteListItemProps): React.JSX.Element => {
   const { show, loading, error } = useShowById(favorite.showId);
 
   if (loading) return <p></p>;
-  if (error || !show) return <p>Error: {error?.message ?? "Show not found"}</p>;
+  if (error || !show) return <p>Error: {error?.message ?? 'Show not found'}</p>;
 
   return (
     <Link href={`/show/${show.id}`}>

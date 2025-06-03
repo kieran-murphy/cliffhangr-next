@@ -1,46 +1,45 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { FaRegCheckSquare } from "react-icons/fa";
-import Image from "next/image";
-import { useUser } from "@/context/UserProvider";
-import Favourites from "./Favourites";
-import ProfileReviews from "./ProfileReviews";
-import Watchlist from "./Watchlist";
-import SmallUser from "@/components/SmallUser";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { FaRegCheckSquare } from 'react-icons/fa';
+import Image from 'next/image';
+import { useUser } from '@/context/UserProvider';
+import Favourites from './Favourites';
+import ProfileReviews from './ProfileReviews';
+import Watchlist from './Watchlist';
+import SmallUser from '@/components/SmallUser';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
-import type { UserType } from "@/types/user";
+import type { UserType } from '@/types/user';
 
 type UserProps = {
   params: {
     userId: string;
   };
-}
+};
 
-type Tab = "profile" | "reviews" | "watchlist" | "favourites";
-
+type Tab = 'profile' | 'reviews' | 'watchlist' | 'favourites';
 
 const UserPage = ({ params }: UserProps): React.JSX.Element => {
   const [user, setUser] = useState<UserType | null>(null);
-  const [avgScore, setAvgScore] = useState<Number>(0);
+  const [avgScore, setAvgScore] = useState<number>(0);
   const [isFollower, setIsFollower] = useState<boolean>(false);
   const [isFollowerID, setIsFollowerID] = useState<string | null>(null);
   const [showFollowers, setShowFollowers] = useState<boolean>(false);
   const [showFollowing, setShowFollowing] = useState<boolean>(false);
   const [isUser, setIsUser] = useState<boolean>(false);
-  const [tab, setTab] = useState<Tab>("profile");
+  const [tab, setTab] = useState<Tab>('profile');
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [newUsername, setNewUsername] = useState<string>("");
-  const [newImageUrl, setNewImageUrl] = useState<string>("");
+  const [newUsername, setNewUsername] = useState<string>('');
+  const [newImageUrl, setNewImageUrl] = useState<string>('');
 
   const { userInfo, setUserInfo } = useUser();
   const { userId } = params;
   const { data: session } = useSession();
   const sessionUserID = session?.user?.id || null;
 
-  const tabs: Tab[] = ["profile", "reviews", "favourites", "watchlist"];
+  const tabs: Tab[] = ['profile', 'reviews', 'favourites', 'watchlist'];
 
   const fetchUser = async () => {
     try {
@@ -48,7 +47,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
       const data = await res.json();
       setUser(data.user);
     } catch (err) {
-      console.error("Failed to fetch user", err);
+      console.error('Failed to fetch user', err);
     }
   };
 
@@ -60,32 +59,27 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
     if (!user) return;
     if (!userInfo) return;
 
-    const matchingFollow = user.followers.find(
-      (f) => f.followerId === sessionUserID
-    );
+    const matchingFollow = user.followers.find((f) => f.followerId === sessionUserID);
     setIsFollower(!!matchingFollow);
     setIsFollowerID(matchingFollow?.id || null);
 
     setIsUser(userInfo.id === userId);
 
-    const totalRating = user.writtenReviews.reduce(
-      (sum, r) => sum + r.rating,
-      0
-    );
+    const totalRating = user.writtenReviews.reduce((sum, r) => sum + r.rating, 0);
     setAvgScore(user.writtenReviews.length ? totalRating / user.writtenReviews.length : 0);
   }, [user, userInfo]);
 
   useEffect(() => {
     if (editMode && user) {
       setNewUsername(user.username);
-      setNewImageUrl(user.imageUrl || "");
+      setNewImageUrl(user.imageUrl || '');
     }
   }, [editMode, user]);
 
   const follow = async () => {
-    await fetch("/api/follow", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetch('/api/follow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         follow: {
           followerId: sessionUserID,
@@ -97,18 +91,18 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
   };
 
   const unfollow = async () => {
-    await fetch("/api/follow", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+    await fetch('/api/follow', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ followID: isFollowerID }),
     });
     fetchUser();
   };
 
   const updateProfile = async () => {
-    await fetch("/api/user", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+    await fetch('/api/user', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         userID: userId,
         data: { username: newUsername, imageUrl: newImageUrl },
@@ -117,7 +111,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
     const res = await fetch(`/api/user?id=${userId}`);
     const updated = await res.json();
     setUserInfo(updated.user);
-    setNewUsername(updated.user.username)
+    setNewUsername(updated.user.username);
     setEditMode(false);
   };
 
@@ -129,7 +123,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
         <div className="avatar my-8 mx-4">
           <div className="w-20 rounded-full ring ring-slate-400 ring-offset-base-100 ring-offset-2">
             <Image
-              src={user.imageUrl || "/images/profile.png"}
+              src={user.imageUrl || '/images/profile.png'}
               alt="profile"
               width={80}
               height={80}
@@ -142,12 +136,12 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
         </div>
       </div>
 
-      <div className="flex place-content-center tabs tabs-boxed"  id="user-tabs">
+      <div className="flex place-content-center tabs tabs-boxed" id="user-tabs">
         {tabs.map((t: Tab) => (
           <a
             key={t}
             id={t}
-            className={`tab ${tab === t ? "tab-active" : ""}`}
+            className={`tab ${tab === t ? 'tab-active' : ''}`}
             onClick={() => setTab(t)}
           >
             {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -156,14 +150,14 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
       </div>
 
       <div className="w-full md:w-1/2 mx-auto flex place-content-center">
-        {tab === "profile" ? (
+        {tab === 'profile' ? (
           <div className="flex flex-col w-full place-content-center">
             {!editMode ? (
               <>
                 {!isUser ? (
                   <div className="flex place-content-center mx-6 mt-6">
                     <button
-                      className={`btn w-full ${isFollower ? "" : "btn-info"}`}
+                      className={`btn w-full ${isFollower ? '' : 'btn-info'}`}
                       onClick={isFollower ? unfollow : follow}
                     >
                       {isFollower ? (
@@ -171,27 +165,22 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
                           Following <FaRegCheckSquare className="ml-2" />
                         </>
                       ) : (
-                        "Follow +"
+                        'Follow +'
                       )}
                     </button>
                   </div>
                 ) : (
                   <div className="flex place-content-center mx-6 mt-6">
-                    <button
-                      className="btn btn-secondary w-full"
-                      onClick={() => setEditMode(true)}
-                    >
+                    <button className="btn btn-secondary w-full" onClick={() => setEditMode(true)}>
                       Edit my profile
                     </button>
                   </div>
                 )}
 
                 <div className="stats stats-vertical shadow text-center m-6 bg-base-200">
-                  <div className="stat" onClick={() => setTab("reviews")}>
+                  <div className="stat" onClick={() => setTab('reviews')}>
                     <div className="stat-title">Reviews</div>
-                    <div className="stat-value text-success">
-                      {user.writtenReviews.length}
-                    </div>
+                    <div className="stat-value text-success">{user.writtenReviews.length}</div>
                   </div>
                   <div className="stat">
                     <div className="stat-title">Avg Score</div>
@@ -209,9 +198,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
                       {user.following.length}
                     </div>
                     {showFollowing &&
-                      user.following.map((f) => (
-                        <SmallUser key={f.id} user={f.followedBy} />
-                      ))}
+                      user.following.map((f) => <SmallUser key={f.id} user={f.followedBy} />)}
                   </div>
                   <div className="stat">
                     <div className="stat-title">Followers</div>
@@ -222,9 +209,7 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
                       {user.followers.length}
                     </div>
                     {showFollowers &&
-                      user.followers.map((f) => (
-                        <SmallUser key={f.id} user={f.followed} />
-                      ))}
+                      user.followers.map((f) => <SmallUser key={f.id} user={f.followed} />)}
                   </div>
                 </div>
               </>
@@ -250,9 +235,9 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
               </div>
             )}
           </div>
-        ) : tab === "watchlist" ? (
+        ) : tab === 'watchlist' ? (
           <Watchlist watchlist={user.watchlistShows} />
-        ) : tab === "favourites" ? (
+        ) : tab === 'favourites' ? (
           <Favourites favourites={user.favoriteShows} />
         ) : (
           <ProfileReviews reviews={user.writtenReviews} />
@@ -260,6 +245,6 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
       </div>
     </div>
   );
-}
+};
 
 export default UserPage;

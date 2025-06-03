@@ -1,11 +1,10 @@
 import { test, expect } from '../fixtures';
 import { goToProfilePage, login } from './utils/utils';
 import { testUser } from './data/testuser';
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 test.describe('User Related Tests', () => {
   test('Username Change Test', async ({ page }) => {
-    
     const originalUsername = testUser.username;
     const updatedUsername = testUser.username + '1';
 
@@ -29,7 +28,7 @@ test.describe('User Related Tests', () => {
     const newUsername = faker.internet.userName();
     const newEmail = newUsername + '@cliffhangr.com';
     const newPassword = faker.internet.password();
-    
+
     await page.goto('/');
 
     // Register a new user
@@ -43,7 +42,7 @@ test.describe('User Related Tests', () => {
     await page.locator('#confirmpassword').click();
     await page.locator('#confirmpassword').fill(newPassword);
     await page.getByRole('button', { name: 'Register' }).click();
-    
+
     // Login with the new user
     await page.goto('/');
     await page.locator('#email').fill(newEmail);

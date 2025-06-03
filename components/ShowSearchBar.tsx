@@ -1,11 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 type ShowSearchBarProps = {
   setSearchTerm: (term: string) => void;
-}
+};
 
 const ShowSearchBar = ({ setSearchTerm }: ShowSearchBarProps): React.JSX.Element => {
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputValue(event.target.value);

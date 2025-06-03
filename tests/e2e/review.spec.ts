@@ -1,18 +1,22 @@
 import { test, expect } from '../fixtures';
-import { getRandomReviewWithComments, getRandomReviewWithoutComments, getRandomShowToReview } from "./utils/userApi";
-import { getRandomReaction, goToProfilePage, login } from "./utils/utils";
+import {
+  getRandomReviewWithComments,
+  getRandomReviewWithoutComments,
+  getRandomShowToReview,
+} from './utils/userApi';
+import { getRandomReaction, goToProfilePage, login } from './utils/utils';
 import { testUser } from './data/testuser';
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
-test.describe("Review Related Tests", () => {
-  test("Create Review Test", async ({ authRequest, page }) => {
+test.describe('Review Related Tests', () => {
+  test('Create Review Test', async ({ authRequest, page }) => {
     const showToSearch = await getRandomShowToReview(authRequest);
 
     await login(page);
-    await page.getByRole("link", { name: "See Shows" }).click();
-    await page.getByRole("textbox", { name: "Search" }).fill(showToSearch);
-    await page.getByRole("textbox", { name: "Search" }).press("Enter");
-    await page.getByRole("link", { name: showToSearch }).click();
+    await page.getByRole('link', { name: 'See Shows' }).click();
+    await page.getByRole('textbox', { name: 'Search' }).fill(showToSearch);
+    await page.getByRole('textbox', { name: 'Search' }).press('Enter');
+    await page.getByRole('link', { name: showToSearch }).click();
     await page.getByText('Write a Review').click();
 
     await page.getByRole('textbox', { name: 'Your review here' }).fill('Test Review');
@@ -20,10 +24,10 @@ test.describe("Review Related Tests", () => {
     await page.getByText('Create', { exact: true }).click();
     await goToProfilePage(page);
     await page.locator('#user-tabs').locator('#reviews').click();
-    await expect(page.getByRole("link", { name: showToSearch })).toBeVisible();
+    await expect(page.getByRole('link', { name: showToSearch })).toBeVisible();
   });
 
-  test("Comment On Review Test", async ({ authRequest, page }) => {
+  test('Comment On Review Test', async ({ authRequest, page }) => {
     const commentText = faker.word.words(10);
     const reviewId = await getRandomReviewWithComments(authRequest);
 
@@ -35,7 +39,7 @@ test.describe("Review Related Tests", () => {
     await expect(page.locator('#comment').getByText(commentText)).toBeVisible();
   });
 
-  test("React On Review Test", async ({ authRequest, page }) => {
+  test('React On Review Test', async ({ authRequest, page }) => {
     const reaction = getRandomReaction();
     const reactUsername = testUser.username;
     const reviewId = await getRandomReviewWithComments(authRequest);
@@ -47,7 +51,7 @@ test.describe("Review Related Tests", () => {
     await expect(page.getByText(`${reaction} - ${reactUsername}`)).toBeVisible();
   });
 
-  test("Delete Review Test", async ({ authRequest, page }) => {
+  test('Delete Review Test', async ({ authRequest, page }) => {
     const reviewId = await getRandomReviewWithoutComments(authRequest);
     await login(page);
     await page.goto(`/review/${reviewId}`);

@@ -1,6 +1,6 @@
-import prisma from "./index";
+import prisma from './index';
 
-import type { Show } from "@prisma/client";
+import type { Show } from '@prisma/client';
 
 // Get all shows
 export async function getShows(): Promise<{ count?: number; shows?: Show[]; error?: string }> {
@@ -19,12 +19,12 @@ export async function getShows(): Promise<{ count?: number; shows?: Show[]; erro
     };
   } catch (error) {
     return {
-      error: `Failed to get all shows: ${error.message}`
+      error: `Failed to get all shows: ${error.message}`,
     };
   } finally {
     await prisma.$disconnect();
-  };
-};
+  }
+}
 
 // Get a single show by ID
 export const getShow = async (showID: string): Promise<{ show?: Show; error?: string }> => {
@@ -40,7 +40,7 @@ export const getShow = async (showID: string): Promise<{ show?: Show; error?: st
       },
     });
     if (!show) {
-      return { error: "Show not found." };
+      return { error: 'Show not found.' };
     }
     return { show };
   } catch (error) {
@@ -49,22 +49,24 @@ export const getShow = async (showID: string): Promise<{ show?: Show; error?: st
     };
   } finally {
     await prisma.$disconnect();
-  };
+  }
 };
 
 // Search shows by name
-export const searchShowsByName = async (nameQuery: string): Promise<{ count?: number; shows?: Show[]; error?: string; }> => {
+export const searchShowsByName = async (
+  nameQuery: string
+): Promise<{ count?: number; shows?: Show[]; error?: string }> => {
   try {
     const shows = await prisma.show.findMany({
       where: {
         title: {
           contains: nameQuery,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
     });
     if (!shows) {
-      return { error: "No shows found." };
+      return { error: 'No shows found.' };
     }
     return {
       count: shows.length,
@@ -76,11 +78,11 @@ export const searchShowsByName = async (nameQuery: string): Promise<{ count?: nu
     };
   } finally {
     await prisma.$disconnect();
-  };
+  }
 };
 
 // Create a show
-export async function createShow(show: Omit<Show, "id">): Promise<{ show?: Show; error?: string }> {
+export async function createShow(show: Omit<Show, 'id'>): Promise<{ show?: Show; error?: string }> {
   try {
     const showFromDB = await prisma.show.create({
       data: show,
@@ -92,11 +94,14 @@ export async function createShow(show: Omit<Show, "id">): Promise<{ show?: Show;
     };
   } finally {
     await prisma.$disconnect();
-  };
-};
+  }
+}
 
 // Update a show
-export const updateShow = async (showID: string, updateData: Partial<Show>): Promise<{ show?: Show; error?: string; }> => {
+export const updateShow = async (
+  showID: string,
+  updateData: Partial<Show>
+): Promise<{ show?: Show; error?: string }> => {
   try {
     const updatedShow = await prisma.show.update({
       where: { id: showID },
@@ -109,9 +114,8 @@ export const updateShow = async (showID: string, updateData: Partial<Show>): Pro
     };
   } finally {
     await prisma.$disconnect();
-  };
+  }
 };
-
 
 // Delete a show
 export async function deleteShow(showID: string): Promise<{ show?: Show; error?: string }> {
@@ -121,8 +125,8 @@ export async function deleteShow(showID: string): Promise<{ show?: Show; error?:
   } catch (error) {
     return {
       error: `Failed to delete show with ID ${showID}: ${error.message}`,
-    }
+    };
   } finally {
     await prisma.$disconnect();
-  };
-};
+  }
+}

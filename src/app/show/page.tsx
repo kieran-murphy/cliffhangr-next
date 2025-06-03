@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import ShowListItem from "@/components/ShowListItem";
-import ShowSearchBar from "@/components/ShowSearchBar";
-import { getErrorMessage } from "@/utils/error";
+import { useState, useEffect } from 'react';
+import ShowListItem from '@/components/ShowListItem';
+import ShowSearchBar from '@/components/ShowSearchBar';
+import { getErrorMessage } from '@/utils/error';
 
-import type { ShowType } from "@/types/show";
+import type { ShowType } from '@/types/show';
 
 type ShowApiResponse = {
   shows: ShowType[];
@@ -13,48 +13,47 @@ type ShowApiResponse = {
 
 const ShowList = (): React.JSX.Element => {
   const [shows, setShows] = useState<ShowType[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const showsPerPage = 8;
 
-useEffect(() => {
-  let isMounted = true;
+  useEffect(() => {
+    let isMounted = true;
 
-  const getShows = async (): Promise<ShowType[]> => {
-    try {
-      const encoded = encodeURIComponent(searchTerm);
-      const response = await fetch(`/api/show?search=${encoded}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+    const getShows = async (): Promise<ShowType[]> => {
+      try {
+        const encoded = encodeURIComponent(searchTerm);
+        const response = await fetch(`/api/show?search=${encoded}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Fetch failed:", response.status, response.statusText, errorText);
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Fetch failed:', response.status, response.statusText, errorText);
+          return [];
+        }
+
+        const data: ShowApiResponse = await response.json();
+        return data.shows;
+      } catch (error) {
+        console.error('Unexpected error fetching shows:', getErrorMessage(error));
         return [];
       }
+    };
 
-      const data: ShowApiResponse = await response.json();
-      return data.shows;
-    } catch (error) {
-      console.error("Unexpected error fetching shows:", getErrorMessage(error));
-      return [];
-    }
-  };
+    const fetchShows = async () => {
+      const shows: ShowType[] = await getShows();
+      if (isMounted) {
+        setShows(shows);
+      }
+    };
 
-  const fetchShows = async () => {
-    const shows: ShowType[] = await getShows();
-    if (isMounted) {
-      setShows(shows);
-    }
-  };
-
-  fetchShows();
-  return () => {
-    isMounted = false;
-  };
-}, [searchTerm]);
-
+    fetchShows();
+    return () => {
+      isMounted = false;
+    };
+  }, [searchTerm]);
 
   const indexOfLastShow = currentPage * showsPerPage;
   const indexOfFirstShow = indexOfLastShow - showsPerPage;
@@ -80,23 +79,19 @@ useEffect(() => {
         ))}
       </div>
       <div className="flex flex-row place-content-between m-4">
-        <button
-          onClick={prevPage}
-          disabled={currentPage === 1}
-          className="btn mx-1"
-        >
-          {"< Prev"}
+        <button onClick={prevPage} disabled={currentPage === 1} className="btn mx-1">
+          {'< Prev'}
         </button>
         <button
           onClick={nextPage}
           disabled={currentPage === Math.ceil(shows.length / showsPerPage)}
           className="btn mx-1"
         >
-          {"Next >"}
+          {'Next >'}
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default ShowList;

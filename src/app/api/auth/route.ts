@@ -1,10 +1,10 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "./[...nextauth]/route";
-import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './[...nextauth]/route';
+import { NextRequest, NextResponse } from 'next/server';
 
-import type { Session } from "next-auth";
+import type { Session } from 'next-auth';
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async function GET(_request: NextRequest): Promise<NextResponse> {
   const session = (await getServerSession(authOptions)) as Session | null;
 
   if (!session || !session.user) {

@@ -1,6 +1,6 @@
-import React from "react";
-import prisma from "@/lib/prisma";
-import ReviewClient from "./ReviewClient";
+import React from 'react';
+import prisma from '@/lib/prisma';
+import ReviewClient from './ReviewClient';
 
 interface PageProps {
   params: {
@@ -24,6 +24,6 @@ const ReviewPage = async ({ params }: PageProps): Promise<React.JSX.Element> => 
   }
 
   return <ReviewClient review={review} />;
-}
+};
 
 export default ReviewPage;

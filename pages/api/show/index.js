@@ -5,10 +5,10 @@ import {
   createShow,
   updateShow,
   deleteShow,
-} from "@/lib/prisma/shows";
+} from '@/lib/prisma/shows';
 
 const handler = async (req, res) => {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const showID = req.query.id;
     const search = req.query.search;
     if (showID) {
@@ -39,7 +39,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     try {
       const data = req.body.show;
       const { show, error } = await createShow(data);
@@ -51,11 +51,11 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "PATCH") {
+  if (req.method === 'PATCH') {
     const { showID, data } = req.body;
 
     if (!showID) {
-      return res.status(400).json({ error: "showID is required." });
+      return res.status(400).json({ error: 'showID is required.' });
     }
 
     try {
@@ -68,7 +68,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     try {
       const data = req.body.showID;
       const { show, error } = await deleteShow(data);
@@ -80,7 +80,7 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+  res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 

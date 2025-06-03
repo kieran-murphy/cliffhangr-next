@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import ShowReview from "./ShowReview/ShowReview";
+import { useEffect, useState } from 'react';
+import ShowReview from './ShowReview/ShowReview';
 
-import type { ShowType } from "@/types/show";
-import type { ReviewType } from "@/types/review";
+import type { ShowType } from '@/types/show';
+import type { ReviewType } from '@/types/review';
 
 type ShowReviewListProps = {
   sessionUserID: string | null;
   show: ShowType;
-}
+};
 
 const ShowReviewList = ({ sessionUserID, show }: ShowReviewListProps): React.JSX.Element => {
   const [sortedReviews, setSortedReviews] = useState<ReviewType[]>([]);
@@ -25,10 +25,7 @@ const ShowReviewList = ({ sessionUserID, show }: ShowReviewListProps): React.JSX
 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = sortedReviews.slice(
-    indexOfFirstReview,
-    indexOfLastReview
-  );
+  const currentReviews = sortedReviews.slice(indexOfFirstReview, indexOfLastReview);
 
   const nextPage = () => {
     if (currentPage < Math.ceil(sortedReviews.length / reviewsPerPage)) {
@@ -53,30 +50,22 @@ const ShowReviewList = ({ sessionUserID, show }: ShowReviewListProps): React.JSX
       <div id="review-list">
         {show !== null &&
           (currentReviews.length > 0 ? (
-            currentReviews.map((review) => (
-              <ShowReview key={review.id} review={review} />
-            ))
+            currentReviews.map((review) => <ShowReview key={review.id} review={review} />)
           ) : (
             <div className="mx-2">No reviews yet</div>
           ))}
       </div>
 
       <div className="flex flex-row place-content-between my-4">
-        <button
-          onClick={prevPage}
-          disabled={currentPage === 1}
-          className="btn mx-1"
-        >
-          {"< Prev"}
+        <button onClick={prevPage} disabled={currentPage === 1} className="btn mx-1">
+          {'< Prev'}
         </button>
         <button
           onClick={nextPage}
-          disabled={
-            currentPage === Math.ceil(sortedReviews.length / reviewsPerPage)
-          }
+          disabled={currentPage === Math.ceil(sortedReviews.length / reviewsPerPage)}
           className="btn mx-1"
         >
-          {"Next >"}
+          {'Next >'}
         </button>
       </div>
     </div>

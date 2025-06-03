@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
 export type ReviewType = Prisma.ReviewGetPayload<{
   include: {
@@ -10,5 +10,5 @@ export type ReviewType = Prisma.ReviewGetPayload<{
     CommentOnReview: {
       include: { user: true };
     };
-  }
-}>
+  };
+}>;

@@ -1,40 +1,39 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, ChangeEvent } from "react";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { ImClock, ImPencil, ImPlay, ImHeart, ImHeartBroken } from "react-icons/im";
-import Rating from "@/components/Rating";
-import ReviewConfirmation from "@/components/ReviewConfirmation";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import ShowReviewList from "./ShowReviewList";
+import React, { useEffect, useState, ChangeEvent } from 'react';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import { ImClock, ImPencil, ImPlay, ImHeart, ImHeartBroken } from 'react-icons/im';
+import Rating from '@/components/Rating';
+import ReviewConfirmation from '@/components/ReviewConfirmation';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import ShowReviewList from './ShowReviewList';
 
-import type { ShowType } from "@/types/show";
+import type { ShowType } from '@/types/show';
 
 type ShowClientProps = {
   show: ShowType;
-}
+};
 
 const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
   const [loading, setLoading] = useState<boolean>(true);
   const [alreadyReviewed, setAlreadyReviewed] = useState<boolean>(false);
   const [confirm, setConfirm] = useState<boolean>(false);
-  const [avgScore, setAvgScore] = useState<string>("0.0");
+  const [avgScore, setAvgScore] = useState<string>('0.0');
   const [alreadyFavorited, setAlreadyFavorited] = useState<boolean>(false);
   const [alreadyInWatchlist, setAlreadyInWatchlist] = useState<boolean>(false);
   const [userFavID, setUserFavID] = useState<string | null>(null);
   const [userWatchlistID, setUserWatchlistID] = useState<string | null>(null);
   const [reviewScore, setReviewScore] = useState<number>(0);
-  const [reviewComment, setReviewComment] = useState<string>("");
+  const [reviewComment, setReviewComment] = useState<string>('');
 
   const { data: session, status } = useSession();
-  const user = session?.user || null;
   const sessionUserID = session?.user?.id || null;
 
   useEffect(() => {
-  if (status !== "loading" && show) {
-    setLoading(false);
-  }
+    if (status !== 'loading' && show) {
+      setLoading(false);
+    }
   }, [status, show]);
 
   useEffect(() => {
@@ -49,15 +48,13 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         show.reviews.reduce((sum, review) => sum + review.rating, 0) / show.reviews.length
       ).toFixed(2);
       setAvgScore(avg);
-    } 
+    }
   }, [show]);
 
   const checkReviewStatus = () => {
     if (show) {
       if (sessionUserID) {
-        const matchingReview = show.reviews.find(
-          (element) => element.userId === sessionUserID
-        );
+        const matchingReview = show.reviews.find((element) => element.userId === sessionUserID);
         if (matchingReview) {
           setAlreadyReviewed(true);
         } else {
@@ -70,9 +67,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
   const checkFavStatus = () => {
     if (show) {
       if (sessionUserID) {
-        const matchingFav = show.favoritedBy.find(
-          (element) => element.userId === sessionUserID
-        );
+        const matchingFav = show.favoritedBy.find((element) => element.userId === sessionUserID);
         if (matchingFav) {
           setUserFavID(matchingFav.id);
           setAlreadyFavorited(true);
@@ -102,10 +97,10 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
   const toggleFavorite = async () => {
     if (alreadyFavorited) {
       try {
-        const response = await fetch("/api/favoriteshow", {
-          method: "DELETE",
+        const response = await fetch('/api/favoriteshow', {
+          method: 'DELETE',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ favoriteShowID: userFavID }),
         });
@@ -113,15 +108,15 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error("There was an error deleting the favorite", error);
-        alert("There was an error deleting the favorite");
+        console.error('There was an error deleting the favorite', error);
+        alert('There was an error deleting the favorite');
       }
     } else {
       try {
-        const response = await fetch("/api/favoriteshow", {
-          method: "POST",
+        const response = await fetch('/api/favoriteshow', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             favoriteShow: {
@@ -134,8 +129,8 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error("There was an error submitting the favorite", error);
-        alert("There was an error submitting the favorite");
+        console.error('There was an error submitting the favorite', error);
+        alert('There was an error submitting the favorite');
       }
     }
     window.location.reload();
@@ -144,10 +139,10 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
   const toggleWatchlist = async () => {
     if (alreadyInWatchlist) {
       try {
-        const response = await fetch("/api/watchlistshow", {
-          method: "DELETE",
+        const response = await fetch('/api/watchlistshow', {
+          method: 'DELETE',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ WatchlistShowID: userWatchlistID }),
         });
@@ -155,15 +150,15 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error("There was an error updating the watchlist", error);
-        alert("There was an error updating the watchlist");
+        console.error('There was an error updating the watchlist', error);
+        alert('There was an error updating the watchlist');
       }
     } else {
       try {
-        const response = await fetch("/api/watchlistshow", {
-          method: "POST",
+        const response = await fetch('/api/watchlistshow', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             watchlistShow: {
@@ -176,8 +171,8 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error("There was an error updating the watchlist", error);
-        alert("There was an error updating the watchlist");
+        console.error('There was an error updating the watchlist', error);
+        alert('There was an error updating the watchlist');
       }
     }
     window.location.reload();
@@ -193,8 +188,8 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
     };
     // console.log(review);
     const RequestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         review: review,
       }),
@@ -210,7 +205,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         }
       })
       .catch((err) => {
-        console.log("caught it!", err);
+        console.log('caught it!', err);
       });
   };
 
@@ -247,7 +242,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
               <h1 className="font-bold text-3xl">{show.title}</h1>
               <h1 className="font-light text-lg">
                 {show.seasons} season
-                {show.seasons > 1 ? "s" : ""}
+                {show.seasons > 1 ? 's' : ''}
               </h1>
             </div>
             <div className="flex flex-col text-center">
@@ -268,18 +263,13 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
           <div className="flex w-full place-content-center ">
             <div className="flex flex-col w-full place-content-between">
               {show.reviews.length > 0 ? (
-                <h1 className="font-light text-lg text-center">
-                  {avgScore} out of 5 stars ⭐
-                </h1>
+                <h1 className="font-light text-lg text-center">{avgScore} out of 5 stars ⭐</h1>
               ) : null}
 
               {alreadyReviewed ? (
                 <></>
               ) : (
-                <label
-                  htmlFor="my-modal"
-                  className="btn btn-success w-full mt-4 gap-2"
-                >
+                <label htmlFor="my-modal" className="btn btn-success w-full mt-4 gap-2">
                   <ImPencil />
                   Write a Review
                 </label>
@@ -341,10 +331,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
         <input type="checkbox" id="my-modal" className="modal-toggle" />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box relative">
-            <label
-              htmlFor="my-modal"
-              className="btn btn-sm btn-circle absolute right-2 top-2"
-            >
+            <label htmlFor="my-modal" className="btn btn-sm btn-circle absolute right-2 top-2">
               ✕
             </label>
             <h3 className="text-2xl font-bold text-center">Create Review</h3>
@@ -358,17 +345,14 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
               ></textarea>
 
               <h3 className="mt-4">Rating:</h3>
-              <Rating
-                reviewScore={reviewScore}
-                setReviewScore={setReviewScore}
-              />
+              <Rating reviewScore={reviewScore} setReviewScore={setReviewScore} />
 
               <label
                 className="btn btn-success mt-4"
                 htmlFor="my-modal"
                 onClick={async () => {
                   await addReview(reviewComment, reviewScore, show);
-                  setReviewComment("");
+                  setReviewComment('');
                   setReviewScore(0);
                   window.location.reload();
                 }}
@@ -381,6 +365,6 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
       </div>
     </div>
   );
-}
+};
 
 export default ShowClient;

@@ -1,12 +1,7 @@
-import {
-  getReviews,
-  getReview,
-  createReview,
-  deleteReview,
-} from "@/lib/prisma/reviews";
+import { getReviews, getReview, createReview, deleteReview } from '@/lib/prisma/reviews';
 
 const handler = async (req, res) => {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const reviewID = req.query.id;
     if (reviewID) {
       try {
@@ -27,7 +22,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "POST") {
+  if (req.method === 'POST') {
     try {
       const data = req.body.review;
       const { review, error } = await createReview(data);
@@ -39,7 +34,7 @@ const handler = async (req, res) => {
     }
   }
 
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     try {
       const data = req.body.reviewID;
       const { review, error } = await deleteReview(data);
@@ -51,7 +46,7 @@ const handler = async (req, res) => {
     }
   }
 
-  res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+  res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
   res.status(425).end(`Method ${req.method} is not allowed.`);
 };
 

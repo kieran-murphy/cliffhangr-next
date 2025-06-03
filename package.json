@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write .",
     "seed": "node prisma/seed.js",
     "delete": "node prisma/delete.js",
     "test": "npx playwright test",
@@ -39,8 +40,11 @@
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
     "@types/react-stars": "^2.2.4",
-    "eslint": "^9.26.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
     "postcss-nesting": "^13.0.1",
+    "prettier": "^3.5.3",
     "prisma": "^5.1.1",
     "typescript": "^5.8.3"
   }

@@ -1,10 +1,10 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
-import prisma from "@/lib/prisma/index";
+import NextAuth, { type NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { compare } from 'bcrypt';
+import prisma from '@/lib/prisma/index';
 
-import type { Session } from "next-auth";
-import type { JWT } from "next-auth/jwt";
+import type { Session } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
 
 // Custom user type
 interface AuthUser {
@@ -15,14 +15,14 @@ interface AuthUser {
 
 export const authOptions: NextAuthOptions = {
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   providers: [
     CredentialsProvider({
-      name: "Sign in",
+      name: 'Sign in',
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "hello@example.com" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email', placeholder: 'hello@example.com' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/signIn",
+    signIn: '/signIn',
   },
   callbacks: {
     // Add user ID to JWT
