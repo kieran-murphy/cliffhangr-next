@@ -50,15 +50,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // Add user ID to JWT
     async jwt({ token, user }) {
+      // On sign-in, persist the user ID
       if (user) {
         token.id = (user as AuthUser).id;
+        return token;
+      }
+      // On subsequent requests, re-fetch the user
+      const dbUser = await prisma.user.findUnique({
+        where: { id: token.id as string },
+      });
+      if (!dbUser) {
+        // User was deleted – clear the token so session() returns null
+        return {} as typeof token;
       }
       return token;
     },
     // Add user ID to session
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (session.user) {
-        (session.user as AuthUser).id = token.id as string;
+      // Attach user ID if present
+      if (token.id) {
+        session.user = { ...session.user!, id: token.id as string } as AuthUser;
       }
       return session;
     },
