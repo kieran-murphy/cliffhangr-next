@@ -188,7 +188,7 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
         }}
       >
         {Object.entries(reactsDict).map(([key, [label, emoji]]) => (
-          <button key={key} onClick={() => addReact(label)} className="btn text-xl mx-1">
+          <button key={key} onClick={() => addReact(label)} className={`btn text-xl mx-1 ${userReact === label && 'shadow-md shadow-gray-500'}`}>
             {emoji}
           </button>
         ))}
