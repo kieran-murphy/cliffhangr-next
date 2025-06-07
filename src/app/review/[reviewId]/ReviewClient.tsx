@@ -143,7 +143,9 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
   return (
     <div className="flex flex-col items-center m-4">
       <div className="flex flex-col items-center text-center">
-        <h3 className="text-2xl font-bold mr-4">{review.show?.title || 'Title not available'}</h3>
+        <Link href={`/show/${review.show.id || ''}`}>
+          <h3 className="text-2xl font-bold mr-4">{review.show?.title || 'Title not available'}</h3>
+        </Link>
         <DisplayRating rating={review.rating} size={10} />
       </div>
       <div className="divider"></div>
@@ -188,7 +190,11 @@ const ReviewClient = ({ review }: ReviewClientProps): React.JSX.Element => {
         }}
       >
         {Object.entries(reactsDict).map(([key, [label, emoji]]) => (
-          <button key={key} onClick={() => addReact(label)} className={`btn text-xl mx-1 ${userReact === label && 'shadow-md shadow-gray-500'}`}>
+          <button
+            key={key}
+            onClick={() => addReact(label)}
+            className={`btn text-xl mx-1 ${userReact === label && 'shadow-md shadow-gray-500'}`}
+          >
             {emoji}
           </button>
         ))}
