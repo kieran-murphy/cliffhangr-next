@@ -8,8 +8,9 @@ type ShowPageProps = {
 };
 
 const ShowPage = async ({ params }: ShowPageProps): Promise<React.JSX.Element> => {
+  const { showId } = await params;
   const show = await prisma.show.findUnique({
-    where: { id: params.showId },
+    where: { id: showId },
     include: {
       reviews: {
         include: {
