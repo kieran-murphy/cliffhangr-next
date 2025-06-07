@@ -9,8 +9,9 @@ import { useUser } from '@/context/UserProvider';
 import Favourites from './Favourites';
 import ProfileReviews from './ProfileReviews';
 import Watchlist from './Watchlist';
-import SmallUser from '@/components/SmallUser';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import NotFoundMessage from '@/components/NotFoundMessage';
+import SmallUser from '@/components/SmallUser';
 
 import type { UserType } from '@/types/user';
 
@@ -128,17 +129,9 @@ const UserPage = (): React.JSX.Element => {
   };
 
   if (error) {
-    return (
-      <div className="flex justify-center mt-16">
-        <div className="alert shadow-lg w-full max-w-md">
-          <div>
-            <span className="text-lg font-semibold">🚫 {error}</span>
-            <p className="mt-2">Check the URL or go back to the previous page.</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <NotFoundMessage error={error} />;
   }
+
   if (!user) {
     return <LoadingSpinner />;
   }
