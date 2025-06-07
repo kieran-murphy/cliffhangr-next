@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { useParams } from 'next/navigation';
 import { FaRegCheckSquare } from 'react-icons/fa';
 import Image from 'next/image';
 import { useUser } from '@/context/UserProvider';
@@ -13,16 +14,15 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 import type { UserType } from '@/types/user';
 
-type UserProps = {
-  params: {
-    userId: string;
-  };
+type UserParamsType = {
+  userId: string;
 };
 
 type Tab = 'profile' | 'reviews' | 'watchlist' | 'favourites';
 
-const UserPage = ({ params }: UserProps): React.JSX.Element => {
+const UserPage = (): React.JSX.Element => {
   const [user, setUser] = useState<UserType | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [avgScore, setAvgScore] = useState<number>(0);
   const [isFollower, setIsFollower] = useState<boolean>(false);
   const [isFollowerID, setIsFollowerID] = useState<string | null>(null);
@@ -34,8 +34,8 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
   const [newUsername, setNewUsername] = useState<string>('');
   const [newImageUrl, setNewImageUrl] = useState<string>('');
 
+  const { userId } = useParams() as UserParamsType;
   const { userInfo, setUserInfo } = useUser();
-  const { userId } = params;
   const { data: session } = useSession();
   const sessionUserID = session?.user?.id || null;
 
@@ -44,10 +44,22 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
   const fetchUser = async () => {
     try {
       const res = await fetch(`/api/user?id=${userId}`);
+      if (!res.ok) {
+        setError(`User "${userId}" not found.`);
+        setUser(null);
+        return;
+      }
       const data = await res.json();
+      if (!data.user) {
+        setError(`User "${userId}" not found.`);
+        setUser(null);
+        return;
+      }
       setUser(data.user);
+      setError(null);
     } catch (err) {
       console.error('Failed to fetch user', err);
+      setError('An unexpected error occurred.');
     }
   };
 
@@ -115,7 +127,21 @@ const UserPage = ({ params }: UserProps): React.JSX.Element => {
     setEditMode(false);
   };
 
-  if (!user) return <LoadingSpinner />;
+  if (error) {
+    return (
+      <div className="flex justify-center mt-16">
+        <div className="alert shadow-lg w-full max-w-md">
+          <div>
+            <span className="text-lg font-semibold">🚫 {error}</span>
+            <p className="mt-2">Check the URL or go back to the previous page.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (!user) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>
