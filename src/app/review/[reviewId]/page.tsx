@@ -1,6 +1,7 @@
 import React from 'react';
 import prisma from '@/lib/prisma';
 import ReviewClient from './ReviewClient';
+import NotFoundMessage from '@/components/NotFoundMessage';
 
 interface PageProps {
   params: {
@@ -9,8 +10,9 @@ interface PageProps {
 }
 
 const ReviewPage = async ({ params }: PageProps): Promise<React.JSX.Element> => {
+  const { reviewId } = await params;
   const review = await prisma.review.findUnique({
-    where: { id: params.reviewId },
+    where: { id: reviewId },
     include: {
       user: true,
       reactOnReviews: { include: { user: true } },
@@ -20,7 +22,8 @@ const ReviewPage = async ({ params }: PageProps): Promise<React.JSX.Element> => 
   });
 
   if (!review) {
-    throw new Error(`Review with id=${params.reviewId} not found`);
+    const errorMsg = `Review with id="${reviewId}" not found.`;
+    return <NotFoundMessage error={errorMsg} />;
   }
 
   return <ReviewClient review={review} />;

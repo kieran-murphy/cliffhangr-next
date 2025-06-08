@@ -31,8 +31,8 @@ const ShowPage = async ({ params }: ShowPageProps): Promise<React.JSX.Element> =
   });
 
   if (!show) {
-    const errorMsg = `Show with id="${showId}" not found.`
-    return <NotFoundMessage error={errorMsg} />
+    const errorMsg = `Show with id="${showId}" not found.`;
+    return <NotFoundMessage error={errorMsg} />;
   }
 
   return <ShowClient show={show} />;
