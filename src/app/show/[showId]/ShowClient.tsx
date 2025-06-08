@@ -216,11 +216,7 @@ const ShowClient = ({ show }: ShowClientProps): React.JSX.Element => {
   if (!show) return <p>No show found!</p>;
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

@@ -10,7 +10,7 @@ const LoadingSpinner = (): React.JSX.Element => {
         height: '100vh',
       }}
     >
-      <span className="loading loading-ring loading-lg m-4" />
+      <span className="loading m-4" />
     </div>
   );
 };
