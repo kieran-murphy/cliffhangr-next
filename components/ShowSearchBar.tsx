@@ -17,7 +17,7 @@ const ShowSearchBar = ({ setSearchTerm }: ShowSearchBarProps): React.JSX.Element
   };
 
   return (
-    <div className="m-4">
+    <div className="w-full m-4 pr-8">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -25,7 +25,7 @@ const ShowSearchBar = ({ setSearchTerm }: ShowSearchBarProps): React.JSX.Element
           onChange={handleInputChange}
           placeholder="Search here..."
           aria-label="Search Bar"
-          className="input input-bordered input-primary w-full max-w-xs"
+          className="input input-bordered input-primary w-full max-w"
         />
       </form>
     </div>
