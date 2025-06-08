@@ -12,9 +12,6 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: LayoutProps): React.JSX.Element => {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-      </head>
       <body>
         <Providers>{children}</Providers>
       </body>
