@@ -23,7 +23,7 @@ export default function Login() {
     <div className="text-center w-full md:w-1/2 mx-auto">
       <h1 className="text-2xl my-8">Login</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control w-full max-w">
           <div className="label">
             <span className="label-text">Email</span>
           </div>
@@ -33,7 +33,7 @@ export default function Login() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input input-bordered input-error w-full max-w-xs"
+            className="input input-bordered w-full"
           />
           <div className="label">
             <span className="label-text">Password</span>
@@ -44,7 +44,7 @@ export default function Login() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="input input-bordered input-error w-full max-w-xs"
+            className="input input-bordered w-full"
           />
         </div>
 

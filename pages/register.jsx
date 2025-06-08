@@ -54,7 +54,7 @@ export default function Home() {
       <h1 className="text-2xl my-8">Register</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <div className="form-control w-full max-w-xs">
+          <div className="form-control w-full max-w">
             <div className="label">
               <span className="label-text">Username</span>
             </div>
@@ -64,7 +64,7 @@ export default function Home() {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="input input-bordered input-error w-full max-w-xs"
+              className="input input-bordered w-full"
             />
             <div className="label">
               <span className="label-text">Email</span>
@@ -75,7 +75,7 @@ export default function Home() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input input-bordered input-error w-full max-w-xs"
+              className="input input-bordered w-full"
             />
             <div className="label">
               <span className="label-text">Password</span>
@@ -86,7 +86,7 @@ export default function Home() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input input-bordered input-error w-full max-w-xs"
+              className="input input-bordered w-full"
             />
             <div className="label">
               <span className="label-text">Confirm Password</span>
@@ -97,7 +97,7 @@ export default function Home() {
               id="confirmpassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="input input-bordered input-error w-full max-w-xs"
+              className="input input-bordered w-full"
             />
           </div>
 
