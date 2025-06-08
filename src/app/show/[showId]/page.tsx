@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import ShowClient from './ShowClient';
+import NotFoundMessage from '@/components/NotFoundMessage';
 
 type ShowPageProps = {
   params: {
@@ -30,7 +31,8 @@ const ShowPage = async ({ params }: ShowPageProps): Promise<React.JSX.Element> =
   });
 
   if (!show) {
-    throw new Error(`Show with id=${params.showId} not found`);
+    const errorMsg = `Show with id="${showId}" not found.`
+    return <NotFoundMessage error={errorMsg} />
   }
 
   return <ShowClient show={show} />;
