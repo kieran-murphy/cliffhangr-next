@@ -1,10 +1,11 @@
 import React from 'react';
 import '../src/app/globals.css';
 import { SessionProvider } from 'next-auth/react';
+import PagesLayout from '../components/PagesLayout';
 
-import PagesLayout from '../components/PagesLayout'; // Adjust the path to your PagesLayout component
+import type { AppProps } from 'next/app';
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }: AppProps): React.JSX.Element => {
   return (
     <SessionProvider session={pageProps.session}>
       <PagesLayout>
@@ -12,6 +13,6 @@ function MyApp({ Component, pageProps }) {
       </PagesLayout>
     </SessionProvider>
   );
-}
+};
 
 export default MyApp;
