@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Login = (): React.JSX.Element => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
     try {
       await signIn('credentials', {
         callbackUrl: '/',
@@ -15,7 +15,7 @@ export default function Login() {
         password,
       });
     } catch (error) {
-      alert('signIn error = ', error);
+      alert(`signIn error = ${error}`);
     }
   };
 
@@ -60,4 +60,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default Login;
