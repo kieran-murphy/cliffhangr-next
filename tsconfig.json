@@ -33,13 +33,17 @@
     ]
   },
   "include": [
-    "types/next-auth.d.ts",
-    "next-env.d.ts",
-    "src/**/*",
-    ".next/types/**/*.ts",
     "components/**/*",
+    "hooks/**/*",
+    "lib/**/*",
+    "pages/**/*",
+    "src/**/*",
+    "tests/**/*",
     "types/**/*",
-    "hooks/**/*"
+    "utils/**/*",
+    ".next/types/**/*.ts",
+    "types/next-auth.d.ts",
+    "next-env.d.ts"
   ],
   "exclude": ["node_modules", ".next"]
 }
