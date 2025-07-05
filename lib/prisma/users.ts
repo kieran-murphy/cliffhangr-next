@@ -1,5 +1,6 @@
 import prisma from './index';
 import bcrypt from 'bcrypt';
+import { getErrorMessage } from '@/utils/error';
 
 import type { User } from '@prisma/client';
 
@@ -24,7 +25,7 @@ export async function getUsers(): Promise<{ count?: number; users?: User[]; erro
     };
   } catch (error) {
     return {
-      error: `Failed to get all users: ${error.message}`,
+      error: `Failed to get all users: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -82,7 +83,7 @@ export const getUser = async (userID: string): Promise<{ user?: User; error?: st
     return { user };
   } catch (error) {
     return {
-      error: `Failed to get user with ID ${userID}: ${error.message}`,
+      error: `Failed to get user with ID ${userID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -113,7 +114,7 @@ export const searchUsersByName = async (
     };
   } catch (error) {
     return {
-      error: `Failed to search for ${nameQuery}: ${error.message}`,
+      error: `Failed to search for ${nameQuery}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -134,7 +135,7 @@ export async function createUser(
     return { user: userFromDB };
   } catch (error) {
     return {
-      error: `Failed to create user: ${error.message}`,
+      error: `Failed to create user: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -154,7 +155,7 @@ export const updateUser = async (
     return { user: updatedUser };
   } catch (error) {
     return {
-      error: `Failed to update user with ID ${userID}: ${error.message}`,
+      error: `Failed to update user with ID ${userID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -170,7 +171,7 @@ export async function deleteUser(userID: string): Promise<{ user?: User; error?:
     };
   } catch (error) {
     return {
-      error: `Failed to delete user with ID ${userID}: ${error.message}`,
+      error: `Failed to delete user with ID ${userID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
