@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/utils/error';
 import prisma from './index';
 
 import type { CommentOnReview } from '@prisma/client';
@@ -17,7 +18,7 @@ export async function getCommentOnReviews(): Promise<{
     };
   } catch (error) {
     return {
-      error: `Failed to get all comments: ${error.message}`,
+      error: `Failed to get all comments: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -40,7 +41,7 @@ export async function getCommentOnReview(
     return { commentOnReview };
   } catch (error) {
     return {
-      error: `Failed to get comment with ID ${commentOnReviewID}: ${error.message}`,
+      error: `Failed to get comment with ID ${commentOnReviewID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -58,7 +59,7 @@ export async function createCommentOnReview(
     return { commentOnReview: commentOnReviewFromDB };
   } catch (error) {
     return {
-      error: `Failed to create comment: ${error.message}`,
+      error: `Failed to create comment: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -80,7 +81,7 @@ export async function updateCommentOnReview(
     return { commentOnReview: updatedCommentOnReview };
   } catch (error) {
     return {
-      error: `Failed to update commentOnReview with ID ${commentOnReviewID}: ${error.message}`,
+      error: `Failed to update commentOnReview with ID ${commentOnReviewID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -98,7 +99,7 @@ export async function deleteCommentOnReview(
     return { commentOnReview };
   } catch (error) {
     return {
-      error: `Failed to delete commentOnReview with ID ${commentOnReviewID}: ${error.message}`,
+      error: `Failed to delete commentOnReview with ID ${commentOnReviewID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();

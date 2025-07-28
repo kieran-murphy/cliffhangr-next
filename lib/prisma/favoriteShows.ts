@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/utils/error';
 import prisma from './index';
 import type { FavoriteShow } from '@prisma/client';
 
@@ -15,7 +16,7 @@ export async function getFavoriteShows(): Promise<{
       favoriteShows: favoriteShows,
     };
   } catch (error) {
-    return { error: error.message ?? 'Failed to get follows' };
+    return { error: getErrorMessage(error) ?? 'Failed to get follows' };
   } finally {
     await prisma.$disconnect();
   }
@@ -36,7 +37,7 @@ export async function getFavoriteShow(
     }
     return { favoriteShow };
   } catch (error) {
-    return { error: error.message ?? 'Failed to get favorite' };
+    return { error: getErrorMessage(error) ?? 'Failed to get favorite' };
   } finally {
     await prisma.$disconnect();
   }
@@ -52,7 +53,7 @@ export async function createFavoriteShow(
     });
     return { favoriteShow: favoriteShowFromDB };
   } catch (error) {
-    return { error: error.message ?? 'Failed to create favorite' };
+    return { error: getErrorMessage(error) ?? 'Failed to create favorite' };
   } finally {
     await prisma.$disconnect();
   }
@@ -68,7 +69,7 @@ export async function deleteFavoriteShow(
     });
     return { favoriteShow };
   } catch (error) {
-    return { error: error.message ?? 'Failed to delete favorite' };
+    return { error: getErrorMessage(error) ?? 'Failed to delete favorite' };
   } finally {
     await prisma.$disconnect();
   }

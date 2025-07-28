@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/utils/error';
 import prisma from './index';
 
 import type { WatchlistShow } from '@prisma/client';
@@ -17,7 +18,7 @@ export async function getWatchlistShows(): Promise<{
     };
   } catch (error) {
     return {
-      error: `Failed to get all watchlistShows: ${error.message}`,
+      error: `Failed to get all watchlistShows: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -40,7 +41,7 @@ export const getWatchlistShow = async (
     return { watchlistShow };
   } catch (error) {
     return {
-      error: `Failed to get watchlistShow with ID ${watchlistShowID}: ${error.message}`,
+      error: `Failed to get watchlistShow with ID ${watchlistShowID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -58,7 +59,7 @@ export async function createWatchlistShow(
     return { watchlistShow: watchlistShowFromDB };
   } catch (error) {
     return {
-      error: `Failed to create watchlistShow: ${error.message}`,
+      error: `Failed to create watchlistShow: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -76,7 +77,7 @@ export async function deleteWatchlistShow(
     return { watchlistShow };
   } catch (error) {
     return {
-      error: `Failed to delete watchlistShow with ID ${watchlistShowID}: ${error.message}`,
+      error: `Failed to delete watchlistShow with ID ${watchlistShowID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();

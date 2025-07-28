@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/utils/error';
 import prisma from './index';
 
 import type { Review } from '@prisma/client';
@@ -22,7 +23,7 @@ export async function getReviews(): Promise<{
     };
   } catch (error) {
     return {
-      error: `Failed to get all reviews: ${error.message}`,
+      error: `Failed to get all reviews: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -47,7 +48,7 @@ export const getReview = async (reviewID: string): Promise<{ review?: Review; er
     return { review };
   } catch (error) {
     return {
-      error: `Failed to get review with ID ${reviewID}: ${error.message}`,
+      error: `Failed to get review with ID ${reviewID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -65,7 +66,7 @@ export async function createReview(
     return { review: reviewFromDB };
   } catch (error) {
     return {
-      error: `Failed to create react: ${error.message}`,
+      error: `Failed to create react: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -90,7 +91,7 @@ export async function deleteReview(reviewID: string): Promise<{ review?: Review;
     return { review };
   } catch (error) {
     return {
-      error: `Failed to delete review with ID ${reviewID}: ${error.message}`,
+      error: `Failed to delete review with ID ${reviewID}: ${getErrorMessage(error)}`,
     };
   }
 }

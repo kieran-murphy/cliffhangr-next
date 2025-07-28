@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/utils/error';
 import prisma from './index';
 
 import type { ReactOnReview } from '@prisma/client';
@@ -17,7 +18,7 @@ export async function getReactOnReviews(): Promise<{
     };
   } catch (error) {
     return {
-      error: `Failed to get all reacts: ${error.message}`,
+      error: `Failed to get all reacts: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -40,7 +41,7 @@ export const getReactOnReview = async (
     return { reactOnReview };
   } catch (error) {
     return {
-      error: `Failed to get react with ID ${reactOnReviewID}: ${error.message}`,
+      error: `Failed to get react with ID ${reactOnReviewID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -58,7 +59,7 @@ export async function createReactOnReview(
     return { reactOnReview: reactOnReviewFromDB };
   } catch (error) {
     return {
-      error: `Failed to create react: ${error.message}`,
+      error: `Failed to create react: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -76,7 +77,7 @@ export async function deleteReactOnReview(
     return { reactOnReview };
   } catch (error) {
     return {
-      error: `Failed to delete reactOnReview with ID ${reactOnReviewID}: ${error.message}`,
+      error: `Failed to delete reactOnReview with ID ${reactOnReviewID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();

@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/utils/error';
 import prisma from './index';
 import type { Follow } from '@prisma/client';
 
@@ -15,7 +16,7 @@ export async function getFollows(): Promise<{
       follows,
     };
   } catch (error) {
-    return { error: error.message ?? 'Failed to get follows' };
+    return { error: getErrorMessage(error) ?? 'Failed to get follows' };
   } finally {
     await prisma.$disconnect();
   }
@@ -32,7 +33,7 @@ export async function getFollow(followID: string): Promise<{ follow?: Follow; er
     }
     return { follow };
   } catch (error) {
-    return { error: error.message ?? 'Failed to get follow' };
+    return { error: getErrorMessage(error) ?? 'Failed to get follow' };
   } finally {
     await prisma.$disconnect();
   }
@@ -46,7 +47,7 @@ export async function createFollow(
     const followFromDB = await prisma.follow.create({ data: follow });
     return { follow: followFromDB };
   } catch (error) {
-    return { error: error.message ?? 'Failed to create follow' };
+    return { error: getErrorMessage(error) ?? 'Failed to create follow' };
   } finally {
     await prisma.$disconnect();
   }
@@ -58,6 +59,6 @@ export async function deleteFollow(followID: string): Promise<{ follow?: Follow;
     const follow = await prisma.follow.delete({ where: { id: followID } });
     return { follow };
   } catch (error) {
-    return { error: error.message ?? 'Failed to delete follow' };
+    return { error: getErrorMessage(error) ?? 'Failed to delete follow' };
   }
 }

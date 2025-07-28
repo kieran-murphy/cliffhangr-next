@@ -1,4 +1,5 @@
 import prisma from './index';
+import { getErrorMessage } from '@/utils/error';
 
 import type { Show } from '@prisma/client';
 
@@ -19,7 +20,7 @@ export async function getShows(): Promise<{ count?: number; shows?: Show[]; erro
     };
   } catch (error) {
     return {
-      error: `Failed to get all shows: ${error.message}`,
+      error: `Failed to get all shows: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -45,7 +46,7 @@ export const getShow = async (showID: string): Promise<{ show?: Show; error?: st
     return { show };
   } catch (error) {
     return {
-      error: `Failed to get show with ID ${showID}: ${error.message}`,
+      error: `Failed to get show with ID ${showID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -74,7 +75,7 @@ export const searchShowsByName = async (
     };
   } catch (error) {
     return {
-      error: `Failed to search for ${nameQuery}: ${error.message}`,
+      error: `Failed to search for ${nameQuery}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -90,7 +91,7 @@ export async function createShow(show: Omit<Show, 'id'>): Promise<{ show?: Show;
     return { show: showFromDB };
   } catch (error) {
     return {
-      error: `Failed to create show: ${error.message}`,
+      error: `Failed to create show: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -110,7 +111,7 @@ export const updateShow = async (
     return { show: updatedShow };
   } catch (error) {
     return {
-      error: `Failed to update show with ID ${showID}: ${error.message}`,
+      error: `Failed to update show with ID ${showID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
@@ -124,7 +125,7 @@ export async function deleteShow(showID: string): Promise<{ show?: Show; error?:
     return { show };
   } catch (error) {
     return {
-      error: `Failed to delete show with ID ${showID}: ${error.message}`,
+      error: `Failed to delete show with ID ${showID}: ${getErrorMessage(error)}`,
     };
   } finally {
     await prisma.$disconnect();
