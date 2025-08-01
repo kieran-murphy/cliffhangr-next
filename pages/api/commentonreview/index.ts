@@ -5,17 +5,20 @@ import {
   updateCommentOnReview,
   deleteCommentOnReview,
 } from '@/lib/prisma/commentOnReviews';
+import { getErrorMessage } from '@/utils/error';
 
-const handler = async (req, res) => {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const commentOnReviewID = req.query.id;
+    const commentOnReviewID = req.query.id as string;
     if (commentOnReviewID) {
       try {
         const { commentOnReview, error } = await getCommentOnReview(commentOnReviewID);
         if (error) throw new Error(error);
         return res.status(200).json({ commentOnReview });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     } else {
       try {
@@ -23,7 +26,7 @@ const handler = async (req, res) => {
         if (error) throw new Error(error);
         return res.status(200).json({ count, commentOnReviews });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     }
   }
@@ -36,20 +39,20 @@ const handler = async (req, res) => {
       return res.status(200).json({ commentOnReview });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
   if (req.method === 'PUT') {
     try {
-      const commentOnReviewID = req.query.id; // Assuming the ID is in the query
+      const commentOnReviewID = req.query.id as string; // Assuming the ID is in the query
       const data = req.body; // Assuming the updated data is in the body
       const { commentOnReview, error } = await updateCommentOnReview(commentOnReviewID, data);
       if (error) throw new Error(error);
       return res.status(200).json({ commentOnReview });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
@@ -61,7 +64,7 @@ const handler = async (req, res) => {
       return res.status(200).json({ commentOnReview });
     } catch (error) {
       console.log(error);
-      return res.status(500).json();
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
