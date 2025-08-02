@@ -6,18 +6,21 @@ import {
   updateShow,
   deleteShow,
 } from '@/lib/prisma/shows';
+import { getErrorMessage } from '@/utils/error';
 
-const handler = async (req, res) => {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const showID = req.query.id;
-    const search = req.query.search;
+    const showID = req.query.id as string;
+    const search = req.query.search as string;
     if (showID) {
       try {
         const { show, error } = await getShow(showID);
         if (error) throw new Error(error);
         return res.status(200).json({ show });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     }
     if (search) {
@@ -26,7 +29,7 @@ const handler = async (req, res) => {
         if (error) throw new Error(error);
         return res.status(200).json({ count, shows });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     } else {
       try {
@@ -34,7 +37,7 @@ const handler = async (req, res) => {
         if (error) throw new Error(error);
         return res.status(200).json({ count, shows });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     }
   }
@@ -47,7 +50,7 @@ const handler = async (req, res) => {
       return res.status(200).json({ show });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
@@ -64,7 +67,7 @@ const handler = async (req, res) => {
       return res.status(200).json({ show });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
@@ -76,7 +79,7 @@ const handler = async (req, res) => {
       return res.status(200).json({ show });
     } catch (error) {
       console.log(error);
-      return res.status(500).json();
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 

@@ -4,17 +4,20 @@ import {
   createReactOnReview,
   deleteReactOnReview,
 } from '@/lib/prisma/reactOnReviews';
+import { getErrorMessage } from '@/utils/error';
 
-const handler = async (req, res) => {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const reactOnReviewID = req.query.id;
+    const reactOnReviewID = req.query.id as string;
     if (reactOnReviewID) {
       try {
         const { reactOnReview, error } = await getReactOnReview(reactOnReviewID);
         if (error) throw new Error(error);
         return res.status(200).json({ reactOnReview });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     } else {
       try {
@@ -22,7 +25,7 @@ const handler = async (req, res) => {
         if (error) throw new Error(error);
         return res.status(200).json({ count, reactOnReviews });
       } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: getErrorMessage(error) });
       }
     }
   }
@@ -35,7 +38,7 @@ const handler = async (req, res) => {
       return res.status(200).json({ reactOnReview });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
@@ -47,7 +50,7 @@ const handler = async (req, res) => {
       return res.status(200).json({ reactOnReview });
     } catch (error) {
       console.log(error);
-      return res.status(500).json();
+      return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 
