@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-export type WatchlistItem = Prisma.WatchlistShowGetPayload<{
+export type WatchlistItemType = Prisma.WatchlistShowGetPayload<{
   include: {
     show: true;
   };
