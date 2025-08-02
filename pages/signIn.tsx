@@ -1,21 +1,29 @@
 import { useState, FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const Login = (): React.JSX.Element => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    try {
-      await signIn('credentials', {
-        callbackUrl: '/',
-        email,
-        password,
-      });
-    } catch (error) {
-      alert(`signIn error = ${error}`);
+    setError('');
+
+    const res = await signIn('credentials', {
+      // callbackUrl: '/',
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (res?.error) {
+      setError(res.error);
+    } else {
+      router.push('/');
     }
   };
 
@@ -23,6 +31,7 @@ const Login = (): React.JSX.Element => {
     <div className="text-center w-full md:w-1/2 mx-auto">
       <h1 className="text-2xl my-8">Login</h1>
       <form onSubmit={handleSubmit}>
+        {error && <div className="text-red-500">{error}</div>}
         <div className="form-control w-full max-w">
           <div className="label">
             <span className="label-text">Email</span>

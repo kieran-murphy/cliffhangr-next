@@ -31,10 +31,14 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user) return null;
+        if (!user) {
+          throw new Error('No account found with this email.');
+        }
 
         const isValid = await compare(credentials.password, user.password);
-        if (!isValid) return null;
+        if (!isValid) {
+          throw new Error('Incorrect password.');
+        }
 
         return {
           id: user.id,
