@@ -1,12 +1,19 @@
 import { APIRequestContext } from '@playwright/test';
 import { testUser } from '../data/testuser';
 
+import type { UserType } from '@/types/user';
+import type { ShowType } from '@/types/show';
+import type { FollowType } from '@/types/follow';
+import type { FavoriteType } from '@/types/favorite';
+import type { WatchlistItemType } from '@/types/watchlist';
+import type { ReviewType } from '@/types/review';
+
 export async function getRandomUser(request: APIRequestContext) {
   const res = await request.get('/api/user');
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { users } = await res.json();
 
-  const candidates = users.filter((u) => u.username !== 'testuser');
+  const candidates = users.filter((u: UserType) => u.username !== 'testuser');
   if (candidates.length === 0) throw new Error('No non-testuser accounts');
 
   return candidates[Math.floor(Math.random() * candidates.length)].username;
@@ -58,8 +65,10 @@ export async function getRandomUserToFollow(request: APIRequestContext) {
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { users } = await res.json();
   const following = await getTestUserFollowing(request);
-  const followedIds = new Set(following.map((f) => f.followedBy.id));
-  const candidates = users.filter((u) => u.username !== 'testuser' && !followedIds.has(u.id));
+  const followedIds = new Set(following.map((f: FollowType) => f.followedBy.id));
+  const candidates = users.filter(
+    (u: UserType) => u.username !== 'testuser' && !followedIds.has(u.id)
+  );
   if (candidates.length === 0) {
     throw new Error('No users left to follow');
   }
@@ -77,8 +86,8 @@ export async function getRandomShowToFavourite(request: APIRequestContext) {
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { shows } = await res.json();
   const favObjects = await getTestUserFavourites(request);
-  const favIds = new Set(favObjects.map((f) => f.showId));
-  const candidates = shows.filter((s) => !favIds.has(s.id));
+  const favIds = new Set(favObjects.map((f: FavoriteType) => f.showId));
+  const candidates = shows.filter((s: ShowType) => !favIds.has(s.id));
   return candidates[Math.floor(Math.random() * candidates.length)].title;
 }
 
@@ -92,8 +101,8 @@ export async function getRandomShowToWatchlist(request: APIRequestContext) {
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { shows } = await res.json();
   const watchlistEntries = await getTestUserWatchlist(request);
-  const watchlistIds = watchlistEntries.map((entry) => entry.showId);
-  const candidates = shows.filter((s) => !watchlistIds.includes(s.id));
+  const watchlistIds = watchlistEntries.map((entry: WatchlistItemType) => entry.showId);
+  const candidates = shows.filter((s: ShowType) => !watchlistIds.includes(s.id));
   const pick = candidates[Math.floor(Math.random() * candidates.length)];
   return pick.title;
 }
@@ -108,8 +117,8 @@ export async function getRandomShowToReview(request: APIRequestContext) {
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { shows } = await res.json();
   const reviews = await getTestUserReviews(request);
-  const reviewedIds = new Set(reviews.map((r) => r.showId));
-  const candidates = shows.filter((s) => !reviewedIds.has(s.id));
+  const reviewedIds = new Set(reviews.map((r: ReviewType) => r.showId));
+  const candidates = shows.filter((s: ShowType) => !reviewedIds.has(s.id));
   return candidates[Math.floor(Math.random() * candidates.length)].title;
 }
 
@@ -117,7 +126,7 @@ export async function getRandomReviewWithComments(request: APIRequestContext) {
   const res = await request.get('/api/review');
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { reviews } = await res.json();
-  const candidates = reviews.filter((r) => r.CommentOnReview.length > 0);
+  const candidates = reviews.filter((r: ReviewType) => r.CommentOnReview.length > 0);
   if (candidates.length === 0) throw new Error('No reviews with comments');
   const candidateReview = candidates[Math.floor(Math.random() * candidates.length)];
   return candidateReview.id;
@@ -129,7 +138,7 @@ export async function getRandomReviewWithoutComments(request: APIRequestContext)
   if (!res.ok()) throw new Error(`API returned ${res.status()}`);
   const { reviews } = await res.json();
   const candidates = reviews.filter(
-    (r) => r.CommentOnReview.length === 0 && r.userId === testUserId
+    (r: ReviewType) => r.CommentOnReview.length === 0 && r.userId === testUserId
   );
   if (candidates.length === 0) throw new Error('No reviews with comments');
   const candidateReview = candidates[Math.floor(Math.random() * candidates.length)];
