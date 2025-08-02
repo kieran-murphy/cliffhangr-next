@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -8,8 +8,15 @@ import ToastError from '@/components/ToastError';
 const Login = (): React.JSX.Element => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { query, replace } = useRouter();
-  const callbackUrl = typeof query.callbackUrl === 'string' ? query.callbackUrl : '/';
+  const router = useRouter();
+  const callbackUrl = typeof router.query.callbackUrl === 'string' ? router.query.callbackUrl : '/';
+
+  useEffect(() => {
+    if (router.query.callbackUrl) {
+      const cleanedUrl = window.location.pathname;
+      router.replace(cleanedUrl, undefined, { shallow: true });
+    }
+  }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -28,7 +35,7 @@ const Login = (): React.JSX.Element => {
         />
       ));
     } else if (res?.url) {
-      replace(res.url); // 👈 this cleans the URL (instead of push, which keeps ?callbackUrl)
+      router.replace(res.url);
     }
   };
 
