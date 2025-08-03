@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Home = (): React.JSX.Element => {
   const { data: session } = useSession();
   const user = session?.user;
 
   if (!user) {
-    return <div>Please log in to see the content.</div>;
+    return <LoadingSpinner />;
   }
 
   return (
