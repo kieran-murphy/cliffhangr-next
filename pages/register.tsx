@@ -2,6 +2,8 @@
 
 import React, { useState, FormEvent } from 'react';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import ToastError from '@/components/ToastError';
 
 const Home = (): React.JSX.Element => {
   const [username, setUsername] = useState<string>('');
@@ -19,33 +21,37 @@ const Home = (): React.JSX.Element => {
     };
 
     if (password === confirmPassword) {
-      try {
-        const response = await fetch('/api/user', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user: formData }),
-        });
+      const res = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user: formData }),
+      });
 
-        const data = await response.json();
-        console.log(data);
+      const data = await res.json();
 
-        if (response.ok) {
-          alert('Successful registered');
-          setUsername('');
-          setEmail('');
-          setPassword('');
-          setConfirmPassword('');
-        } else {
-          alert('Submission failed');
+      if (res.ok) {
+        alert('Successful registered');
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+      } else {
+        if (data?.error) {
+          toast.custom(() => (
+            <ToastError
+              message={
+                data.error?.includes('Unique constraint failed')
+                  ? 'Username or email already taken'
+                  : data.error
+              }
+            />
+          ));
         }
-      } catch (error) {
-        console.error('There was an error submitting the form data', error);
-        alert('There was an error submitting the form data');
       }
     } else {
-      alert('Passwords dont match');
+      toast.custom(() => <ToastError message={'Passwords do not match. Please try again.'} />);
     }
   };
 

@@ -49,7 +49,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (error) throw new Error(error);
       return res.status(200).json({ user });
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('User creation error:', error);
+      }
       return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
@@ -66,7 +68,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (error) throw new Error(error);
       return res.status(200).json({ user });
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('User update error:', error);
+      }
       return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
@@ -78,7 +82,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (error) throw new Error(error);
       return res.status(200).json({ user });
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('User deletion error:', error);
+      }
       return res.status(500).json({ error: getErrorMessage(error) });
     }
   }
